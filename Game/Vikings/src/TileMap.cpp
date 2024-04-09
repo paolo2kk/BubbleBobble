@@ -29,48 +29,48 @@ TileMap::~TileMap()
 }
 void TileMap::InitTileDictionary()
 {
-	const int n = TILE_SIZE;
+	const int n = TILE_SIZE_WIDTH;
+	const int p = TILE_SIZE_HEIGHT;
 
-	dict_rect[(int)Tile::BLOCK_SQUARE1_TL] = { 0,  0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE1_TR] = { n,  0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE1_BL] = { 0, n, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE1_BR] = { n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_TL] = { 2 * n,  0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_TR] = { 3 * n,  0, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_BL] = { 2 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_SQUARE2_BR] = { 3 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_VERT2_T] = { 4 * n,  0, n, n };
-	dict_rect[(int)Tile::BLOCK_VERT2_B] = { 4 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ2_L] = { 5 * n, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ2_R] = { 6 * n, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_BLUE] = { 7 * n, 0, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_L] = { 5 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_M] = { 6 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_HORIZ3_R] = { 7 * n, n, n, n };
-	dict_rect[(int)Tile::BLOCK_BEAM_L] = { 0, 2 * n, n, n };
-	dict_rect[(int)Tile::BLOCK_BEAM_R] = { n, 2 * n, n, n };
 
-	dict_rect[(int)Tile::LADDER_L] = { 2 * n, 2 * n, n, n };
-	dict_rect[(int)Tile::LADDER_R] = { 3 * n, 2 * n, n, n };
-	dict_rect[(int)Tile::LADDER_TOP_L] = { 4 * n, 2 * n, n, n };
-	dict_rect[(int)Tile::LADDER_TOP_R] = { 5 * n, 2 * n, n, n };
+	dict_rect[(int)Tile::LVL1WALL] = { 0,  0, n, p };
+	dict_rect[(int)Tile::LVL1WALLSHADOW] = { n,  0, n, p };
+	dict_rect[(int)Tile::LVL1CEILING] = { n*2,  0, n, p };
+	dict_rect[(int)Tile::LVL1WALL2] = { 0,  p, n, p };
+	dict_rect[(int)Tile::LVL1WALL3] = { 0,  2*p, n, p };
+	dict_rect[(int)Tile::LVL1WALL4] = { 0,  3*p, n, p };
+	dict_rect[(int)Tile::LVL1WALL5] = { 0,  4*p, n, p };
+	dict_rect[(int)Tile::LVL1WALL6] = { 0,  5*p, n, p };
+	dict_rect[(int)Tile::LVL1WALL7] = { 0,  6 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL8] = { 0,  7 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL9] = { 0,  8 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL10] = { 0,  9 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL11] = { 0,  10 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL12] = { 0,  11 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL13] = { 0,  12 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL14] = { 0,  13 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL15] = { 0,  14 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL16] = { 0,  15 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL17] = { 0,  16 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL18] = { 0,  17 * p, n, p };
+	dict_rect[(int)Tile::LVL1WALL19] = { 0,  18 * p, n, p };
+	dict_rect[(int)Tile::LVL1FLOOR] = { 2*n,  18 * p  , n, p  };
+	dict_rect[(int)Tile::LVL1SHADOW] = { n,  n , n, p };
+	dict_rect[(int)Tile::LVL1FLOORDEBUGEAO] = { n,  18 * p  , n, p };
 
-	dict_rect[(int)Tile::LOCK_RED] = { 6 * n, 2 * n, n, n };
-	dict_rect[(int)Tile::LOCK_YELLOW] = { 7 * n, 2 * n, n, n };
-
-	dict_rect[(int)Tile::LASER_L] = { 0, 6 * n, n, n };
-	dict_rect[(int)Tile::LASER_R] = { 4 * n, 6 * n, n, n };
-	
-	dict_rect[(int)Tile::LASER_FRAME0] = { 1 * n, 6 * n, n, n };
-	dict_rect[(int)Tile::LASER_FRAME1] = { 2 * n, 6 * n, n, n };
-	dict_rect[(int)Tile::LASER_FRAME2] = { 3 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::PLATFORM1] = { n,  7 * p + 3 , n, p + 1 };
+	dict_rect[(int)Tile::PLATFORM2] = { 2* n,  7 * p + 3  , n + 2, p + 7};
+	dict_rect[(int)Tile::PLATFORM2V2] = { 2 * n,  7 * p + 3  , n + 1, p  };
+	dict_rect[(int)Tile::PLATFORM1PATTERNDOS] = {  n,  20 * p + 4 , n, p };
+	dict_rect[(int)Tile::PLATFORM3] = {4 * n  ,  7 * p + 2, n, p + 4 };
+	dict_rect[(int)Tile::SHADOWOFTHECOLOSSUS] = { 3 * n + 8 ,  7 * p + 2, n , p + 4};
 
 }
 AppStatus TileMap::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
 
-	if (data.LoadTexture(Resource::IMG_TILES, "images/tileset.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_TILES, "images/MAP1full.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
@@ -84,9 +84,9 @@ AppStatus TileMap::Initialise()
 	}
 	laser->SetNumberAnimations(1);
 	laser->SetAnimationDelay(0, ANIM_DELAY);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME0]);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME1]);
-	laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME2]);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME0]);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME1]);
+	//laser->AddKeyFrame(0, dict_rect[(int)Tile::LASER_FRAME2]);
 	laser->SetAnimation(0);
 
 	return AppStatus::OK;
@@ -127,13 +127,9 @@ bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST);
 }
-bool TileMap::IsTileLadderTop(Tile tile) const
+bool TileMap::IsTilePlatform(Tile tile) const 
 {
-	return tile == Tile::LADDER_TOP_L || tile == Tile::LADDER_TOP_R;
-}
-bool TileMap::IsTileLadder(Tile tile) const
-{
-	return tile == Tile::LADDER_L || tile == Tile::LADDER_R;
+	return (Tile::PLATFORM_FIRST <= tile && tile <= Tile::PLATFORM_LAST);
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
@@ -150,9 +146,9 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 
 	if (CollisionY(p, box.width))
 	{
-		tile_y = p.y / TILE_SIZE;
+		tile_y = p.y / TILE_SIZE_HEIGHT;
 
-		*py = tile_y * TILE_SIZE - 1;
+		*py = tile_y * TILE_SIZE_HEIGHT + 1;
 		return true;
 	}
 	return false;
@@ -166,9 +162,9 @@ bool TileMap::CollisionX(const Point& p, int distance) const
 	int x, y, y0, y1;
 
 	//Calculate the tile coordinates and the range of tiles to check for collision
-	x = p.x / TILE_SIZE;
-	y0 = p.y / TILE_SIZE;
-	y1 = (p.y + distance - 1) / TILE_SIZE;
+	x = p.x / TILE_SIZE_WIDTH;
+	y0 = p.y / TILE_SIZE_WIDTH;
+	y1 = (p.y + distance - 1) / TILE_SIZE_WIDTH;
 	
 	//Iterate over the tiles within the vertical range
 	for (y = y0; y <= y1; ++y)
@@ -185,9 +181,9 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 	Tile tile;
 
 	//Calculate the tile coordinates and the range of tiles to check for collision
-	y = p.y / TILE_SIZE;
-	x0 = p.x / TILE_SIZE;
-	x1 = (p.x + distance - 1) / TILE_SIZE;
+	y = p.y / TILE_SIZE_HEIGHT;
+	x0 = p.x / TILE_SIZE_WIDTH;
+	x1 = (p.x + distance - 1) / TILE_SIZE_WIDTH;
 
 	//Iterate over the tiles within the horizontal range
 	for (x = x0; x <= x1; ++x)
@@ -195,79 +191,13 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 		tile = GetTileIndex(x, y);
 
 		//One solid or laddertop tile is sufficient
-		if (IsTileSolid(tile) || IsTileLadderTop(tile))
+		if (IsTileSolid(tile) || IsTilePlatform(tile))
 			return true;
 	}
 	return false;
 }
-bool TileMap::TestOnLadder(const AABB& box, int* px) const
-{
-	int left, right, bottom;
-	int tx1, tx2, ty;
-	Tile tile1, tile2;
-	
-	//Control points
-	left = box.pos.x;
-	right = box.pos.x + box.width-1;
-	bottom = box.pos.y + box.height-1;
 
-	//Calculate the tile coordinates
-	tx1 = left / TILE_SIZE;
-	tx2 = right / TILE_SIZE;
-	ty = bottom / TILE_SIZE;
 
-	//To be able to climb up or down, both control points must be on ladder
-	tile1 = GetTileIndex(tx1, ty);
-	tile2 = GetTileIndex(tx2, ty);
-	if (IsTileLadder(tile1) && IsTileLadder(tile2))
-	{
-		*px = GetLadderCenterPos(left, bottom) - box.width/2;
-		return true;
-	}
-	return false;
-}
-bool TileMap::TestOnLadderTop(const AABB& box, int* px) const
-{
-	int left, right, bottom;
-	int tx1, tx2, ty;
-	Tile tile1, tile2;
-
-	//Control points
-	left = box.pos.x;
-	right = box.pos.x + box.width - 1;
-	bottom = box.pos.y + box.height - 1;
-
-	//Calculate the tile coordinates
-	tx1 = left / TILE_SIZE;
-	tx2 = right / TILE_SIZE;
-	ty = bottom / TILE_SIZE;
-
-	//To be able to climb up or down, both control points must be on ladder
-	tile1 = GetTileIndex(tx1, ty);
-	tile2 = GetTileIndex(tx2, ty);
-	if (IsTileLadderTop(tile1) && IsTileLadderTop(tile2))
-	{
-		*px = GetLadderCenterPos(left, bottom) - box.width / 2;
-		return true;
-	}
-	return false;
-}
-int TileMap::GetLadderCenterPos(int pixel_x, int pixel_y) const
-{
-	int tx, ty;
-	
-	tx = pixel_x / TILE_SIZE;
-	ty = pixel_y / TILE_SIZE;
-	Tile tile = GetTileIndex(tx, ty);
-
-	if (tile == Tile::LADDER_L || tile == Tile::LADDER_TOP_L)		return tx * TILE_SIZE + TILE_SIZE;
-	else if (tile == Tile::LADDER_R || tile == Tile::LADDER_TOP_R)	return tx * TILE_SIZE;
-	else
-	{
-		LOG("Internal error, tile should be a LADDER, coord: (%d,%d), tile type: %d", pixel_x, pixel_y, (int)tile);
-		return 0;
-	}
-}
 void TileMap::Render()
 {
 	Tile tile;
@@ -281,10 +211,10 @@ void TileMap::Render()
 			tile = map[i * width + j];
 			if (tile != Tile::AIR)
 			{
-				pos.x = (float)j * TILE_SIZE;
-				pos.y = (float)i * TILE_SIZE;
+				pos.x = (float)j * TILE_SIZE_WIDTH;
+				pos.y = (float)i * TILE_SIZE_HEIGHT;
 
-				if (tile != Tile::LASER)
+				if (tile == tile)
 				{
 					rc = dict_rect[(int)tile];
 					DrawTextureRec(*img_tiles, rc, pos, WHITE);

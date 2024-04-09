@@ -8,14 +8,14 @@
 #define PADDING_Y					3
 
 //Logical model size: 12x28
-#define PLAYER_PHYSICAL_WIDTH	17
-#define PLAYER_PHYSICAL_HEIGHT	17
+#define PLAYER_PHYSICAL_WIDTH	13
+#define PLAYER_PHYSICAL_HEIGHT	16
 
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1
 
 //Vertical speed while on a ladder
-#define PLAYER_LADDER_SPEED		1
+#define PLAYER_LADDER_SPEED		2
 
 //Frame animation delay while on a ladder
 #define ANIM_LADDER_DELAY		(2*ANIM_DELAY)
@@ -27,7 +27,7 @@
 #define PLAYER_JUMP_DELAY		2
 
 //Player is levitating when abs(speed) <= this value
-#define PLAYER_LEVITATING_SPEED	4
+#define PLAYER_LEVITATING_SPEED	1
 
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
@@ -70,8 +70,7 @@ private:
 	void MoveX();
 	void MoveY();
 	void LogicJumping();
-	void LogicClimbing();
-
+	
 	//Animation management
 	void SetAnimation(int id);
 	PlayerAnim GetAnimation();
@@ -80,8 +79,6 @@ private:
 	void StartWalkingRight();
 	void StartFalling();
 	void StartJumping();
-	void StartClimbingUp();
-	void StartClimbingDown();
 	void ChangeAnimRight();
 	void ChangeAnimLeft();
 
@@ -90,10 +87,7 @@ private:
 	bool IsLevitating() const;
 	bool IsDescending() const;
 
-	//Ladder get in/out steps
-	bool IsInFirstHalfTile() const;
-	bool IsInSecondHalfTile() const;
-
+	
 	State state;
 	Look look;
 	int jump_delay;
