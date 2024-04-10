@@ -88,6 +88,7 @@ private:
 	bool IsTileFloor(Tile tile) const;
 	bool IsTileLadderTop(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
+	bool CollisionXFLOOR(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 
 	bool CollisionYHalfRight(const Point& p, int distance) const;

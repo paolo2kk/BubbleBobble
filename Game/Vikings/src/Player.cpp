@@ -130,7 +130,7 @@ void Player::StartWalkingRight()
 }
 void Player::StartFalling()
 {
-	dir.y = PLAYER_SPEED;
+	dir.y = PLAYER_SPEED + 1;
 	state = State::FALLING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
@@ -186,7 +186,7 @@ void Player::MoveX()
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
-		pos.x += -PLAYER_SPEED;
+		pos.x += -1;
 		if (state == State::IDLE) StartWalkingLeft();
 		else
 		{
@@ -202,7 +202,7 @@ void Player::MoveX()
 	}
 	else if (IsKeyDown(KEY_RIGHT))
 	{
-		pos.x += PLAYER_SPEED;
+		pos.x += 1;
 		if (state == State::IDLE) StartWalkingRight();
 		else
 		{
@@ -258,7 +258,7 @@ void Player::MoveY()
 			jump_delay = PLAYER_JUMP_DELAY;
 		
 			//Is the jump finished?
-			if (dir.y > PLAYER_JUMP_FORCE)
+			if (dir.y > PLAYER_JUMP_LIMIT)
 			{
 				dir.y = PLAYER_SPEED;
 				StartFalling();

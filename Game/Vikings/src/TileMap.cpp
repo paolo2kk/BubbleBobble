@@ -182,10 +182,11 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {
 	Point p(box.pos.x, *py);	//control point
 	int tile_y;
+	Point pFloor(box.pos.x, box.pos.y + 1);	//control point
 	Point p2(box.pos.x - 8, *py);	//control point
 	Point p3(box.pos.x + 8, *py);	//control point
-	Point p22(box.pos.x - 7, *py);	//control point
-	Point p33(box.pos.x + 7, *py);	//control point
+	Point p22(box.pos.x - 7, box.pos.y + 1);	//control point
+	Point p33(box.pos.x + 7, box.pos.y + 1);	//control point
 
 	if (CollisionY(p, box.width))
 	{
@@ -194,7 +195,7 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 		*py = tile_y * TILE_SIZE;
 		return true;
 	}
-	else if (CollisionYFLOOR(p, box.width))
+	else if (CollisionYFLOOR(pFloor, box.width))
 	{
 		tile_y = p.y / TILE_SIZE;
 		*py = tile_y * TILE_SIZE + TILE_SIZE / 2;

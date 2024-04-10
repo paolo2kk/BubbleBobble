@@ -15,6 +15,7 @@
 
 //When jumping, initial jump speed and maximum falling speed
 #define PLAYER_JUMP_FORCE		10
+#define PLAYER_JUMP_LIMIT		10
 
 //Frame delay for updating the jump velocity
 #define PLAYER_JUMP_DELAY		2

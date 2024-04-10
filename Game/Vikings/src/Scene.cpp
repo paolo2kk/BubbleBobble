@@ -104,7 +104,7 @@ AppStatus Scene::LoadLevel(int stage)
 				if (tile == Tile::PLAYER)
 				{
 					pos.x = x * TILE_SIZE;
-					pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+					pos.y = y * TILE_SIZE + TILE_SIZE - 3;
 					player->SetPos(pos);
 				}
 				++i;
