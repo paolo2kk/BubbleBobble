@@ -16,11 +16,14 @@ public:
     void Render();
     void Release();
 
+
 private:
     AppStatus LoadLevel(int stage);
+    AppStatus LoadMenu(int stage);
 
     Player *player;
     TileMap *level;
+    UI* menu;
     Camera2D camera;
 
     DebugMode debug;

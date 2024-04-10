@@ -98,6 +98,73 @@ AppStatus TileMap::Initialise()
 
 	return AppStatus::OK;
 }
+UI::UI()
+{
+	scene = nullptr;
+	width = 0;
+	height = 0;
+	Letters = nullptr;
+
+	InitUIDictionary();
+}
+
+UI::~UI()
+{
+	if (scene != nullptr)
+	{
+		delete[] scene;
+		scene = nullptr;
+	}
+}
+
+void UI::InitUIDictionary()
+{
+	const int n = LETTER_SIZE;
+	const int y = LETTER_DIS_Y;
+	const int x = LETTER_DIS_X;
+	int pos = 0;
+
+	for (float i = 0; i < 4; i++)
+	{
+		for (float j = 0; j < 59; j++)
+		{
+			dict_rect[(int)UI_elements::EXCL_W + pos] = { j * x, i * y, n, n };
+			pos++;
+		}
+	}
+
+}
+
+AppStatus UI::Initialise()
+{
+	ResourceManager& data = ResourceManager::Instance();
+
+	if (data.LoadTexture(Resource::IMG_LETTERS, "images/0.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	Letters = data.GetTexture(Resource::IMG_LETTERS);
+
+	return AppStatus::OK;
+}
+AppStatus UI::Load(int data[], int w, int h)
+{
+	size = w * h;
+	width = w;
+	height = h;
+
+	if (scene != nullptr)	delete[] scene;
+
+	scene = new UI_elements[size];
+	if (scene == nullptr)
+	{
+		LOG("Failed to allocate memory for tile map");
+		return AppStatus::ERROR;
+	}
+	memcpy(scene, data, size * sizeof(int));
+
+	return AppStatus::OK;
+}
 AppStatus TileMap::Load(int data[], int w, int h)
 {
 	size = w*h;
@@ -120,6 +187,10 @@ void TileMap::Update()
 {
 	laser->Update();
 }
+void UI::Update()
+{
+
+}
 Tile TileMap::GetTileIndex(int x, int y) const
 {
 	int idx = x + y*width;
@@ -129,6 +200,16 @@ Tile TileMap::GetTileIndex(int x, int y) const
 		return Tile::AIR;
 	}
 	return map[x + y * width];
+}
+UI_elements UI::GetTileIndex(int x, int y) const
+{
+	int idx = x + y * width;
+	if (idx < 0 || idx >= size)
+	{
+		LOG("Error: Index out of bounds. Tile map dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
+			return UI_elements::NT;
+	}
+	return scene[x + y * width];
 }
 bool TileMap::IsTileStatic(Tile tile) const
 {
@@ -314,12 +395,44 @@ void TileMap::Render()
 		}
 	}
 }
+void UI::Render()
+{
+	UI_elements tile;
+	Rectangle rc;
+	Vector2 pos;
+
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			tile = scene[i * width + j];
+			if (tile != UI_elements::NT)
+			{
+				pos.x = (float)j * LETTER_SIZE;
+				pos.y = (float)i * LETTER_SIZE;
+
+				if (tile != UI_elements::NT)
+				{
+					rc = dict_rect[(int)tile];
+					DrawTextureRec(*Letters, rc, pos, WHITE);
+				}
+			}
+		}
+	}
+}
 void TileMap::Release()
 {
 	ResourceManager& data = ResourceManager::Instance(); 
 	data.ReleaseTexture(Resource::IMG_TILES);
 
 	laser->Release();
+
+	dict_rect.clear();
+}
+void UI::Release()
+{
+	ResourceManager& data = ResourceManager::Instance();
+	data.ReleaseTexture(Resource::IMG_TILES);
 
 	dict_rect.clear();
 }

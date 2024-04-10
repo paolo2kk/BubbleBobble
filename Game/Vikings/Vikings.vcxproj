@@ -107,8 +107,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\gpauc\Music\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\include;C:\Users\gpauc\Music\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

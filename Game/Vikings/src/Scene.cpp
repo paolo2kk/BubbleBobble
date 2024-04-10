@@ -6,6 +6,7 @@ Scene::Scene()
 {
 	player = nullptr;
     level = nullptr;
+	menu = nullptr;
 	
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
@@ -28,7 +29,14 @@ Scene::~Scene()
         delete level;
         level = nullptr;
     }
+	if (menu != nullptr)
+	{
+		menu->Release();
+		delete menu;
+		menu = nullptr;
+	}
 }
+
 AppStatus Scene::Init()
 {
 	//Create player
@@ -67,6 +75,25 @@ AppStatus Scene::Init()
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
 
+	menu = new UI();
+	if (menu == nullptr)
+	{
+		LOG("Failed to allocate memory for menu");
+		return AppStatus::ERROR;
+	}
+	//Initialise level
+	if (menu->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise menu");
+		return AppStatus::ERROR;
+	}
+	//Load level
+	if (LoadMenu(1) != AppStatus::OK)
+	{
+		LOG("Failed to load menu 1");
+		return AppStatus::ERROR;
+	}
+
     return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage)
@@ -98,6 +125,7 @@ AppStatus Scene::LoadLevel(int stage)
 		i = 0;
 		for (y = 0; y < LEVEL_HEIGHT; ++y)
 		{
+
 			for (x = 0; x < LEVEL_WIDTH; ++x)
 			{
 				tile = (Tile)map[i];
@@ -121,6 +149,52 @@ AppStatus Scene::LoadLevel(int stage)
 	}
 	return AppStatus::OK;
 }
+AppStatus Scene::LoadMenu(int stage)
+{
+	int size;
+	int x, y, i;
+	UI_elements tile;
+	Point pos;
+
+	if (stage == 1)
+	{
+		size = MENU_WIDTH * MENU_HEIGHT;
+		int map[] = {
+				 1,   3,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,  43,  21,  17,  42,  42,  42,  42,  42,  42,  42,  42,  18,   0,  42,  2,
+				 2,   9,   6,  10,  19,  19,  19,  19,  19,  19,  19,  19,  20,   0,   7,  2,
+				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
+				 2,   5, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,  43,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  2
+		};
+		//Entities
+		i = 0;
+		for (y = 0; y < MENU_HEIGHT; ++y)
+		{
+			for (x = 0; x < MENU_WIDTH; ++x)
+			{
+				tile = (UI_elements)map[i];
+				++i;
+			}
+		}
+		//Tile map
+		menu->Load(map, MENU_WIDTH, MENU_HEIGHT);
+	}
+	else
+	{
+		//Error level doesn't exist or incorrect level number
+		LOG("Failed to load Menu, stage %d doesn't exist", stage);
+		return AppStatus::ERROR;
+	}
+	return AppStatus::OK;
+}
 void Scene::Update()
 {
 	Point p1, p2;
@@ -134,9 +208,11 @@ void Scene::Update()
 
 	level->Update();
 	player->Update();
+	menu->Update();
 }
 void Scene::Render()
-{
+ {
+
 	BeginMode2D(camera);
 
     level->Render();
@@ -152,4 +228,5 @@ void Scene::Release()
 {
     level->Release();
 	player->Release();
+	menu->Release();
 }

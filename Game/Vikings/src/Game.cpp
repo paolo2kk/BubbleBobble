@@ -5,9 +5,9 @@
 
 Game::Game()
 {
+
     state = GameState::MAIN_MENU;
     scene = nullptr;
-    img_menu = nullptr;
 
     target = {};
     src = {};
@@ -59,12 +59,6 @@ AppStatus Game::Initialise(float scale)
 AppStatus Game::LoadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
-    
-    if (data.LoadTexture(Resource::IMG_MENU, "images/menu.png") != AppStatus::OK)
-    {
-        return AppStatus::ERROR;
-    }
-    img_menu = data.GetTexture(Resource::IMG_MENU);
     
     return AppStatus::OK;
 }
@@ -126,15 +120,17 @@ void Game::Render()
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
     ClearBackground(BLACK);
+
     
     switch (state)
     {
-        case GameState::MAIN_MENU:
-            DrawTexture(*img_menu, 0, 0, WHITE);
-            break;
 
         case GameState::PLAYING:
             scene->Render();
+            break;
+
+        case GameState::MAIN_MENU:
+
             break;
     }
     

@@ -23,6 +23,11 @@ void log(const char file[], int line, const char* text, ...);
 #define TILE_SIZE		16
 #define LEVEL_WIDTH		16
 #define LEVEL_HEIGHT	14
+#define LETTER_SIZE		8
+#define LETTER_DIS_Y	11
+#define LETTER_DIS_X	9
+#define MENU_WIDTH		16
+#define MENU_HEIGHT		14
 
 //Entities animation delay
 #define ANIM_DELAY		4
