@@ -136,7 +136,7 @@ bool TileMap::IsTileStatic(Tile tile) const
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
-	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST);
+	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -145,6 +145,22 @@ bool TileMap::IsTileLaser(Tile tile) const
 bool TileMap::IsTileMario(Tile tile) const
 {
 	return (tile == Tile::LOCK_RED);
+}
+bool TileMap::IsTileHalfCubeRight(Tile tile) const
+{
+	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST  );
+}
+bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
+{
+	return (tile == Tile::PLATFORMMIDDLEFINISH);
+}
+bool TileMap::IsTileHalfCubeLeft(Tile tile) const
+{
+	return (tile == Tile::PLATFORMEND );
+}
+bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
+{
+	return (tile == Tile::PLATFORMMIDDLESTART) ;
 }
 bool TileMap::IsTileFloor(Tile tile) const
 {
@@ -166,6 +182,10 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {
 	Point p(box.pos.x, *py);	//control point
 	int tile_y;
+	Point p2(box.pos.x - 8, *py);	//control point
+	Point p3(box.pos.x + 8, *py);	//control point
+	Point p22(box.pos.x - 7, *py);	//control point
+	Point p33(box.pos.x + 7, *py);	//control point
 
 	if (CollisionY(p, box.width))
 	{
@@ -175,6 +195,33 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 		return true;
 	}
 	else if (CollisionYFLOOR(p, box.width))
+	{
+		tile_y = p.y / TILE_SIZE;
+		*py = tile_y * TILE_SIZE + TILE_SIZE / 2;
+		return true;
+	}
+	else if (CollisionYHalfRight(p2, box.width)) 
+	{
+		tile_y = p.y / TILE_SIZE;
+
+		*py = tile_y * TILE_SIZE;
+		return true;
+	}
+	else if (CollisionYHalfLeft(p3, box.width))
+	{
+		tile_y = p.y / TILE_SIZE;
+
+		*py = tile_y * TILE_SIZE;
+		return true;
+	}
+	else if (CollisionYHalfRightDEBUG(p33, box.width))
+	{
+		tile_y = p.y / TILE_SIZE;
+
+		*py = tile_y * TILE_SIZE + TILE_SIZE / 2;
+		return true;
+	}
+	else if (CollisionYHalfLeftDEBUG(p22, box.width))
 	{
 		tile_y = p.y / TILE_SIZE;
 
@@ -227,6 +274,90 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 	}
 	return false;
 }
+bool TileMap::CollisionYHalfRight(const Point& p, int distance) const
+{
+	int x, y, x0, x1;
+	Tile tile;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	y = p.y / TILE_SIZE;
+	x0 = p.x / TILE_SIZE;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the horizontal range
+	for (x = x0; x <= x1; ++x)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid or laddertop tile is sufficient
+		if (IsTileHalfCubeRight(tile))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionYHalfLeft(const Point& p, int distance) const
+{
+	int x, y, x0, x1;
+	Tile tile;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	y = p.y / TILE_SIZE;
+	x0 = p.x / TILE_SIZE;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the horizontal range
+	for (x = x0; x <= x1; ++x)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid or laddertop tile is sufficient
+		if (IsTileHalfCubeLeft(tile))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionYHalfRightDEBUG(const Point& p, int distance) const
+{
+	int x, y, x0, x1;
+	Tile tile;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	y = p.y / TILE_SIZE;
+	x0 = p.x / TILE_SIZE;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the horizontal range
+	for (x = x0; x <= x1; ++x)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid or laddertop tile is sufficient
+		if (IsTileHalfCubeRightDEBUG(tile))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionYHalfLeftDEBUG(const Point& p, int distance) const
+{
+	int x, y, x0, x1;
+	Tile tile;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	y = p.y / TILE_SIZE;
+	x0 = p.x / TILE_SIZE;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the horizontal range
+	for (x = x0; x <= x1; ++x)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid or laddertop tile is sufficient
+		if (IsTileHalfCubeLeftDEBUG(tile))
+			return true;
+	}
+	return false;
+}
 bool TileMap::CollisionYFLOOR(const Point& p, int distance) const
 {
 	int x, y, x0, x1;
@@ -235,7 +366,7 @@ bool TileMap::CollisionYFLOOR(const Point& p, int distance) const
 	//Calculate the tile coordinates and the range of tiles to check for collision
 	y = p.y / TILE_SIZE;
 	x0 = p.x / TILE_SIZE;
-	x1 = (p.x + distance - 1) / TILE_SIZE + TILE_SIZE/2;
+	x1 = (p.x + distance - 1) / TILE_SIZE;
 
 	//Iterate over the tiles within the horizontal range
 	for (x = x0; x <= x1; ++x)
@@ -243,7 +374,7 @@ bool TileMap::CollisionYFLOOR(const Point& p, int distance) const
 		tile = GetTileIndex(x, y);
 
 		//One solid or laddertop tile is sufficient
-		if (IsTileFloor(tile) || tile == Tile::PLATFORMMIDDLESTART || tile == Tile::PLATFORMMIDDLEFINISH)
+		if (IsTileFloor(tile))
 		return true;
 	}
 	return false;

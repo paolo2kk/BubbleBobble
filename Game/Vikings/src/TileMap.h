@@ -32,7 +32,9 @@ enum class Tile {
 	STATIC_FIRST = BLOCKWITH1,
 	STATIC_LAST = BLOCKWITHOUT1,
 	SOLID_FIRST = PLATFORMBASIC,
-	SOLID_LAST = PLATFORMCORNERRIGHT,
+	SOLID_LAST = PLATFORMBASIC,
+	HALF_FIRST = PLATFORMBEGINNING,
+	HALF_LAST = PLATFORMBEGINNING,
 	FLOOR_FIRST = FLOOR,
 	FLOOR_LAST = FLOORSTART,
 	SPECIAL_FIRST = DOOR,
@@ -79,10 +81,22 @@ private:
 	bool IsTileSolid(Tile tile) const;
 	bool IsTileLaser(Tile tile) const;
 	bool IsTileMario(Tile tile) const;
+	bool IsTileHalfCubeRight(Tile tile) const;
+	bool IsTileHalfCubeRightDEBUG(Tile tile) const;
+	bool IsTileHalfCubeLeft(Tile tile) const;
+	bool IsTileHalfCubeLeftDEBUG(Tile tile) const;
 	bool IsTileFloor(Tile tile) const;
 	bool IsTileLadderTop(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
+
+	bool CollisionYHalfRight(const Point& p, int distance) const;
+
+	bool CollisionYHalfLeft(const Point& p, int distance) const;
+
+	bool CollisionYHalfRightDEBUG(const Point& p, int distance) const;
+
+	bool CollisionYHalfLeftDEBUG(const Point& p, int distance) const;
 
 	bool CollisionYFLOOR(const Point& p, int distance) const;
 
