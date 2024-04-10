@@ -12,29 +12,35 @@ enum class Tile {
 	// -1: area covered by entity
 	AIR = 0,
 
-	// 0 < id < 50: solid tiles
-	LVL1WALL = 1, LVL1WALL2 = 4, LVL1WALL3, LVL1WALL4, LVL1WALL5, LVL1WALL6, LVL1WALL7, LVL1WALL8, LVL1WALL9, 
-	LVL1WALL10, LVL1WALL11, LVL1WALL12, LVL1WALL13, LVL1WALL14, LVL1WALL15, LVL1WALL16, LVL1WALL17, LVL1WALL18, LVL1WALL19,
-	LVL1FLOORDEBUGEAO, LVL1FLOOR, PLATFORM1, PLATFORM1PATTERNDOS, PLATFORM3, SHADOWOFTHECOLOSSUS, PLATFORM2, PLATFORM2V2,
-	PLACEHOLDER,
-	
-	// 50 <= id < 100: static tiles
-	 LVL1SHADOW = 50, LVL1CEILING, LVL1WALLSHADOW,
+	// 0 < id < 50: static tiles
+	BLOCKWITH1 = 1, BLOCKWITHOUT1, CORNER,  SHADOW , SHADOW2, SHADOW3, SHADOW4, SHADOW5, SHADOW6, SHADOW7,
+	PLATFORMBASIC, PLATFORMBEGINNING, PLATFORMEND, PLATFORMCORNERRIGHT = 16, PLATFORMMIDDLESTART, PLATFORMMIDDLEFINISH,
+	SHADOWDOWN, SHADOWOTRA, SHADOWOTRA2,
+	LADDER_L = 22, LADDER_R, LADDER_TOP_L, LADDER_TOP_R,
+	LOCK_RED = 30, LOCK_YELLOW, 
+	LASER_L = 40, LASER_R, FLOOR, FLOORSTART,
+
+	// 50 <= id < 100: special tiles
+	DOOR = 50,
+	KEY_RED = 60, YELLOW_KEY, ITEM_APPLE, ITEM_CHILI,
+	LASER = 70, LASER_FRAME0, LASER_FRAME1, LASER_FRAME2,
+
 	// id >= 100: entities' initial locations
 	PLAYER = 100,
 
 	//Intervals
-	SOLID_FIRST = LVL1WALL,
-	SOLID_LAST = LVL1FLOOR,
-	PLATFORM_FIRST = PLATFORM1,
-	PLATFORM_LAST = SHADOWOFTHECOLOSSUS,
-	STATIC_FIRST = LVL1SHADOW,
-	STATIC_LAST = LVL1WALLSHADOW,
-	
-	/*SPECIAL_FIRST = DOOR,
-	SPECIAL_LAST = LASER,*/
+	STATIC_FIRST = BLOCKWITH1,
+	STATIC_LAST = BLOCKWITHOUT1,
+	SOLID_FIRST = PLATFORMBASIC,
+	SOLID_LAST = PLATFORMCORNERRIGHT,
+	FLOOR_FIRST = FLOOR,
+	FLOOR_LAST = FLOORSTART,
+	SPECIAL_FIRST = DOOR,
+	SPECIAL_LAST = LASER,
 	ENTITY_FIRST = PLAYER,
-	ENTITY_LAST = PLAYER
+	ENTITY_LAST = PLAYER,
+	LASER_FIRST = LASER,
+	LASER_LAST = LASER_FRAME2
 };
 
 class TileMap
@@ -52,25 +58,36 @@ public:
 	//Test for collisions with walls
 	bool TestCollisionWallLeft(const AABB& box) const;
 	bool TestCollisionWallRight(const AABB& box) const;
-	
+
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.
-	bool TestCollisionGround(const AABB& box, int *py) const;
-	
+	bool TestCollisionGround(const AABB& box, int* py) const;
+
+	bool TestCollisionHead(const AABB& box, int* posY) const;
+
+	bool TestCollisionLaser(const AABB& box, int* posY) const;
+
 	//Test if there is a ground tile one pixel below the given box
 	bool TestFalling(const AABB& box) const;
-	
 
 private:
 	void InitTileDictionary();
 
 	Tile GetTileIndex(int x, int y) const;
+	bool IsTileStatic(Tile tile) const;
 	bool IsTileSolid(Tile tile) const;
-	bool IsTilePlatform(Tile tile) const;
-
+	bool IsTileLaser(Tile tile) const;
+	bool IsTileMario(Tile tile) const;
+	bool IsTileFloor(Tile tile) const;
+	bool IsTileLadderTop(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
+
+	bool CollisionYFLOOR(const Point& p, int distance) const;
+
+
+
 
 	//Tile map
 	Tile *map;

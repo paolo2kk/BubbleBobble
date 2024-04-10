@@ -39,59 +39,14 @@ void Sprite::SetAnimation(int id)
         current_delay = animations[current_anim].delay;
     }
 }
-int Sprite::GetAnimation()
-{
-    return current_anim;
-}
-void Sprite::SetManualMode()
-{
-    mode = AnimMode::MANUAL;
-}
-void Sprite::SetAutomaticMode()
-{
-    mode = AnimMode::AUTOMATIC;
-}
 void Sprite::Update()
 {
-    ////Both animation modes (automatic and manual) are carry out with animation delay
-    //if (current_delay > 0)
-    //{
-    //    current_delay--;
-    //    if (current_delay == 0)
-    //    {
-    //        //Only automatic animation mode advances next frame
-    //        if (mode == AnimMode::AUTOMATIC)
-    //        {
-    //            current_frame++;
-    //            current_frame %= animations[current_anim].frames.size();
-    //            current_delay = animations[current_anim].delay;
-    //        }
-    //    }
-    //}
-}
-void Sprite::NextFrame()
-{
-    //Next frame is only available in manual animation mode
-    if (mode == AnimMode::MANUAL)
+    if (current_delay > 0)
     {
         current_delay--;
-        if (current_delay <= 0)
+        if (current_delay == 0)
         {
             current_frame++;
-            current_frame %= animations[current_anim].frames.size();
-            current_delay = animations[current_anim].delay;
-        }
-    }   
-}
-void Sprite::PrevFrame()
-{
-    //Previous frame is only available in manual animation mode
-    if (mode == AnimMode::MANUAL)
-    {
-        current_delay--;
-        if (current_delay <= 0)
-        {
-            current_frame--;
             current_frame %= animations[current_anim].frames.size();
             current_delay = animations[current_anim].delay;
         }

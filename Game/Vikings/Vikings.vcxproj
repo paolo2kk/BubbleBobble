@@ -51,7 +51,6 @@
     <ProjectGuid>{3977a628-da9d-4402-8f7a-65d0fde48107}</ProjectGuid>
     <RootNamespace>Vikings</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>BubbleBobble</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -36,11 +36,11 @@ AppStatus Player::Initialise()
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
-	
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, 30 );
+
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, 30);
 	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, -n, n });
 	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 2 * (n + PADDING_X), 0, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, 30 );
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, 30);
 	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, n, n });
 	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 2 * (n + PADDING_X), 0, n, n });
 
@@ -52,7 +52,7 @@ AppStatus Player::Initialise()
 		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i * (n + PADDING_X), (float)0, n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 8 * (n + PADDING_X), PADDING_Y+n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 8 * (n + PADDING_X), PADDING_Y + n, -n, n });
 	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 9 * (n + PADDING_X),  PADDING_Y + n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 8 * (n + PADDING_X),  PADDING_Y + n, n, n });
@@ -65,17 +65,7 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 11 * (n + PADDING_X),  PADDING_Y + n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 11 * (n + PADDING_X), PADDING_Y + n, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
-	for (i = 7; i < 10; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE, { (float)i * (n + PADDING_X), 0, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 4 * n, 6 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { 5 * n, 6 * n, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE, ANIM_LADDER_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE, ANIM_DELAY);
 	for (i = 7; i < 10; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE, { (float)i * (n + PADDING_X), 0, n, n });
 
@@ -108,21 +98,21 @@ bool Player::IsDescending() const
 {
 	return dir.y > PLAYER_LEVITATING_SPEED;
 }
-
 void Player::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-PlayerAnim Player::GetAnimation()
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	return (PlayerAnim)sprite->GetAnimation();
-}
 void Player::Stop()
 {
 	dir = { 0,0 };
 	state = State::IDLE;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
+}
+void Player::Stop2()
+{
+	state = State::FALLING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
@@ -153,7 +143,6 @@ void Player::StartJumping()
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
 	jump_delay = PLAYER_JUMP_DELAY;
 }
-
 void Player::ChangeAnimRight()
 {
 	look = Look::RIGHT;
@@ -178,21 +167,22 @@ void Player::ChangeAnimLeft()
 }
 void Player::Update()
 {
-	
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
 	MoveX();
 	MoveY();
+	LaserTag();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+	if (inLaser) {
+		LaserProcedures();
+	}
+	 
 }
 void Player::MoveX()
 {
 	AABB box;
 	int prev_x = pos.x;
-
-	//We can only go up and down while climbing
-	if (state == State::CLIMBING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
@@ -233,14 +223,12 @@ void Player::MoveX()
 }
 void Player::MoveY()
 {
-	AABB box;
+	AABB box, prev_box;
+	int prev_y;
 
-	if (state == State::JUMPING)
-	{
-		LogicJumping();
-	}
 	
-	else //idle, walking, falling
+
+	if (state != State::JUMPING)
 	{
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
@@ -248,77 +236,115 @@ void Player::MoveY()
 		{
 			if (state == State::FALLING) Stop();
 
-			
-			else if (IsKeyPressed(KEY_SPACE))
-			{
+			if (IsKeyPressed(KEY_SPACE))
 				StartJumping();
-			}
 		}
 		else
 		{
 			if (state != State::FALLING) StartFalling();
 		}
 	}
-}
-void Player::LogicJumping()
-{
-	AABB box, prev_box;
-	int prev_y;
-
-	jump_delay--;
-	if (jump_delay == 0)
+	else //state == State::JUMPING
 	{
-		prev_y = pos.y;
-		prev_box = GetHitbox();
-
-		pos.y += dir.y;
-		dir.y += GRAVITY_FORCE;
-		jump_delay = PLAYER_JUMP_DELAY;
-
-		//Is the jump finished?
-		if (dir.y > PLAYER_JUMP_FORCE)
+		
+		jump_delay--;
+		if (jump_delay == 0)
 		{
-			dir.y = PLAYER_SPEED;
-			StartFalling();
-		}
-		else
-		{
-			//Jumping is represented with 3 different states
-			if (IsAscending())
+			prev_y = pos.y;
+			prev_box = GetHitbox();
+
+			pos.y += dir.y;
+			dir.y += GRAVITY_FORCE;
+			jump_delay = PLAYER_JUMP_DELAY;
+		
+			//Is the jump finished?
+			if (dir.y > PLAYER_JUMP_FORCE)
 			{
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+				dir.y = PLAYER_SPEED;
+				StartFalling();
 			}
-			else if (IsLevitating())
+			else
 			{
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+				//Jumping is represented with 3 different states
+				if (IsAscending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+
+					
+				}
+				else if (IsLevitating())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+				}
+				else if (IsDescending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+				}
 			}
-			else if (IsDescending())
+			//We check ground collision when jumping down
+			if (dir.y >= 0)
 			{
+				box = GetHitbox();
+
+				//A ground collision occurs if we were not in a collision state previously.
+				//This prevents scenarios where, after levitating due to a previous jump, we found
+				//ourselves inside a tile, and the entity would otherwise be placed above the tile,
+				//crossing it.
+				if (!map->TestCollisionGround(prev_box, &prev_y) &&
+					 map->TestCollisionGround(box, &pos.y))
+				{
+					Stop();
+				}
 				
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
 			}
-		}
-		//We check ground collision when jumping down
-		if (dir.y >= 0)
-		{
-			box = GetHitbox();
+			else {
+				box = GetHitbox();
 
-			//A ground collision occurs if we were not in a collision state previously.
-			//This prevents scenarios where, after levitating due to a previous jump, we found
-			//ourselves inside a tile, and the entity would otherwise be placed above the tile,
-			//crossing it.
-			if (!map->TestCollisionGround(prev_box, &prev_y) &&
-				map->TestCollisionGround(box, &pos.y))
-			{
-				Stop();
+			
+				if (map->TestCollisionHead(box, &pos.y))
+				{
+					Stop();
+				}
 			}
+			
 		}
 	}
 }
+void Player::LaserTag()
+{
 
+
+	AABB box;
+
+	box = GetHitbox();
+
+	if (map->TestCollisionLaser(box,&pos.y )) {
+		cFrame = 0;
+		inLaser = true;
+	}
+
+	
+
+
+}
+void Player::LaserProcedures() 
+{
+	cFrame++;
+	SetAnimation((int)PlayerAnim::SHOCK_LEFT);
+
+	while (cFrame < 1) 
+	{
+
+		Stop();
+	}
+	cFrame = 0;
+	pos = { 0, 0 };
+
+	inLaser = false;
+}
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
@@ -333,4 +359,3 @@ void Player::Release()
 
 	render->Release();
 }
-

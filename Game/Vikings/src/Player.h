@@ -4,21 +4,14 @@
 
 //Representation model size: 32x32
 #define PLAYER_FRAME_SIZE		17
-#define PADDING_X					4
-#define PADDING_Y					3
-
+#define PADDING_X	4
+#define PADDING_Y	3
 //Logical model size: 12x28
-#define PLAYER_PHYSICAL_WIDTH	13
-#define PLAYER_PHYSICAL_HEIGHT	16
+#define PLAYER_PHYSICAL_WIDTH	12
+#define PLAYER_PHYSICAL_HEIGHT	12
 
 //Horizontal speed and vertical speed while falling down
-#define PLAYER_SPEED			1
-
-//Vertical speed while on a ladder
-#define PLAYER_LADDER_SPEED		2
-
-//Frame animation delay while on a ladder
-#define ANIM_LADDER_DELAY		(2*ANIM_DELAY)
+#define PLAYER_SPEED			2
 
 //When jumping, initial jump speed and maximum falling speed
 #define PLAYER_JUMP_FORCE		10
@@ -27,7 +20,7 @@
 #define PLAYER_JUMP_DELAY		2
 
 //Player is levitating when abs(speed) <= this value
-#define PLAYER_LEVITATING_SPEED	1
+#define PLAYER_LEVITATING_SPEED	4
 
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
@@ -43,10 +36,10 @@ enum class PlayerAnim {
 	JUMPING_LEFT, JUMPING_RIGHT,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
 	FALLING_LEFT, FALLING_RIGHT,
-	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
+	CLIMBING_LEFT, CLIMBING_RIGHT,
 	SHOCK_LEFT, SHOCK_RIGHT,
 	TELEPORT_LEFT, TELEPORT_RIGHT,
-	SHOOT_BUBBLE,
+	LASER_ANIM, SHOOT_BUBBLE,
 	NUM_ANIMATIONS
 };
 
@@ -69,12 +62,13 @@ private:
 	//Player mechanics
 	void MoveX();
 	void MoveY();
-	void LogicJumping();
-	
+	void LaserTag();
+	void LaserProcedures();
+
 	//Animation management
 	void SetAnimation(int id);
-	PlayerAnim GetAnimation();
 	void Stop();
+	void Stop2();
 	void StartWalkingLeft();
 	void StartWalkingRight();
 	void StartFalling();
@@ -86,11 +80,11 @@ private:
 	bool IsAscending() const;
 	bool IsLevitating() const;
 	bool IsDescending() const;
-
-	
+	bool inLaser = false;
 	State state;
 	Look look;
 	int jump_delay;
+	float cFrame = 0, eFrame = 0, maxFrame = 8;
 
 	TileMap *map;
 };
