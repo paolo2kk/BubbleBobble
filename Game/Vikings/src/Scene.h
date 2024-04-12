@@ -15,6 +15,7 @@ public:
     AppStatus Init();
     void Update();
     void Render();
+    void RenderMenu(const Texture2D* image);
     void Release();
 
 private:

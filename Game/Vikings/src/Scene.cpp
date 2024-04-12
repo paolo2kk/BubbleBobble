@@ -207,6 +207,11 @@ void Scene::Render()
 
 	EndMode2D();
 }
+void Scene::RenderMenu(const Texture2D* image)
+{
+	
+	DrawTexture(*image, 0, 0, WHITE);
+}
 void Scene::Release()
 {
     level->Release();

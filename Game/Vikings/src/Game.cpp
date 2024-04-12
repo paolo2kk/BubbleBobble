@@ -5,9 +5,12 @@
 
 Game::Game()
 {
-    state = GameState::MAIN_MENU;
+
     scene = nullptr;
+    state = GameState::MAIN_MENU;
     img_menu = nullptr;
+    img_insert_coin = nullptr;
+    img_player_1 = nullptr;
 
     target = {};
     src = {};
@@ -60,11 +63,24 @@ AppStatus Game::LoadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
     
-    if (data.LoadTexture(Resource::IMG_MENU, "images/menu.png") != AppStatus::OK)
+    if (data.LoadTexture(Resource::IMG_MENU, "images/TitleSpriteSeett.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
     img_menu = data.GetTexture(Resource::IMG_MENU);
+
+    if (data.LoadTexture(Resource::IMG_INSCOIN, "images/InsertCoin.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_insert_coin = data.GetTexture(Resource::IMG_INSCOIN);
+
+
+    if (data.LoadTexture(Resource::IMG_PLAYER_1, "images/Push player 1.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_player_1 = data.GetTexture(Resource::IMG_PLAYER_1);
     
     return AppStatus::OK;
 }
@@ -97,11 +113,30 @@ AppStatus Game::Update()
 
     switch (state)
     {
-        case GameState::MAIN_MENU: 
+        case GameState::MAIN_MENU:
+
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-                if(BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                state = GameState::INSERT_COIN;
+            }
+            break;
+
+        case GameState::INSERT_COIN:
+
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (IsKeyPressed(KEY_SPACE))
+            {
+                state = GameState::PLAYER_1;
+            }
+            break;
+
+        case GameState::PLAYER_1:
+
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (IsKeyPressed(KEY_SPACE))
+            {
+                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
             }
             break;
@@ -130,7 +165,15 @@ void Game::Render()
     switch (state)
     {
         case GameState::MAIN_MENU:
-            DrawTexture(*img_menu, 0, 0, WHITE);
+            scene->RenderMenu(img_menu);
+            break;
+
+        case GameState::INSERT_COIN:
+            DrawTexture(*img_insert_coin, 0, 0, WHITE);
+            break;
+
+        case GameState::PLAYER_1:
+            DrawTexture(*img_player_1, 0, 0, WHITE);
             break;
 
         case GameState::PLAYING:
@@ -154,6 +197,9 @@ void Game::UnloadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
     data.ReleaseTexture(Resource::IMG_MENU);
+    data.ReleaseTexture(Resource::IMG_INSCOIN);
+    data.ReleaseTexture(Resource::IMG_PLAYER_1);
+
 
     UnloadRenderTexture(target);
 }
