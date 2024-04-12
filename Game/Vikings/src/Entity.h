@@ -1,4 +1,3 @@
-
 #pragma once
 #include <raylib.h>
 #include "Point.h"

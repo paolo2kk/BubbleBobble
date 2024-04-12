@@ -107,15 +107,11 @@ void Player::Stop()
 {
 	dir = { 0,0 };
 	state = State::IDLE;
+	isStill = true;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
-void Player::Stop2()
-{
-	state = State::FALLING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
-}
+
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
@@ -137,7 +133,7 @@ void Player::StartFalling()
 }
 void Player::StartJumping()
 {
-	dir.y = -PLAYER_JUMP_FORCE;
+	dir.y = -PLAYER_JUMP_LIMIT;
 	state = State::JUMPING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
@@ -183,10 +179,19 @@ void Player::MoveX()
 {
 	AABB box;
 	int prev_x = pos.x;
+	int objectiveJumpX = pos.x;
 
-	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+	
+	if (IsKeyDown(KEY_LEFT) && initiallyLookingL)
 	{
-		pos.x += -1;
+		if (state != State::JUMPING) {
+			pos.x -= 1;
+
+		}
+		initiallyLookingL = true;
+		initiallyLookingR = false;
+
+		isStill = false;
 		if (state == State::IDLE) StartWalkingLeft();
 		else
 		{
@@ -199,10 +204,20 @@ void Player::MoveX()
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
+		
 	}
-	else if (IsKeyDown(KEY_RIGHT))
+	else if (IsKeyDown(KEY_RIGHT) && initiallyLookingR)
 	{
-		pos.x += 1;
+		
+		isStill = false;
+		initiallyLookingR = true;
+		initiallyLookingL = false;
+
+		if (state != State::JUMPING) {
+			pos.x += 1;
+		}
+		
+	
 		if (state == State::IDLE) StartWalkingRight();
 		else
 		{
@@ -218,18 +233,28 @@ void Player::MoveX()
 	}
 	else
 	{
-		if (state == State::WALKING) Stop();
+		if (state == State::WALKING) {
+			Stop();
+			isStill = true;
+		}
 	}
+}
+bool Player::CreatingBubble() 
+{
+	return true;
 }
 void Player::MoveY()
 {
 	AABB box, prev_box;
-	int prev_y;
+	int prev_x = pos.x;
+	int prev_y = pos.y;
 
-	
 
 	if (state != State::JUMPING)
 	{
+		initiallyLookingR = true;
+		initiallyLookingL = true;
+
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
 		if (map->TestCollisionGround(box, &pos.y))
@@ -246,16 +271,37 @@ void Player::MoveY()
 	}
 	else //state == State::JUMPING
 	{
-		
+		box = GetHitbox();
 		jump_delay--;
 		if (jump_delay == 0)
 		{
+			if (isStill == false) {
+				if (look == Look::RIGHT ) {
+					box = GetHitbox();
+					if (map->TestCollisionWallRight(box))
+					{
+						pos.x -= 2;
+					}
+					pos.x += OBJECTIVEJUMP_X;
+				}
+				else if (look == Look::LEFT)
+				{
+					if (map->TestCollisionWallLeft(box))
+					{
+						pos.x += 2;
+					}
+					pos.x -= OBJECTIVEJUMP_X;
+
+				}
+			}
+			
 			prev_y = pos.y;
 			prev_box = GetHitbox();
 
 			pos.y += dir.y;
 			dir.y += GRAVITY_FORCE;
 			jump_delay = PLAYER_JUMP_DELAY;
+
 		
 			//Is the jump finished?
 			if (dir.y > PLAYER_JUMP_LIMIT)
@@ -311,12 +357,11 @@ void Player::MoveY()
 			}
 			
 		}
+		
 	}
 }
 void Player::LaserTag()
 {
-
-
 	AABB box;
 
 	box = GetHitbox();
@@ -325,9 +370,6 @@ void Player::LaserTag()
 		cFrame = 0;
 		inLaser = true;
 	}
-
-	
-
 
 }
 void Player::LaserProcedures() 
