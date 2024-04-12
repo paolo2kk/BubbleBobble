@@ -81,7 +81,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Tile tile;
 	Point pos;
 	int* map = nullptr;
-	Object* obj;
+	Object *obj;
 
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -112,7 +112,7 @@ AppStatus Scene::LoadLevel(int stage)
 			1,   3,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  11,  2,
 			2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 			2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
-			2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+			2,   5,   0,   0,   0,   0,   0,  62,  63,   0,   0,   0,   0,   0,   0,  2,
 			2,   5,   0,   0,  62,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 			2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
 			2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
@@ -192,13 +192,18 @@ void Scene::Update()
 void Scene::Render()
 {
 	BeginMode2D(camera);
-
     level->Render();
 
 	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
+		RenderObjects();
 		player->Draw();
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
+		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
+
+
+
+	RenderGUI();
 
 	EndMode2D();
 }
@@ -257,5 +262,5 @@ void Scene::RenderObjectsDebug(const Color& col) const
 void Scene::RenderGUI() const
 {
 	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+	DrawText(TextFormat("SCORE : %d", player->GetScore()), 5, 0, 8, LIGHTGRAY);
 }

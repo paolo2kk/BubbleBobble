@@ -7,9 +7,7 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 	
 	Rectangle rc;
 	const int n = TILE_SIZE;
-	ResourceManager& data = ResourceManager::Instance();
-	render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
-
+	
 	switch (type)
 	{
 		case ObjectType::APPLE: rc = {2*n, 2*n, n, n}; break;
@@ -17,7 +15,9 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 
 		default: LOG("Internal error: object creation of invalid type");
 	}
-	
+	ResourceManager& data = ResourceManager::Instance();
+	render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+
 }
 Object::~Object()
 {
