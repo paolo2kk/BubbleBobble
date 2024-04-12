@@ -81,6 +81,7 @@ AppStatus TileMap::Initialise()
 	{
 		return AppStatus::ERROR;
 	}
+	
 	img_tiles = data.GetTexture(Resource::IMG_TILES);
 
 	laser = new Sprite(img_tiles);

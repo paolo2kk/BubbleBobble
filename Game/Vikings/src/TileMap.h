@@ -10,6 +10,7 @@ enum class Tile {
 
 	//  0: empty tile
 	// -1: area covered by entity
+	EMPTY = -1,
 	AIR = 0,
 
 	// 0 < id < 50: static tiles

@@ -17,22 +17,13 @@ Entity::~Entity()
 		render = nullptr;
 	}
 }
-void Entity::Init(const Point& p, int w, int h) {
-	pos = p;
-	width = w;
-	height = h;
-	dir = { 0, 1 };
-	isAlive = true;
-}
 void Entity::SetPos(const Point& p)
 {
 	pos = p;
 }
-
 void Entity::Update()
 {
 	pos += dir;
-	
 }
 AABB Entity::GetHitbox() const
 {

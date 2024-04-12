@@ -37,6 +37,12 @@
     <ClCompile Include="src\Bubble.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\Object.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StaticImage.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Globals.h">
@@ -77,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="src\Bubble.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StaticImage.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

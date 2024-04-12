@@ -26,7 +26,7 @@
 
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1
-#define MAX_SHOTS				4
+
 //Logic states
 enum class State { IDLE, WALKING, JUMPING, FALLING, CLIMBING, DEAD };
 enum class Look { RIGHT, LEFT };
@@ -53,6 +53,9 @@ public:
 	
 	AppStatus Initialise();
 	void SetTileMap(TileMap* tilemap);
+	void InitScore();
+	void IncrScore(int n);
+	int GetScore();
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
@@ -68,8 +71,6 @@ private:
 	void MoveY();
 	void LaserTag();
 	void LaserProcedures();
-	void Shoot();
-
 
 	//Animation management
 	void SetAnimation(int id);
@@ -94,8 +95,7 @@ private:
 	Look look;
 	int jump_delay;
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
-	Entity* Shots[MAX_SHOTS];
-	int idx_shot;
+	int score;
 	TileMap *map;
 };
 

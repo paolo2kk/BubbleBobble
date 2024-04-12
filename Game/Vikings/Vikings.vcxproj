@@ -25,11 +25,13 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\RenderComponent.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
+    <ClCompile Include="src\StaticImage.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -39,12 +41,14 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\MemLeaks.h" />
+    <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\RenderComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\StaticImage.h" />
     <ClInclude Include="src\TileMap.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

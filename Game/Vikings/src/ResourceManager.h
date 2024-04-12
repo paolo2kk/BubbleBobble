@@ -10,6 +10,7 @@ enum class Resource {
     IMG_PLAYER, 
     IMG_TILES,
     IMG_ITEMS,
+    IMG_BONUS,
     IMG_BUBBLES,
 };
 
