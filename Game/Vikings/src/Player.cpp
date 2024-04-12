@@ -12,12 +12,24 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
+	for (int i = 0; i < MAX_SHOTS; ++i) {
+		Shots[i] = nullptr;
+	}
 }
 Player::~Player()
 {
+	for (int i = 0; i < MAX_SHOTS; ++i)
+	{
+		if (Shots[i] != nullptr)
+		{
+			delete Shots[i];
+			Shots[i] = nullptr;
+		}
+	}
 }
 AppStatus Player::Initialise()
 {
+	
 	int i;
 	const int n = PLAYER_FRAME_SIZE;
 	const int p = PADDING_X;
@@ -25,6 +37,15 @@ AppStatus Player::Initialise()
 	if (data.LoadTexture(Resource::IMG_PLAYER, "images/Bub.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
+	}
+	idx_shot = 0;
+	for (int i = 0; i < MAX_SHOTS; ++i)
+	{
+		Shots[i] = new Entity();
+		if (Shots[i] == nullptr)
+		{
+			printf("Failed to allocate memory for Shots[%d]\n", i);
+		}
 	}
 
 	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
@@ -111,7 +132,24 @@ void Player::Stop()
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
+void Player::Shoot() 
+{
+	ResourceManager& data = ResourceManager::Instance();
+	Sprite* renderr;
 
+	if (IsKeyDown(KEY_S)) {
+		Shots[idx_shot]->Init(pos, 16, 16);
+		idx_shot++;
+		idx_shot %= MAX_SHOTS;
+	}
+	for (int i = 0; i < MAX_SHOTS; ++i)
+	{
+		if (Shots[i]->isAlive)
+		{
+			Shots[i]->Draw(img_shot);
+		}
+	}
+}
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
@@ -167,6 +205,7 @@ void Player::Update()
 	//Instead, uses an independent behaviour for each axis.
 	MoveX();
 	MoveY();
+	Shoot();
 	LaserTag();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -261,7 +300,7 @@ void Player::MoveY()
 		{
 			if (state == State::FALLING) Stop();
 
-			if (IsKeyPressed(KEY_SPACE))
+			if (IsKeyPressed(KEY_X))
 				StartJumping();
 		}
 		else
