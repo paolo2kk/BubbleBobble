@@ -50,6 +50,13 @@ void Entity::Draw() const
 	Point p = GetRenderingPosition();
 	render->Draw(p.x, p.y);
 }
+void Entity::Warp()
+{
+	if (pos.y > WINDOW_HEIGHT) {
+		pos.y = -TILE_SIZE;
+		
+	}
+}
 void Entity::DrawTint(const Color& col) const
 {
 	Point p = GetRenderingPosition();

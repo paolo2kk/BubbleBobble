@@ -8,7 +8,7 @@
 #define PADDING_X	4
 #define PADDING_Y	3
 //Logical model size: 12x28
-#define PLAYER_PHYSICAL_WIDTH	12
+#define PLAYER_PHYSICAL_WIDTH	10
 #define PLAYER_PHYSICAL_HEIGHT	12
 
 //Horizontal speed and vertical speed while falling down

@@ -18,6 +18,7 @@ public:
 
 	//Draw representation model
 	void Draw() const;
+	void Warp();
 	void DrawTint(const Color& col) const;
 	
 	//Draw logical/physical model (hitbox)
@@ -31,7 +32,8 @@ protected:
 	//Logical/physical model
 	Point pos, dir;
 	int width, height;				
-
+	float eFrame = 0;
+	float maxSeconds = 1;
 	//Representation model
 	int frame_width, frame_height;
 	Entity* bubble;

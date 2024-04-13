@@ -187,7 +187,9 @@ void Player::Update()
 		LaserProcedures();
 	}
 	CreatingBubble();
+	Warp();
 }
+
 void Player::MoveX()
 {
 	AABB box;
@@ -271,6 +273,7 @@ void Player::CreatingBubble()
 		bubble = new Bubble(pos, States::ALIVE, Looks::RIGHT);
 	}
 }
+
 void Player::MoveY()
 {
 	AABB box, prev_box;
@@ -296,6 +299,36 @@ void Player::MoveY()
 		{
 			if (state != State::FALLING) StartFalling();
 		}
+		if (state == State::FALLING) {
+			if (look == Look::RIGHT) {
+				if (map->TestCollisionWallRight(box))
+				{
+					pos.x -= 1;
+				}
+				if (map->TestCollisionHalfWallRight(box))
+				{
+					pos.x -= 1;
+				}
+				if (map->TestCollisionHalfWallLeft(box))
+				{
+					pos.x -= 1;
+				}
+			}
+			else if (look == Look::LEFT) {
+				if (map->TestCollisionWallLeft(box))
+				{
+					pos.x += 1;
+				}
+				if (map->TestCollisionHalfWallLeft(box))
+				{
+					pos.x += 1;
+				}
+				if (map->TestCollisionHalfWallRight(box))
+				{
+					pos.x += 1;
+				}
+			}
+		}
 	}
 	else //state == State::JUMPING
 	{
@@ -310,11 +343,27 @@ void Player::MoveY()
 					{
 						pos.x -= 2;
 					}
+					if (map->TestCollisionHalfWallRight(box))
+					{
+						pos.x -= 2;
+					}
+					if (map->TestCollisionHalfWallLeft(box))
+					{
+						pos.x -= 2;
+					}
 					pos.x += OBJECTIVEJUMP_X;
 				}
 				else if (look == Look::LEFT)
 				{
 					if (map->TestCollisionWallLeft(box))
+					{
+						pos.x += 2;
+					}
+					if (map->TestCollisionHalfWallLeft(box))
+					{
+						pos.x += 2;
+					}
+					if (map->TestCollisionHalfWallRight(box))
 					{
 						pos.x += 2;
 					}

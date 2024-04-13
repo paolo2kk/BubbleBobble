@@ -95,6 +95,8 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::FLOORSHADOWBOTTOMLVL2] = { 5 * n, 18 * n, n, n };
 	dict_rect[(int)Tile::PLATFORMSHADOWWALLLVL2] = { 7 * n, 20 * n, n, n };
 	dict_rect[(int)Tile::ASHADOWLVL2] = { 6 * n, 25 * n, n, n };
+	dict_rect[(int)Tile::DEBUG_WARP_1] = { 2 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::DEBUG_WARP_2] = { 6 * n, 15 * n, n, n };
 
 
 }
@@ -171,7 +173,7 @@ bool TileMap::IsTileStatic(Tile tile) const
 bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMLVL2 ||
-		  tile == Tile::PLATFORMCORNERRIGHTLVL2 || tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS);
+		   tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -191,7 +193,6 @@ bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 {
-	
 	return (tile == Tile::PLATFORMEND || tile == Tile::ULTIMAPLATFORMLVL2);
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
