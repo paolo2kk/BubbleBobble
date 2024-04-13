@@ -23,16 +23,17 @@ public:
 	//Draw logical/physical model (hitbox)
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
-	void Instantiate(const Point& p, int width, int height, bool lifeStatus);
+
+	virtual Entity* CreateBubble(const Point& p, int width, int height);
 protected:
 	Point GetRenderingPosition() const;
-	bool isAlive = false;
+
 	//Logical/physical model
 	Point pos, dir;
 	int width, height;				
 
 	//Representation model
 	int frame_width, frame_height;
-
+	Entity* bubble;
 	RenderComponent *render;
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
-#include "Bubble.h"
 #include "TileMap.h"
+#include "Bubble.h"
 
 //Representation model size: 32x32
 #define PLAYER_FRAME_SIZE		17
@@ -54,14 +54,13 @@ public:
 	
 	AppStatus Initialise();
 	void SetTileMap(TileMap* tilemap);
-	void SetBubble();
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore();
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
-	bool CreatingBubble();
+	void CreatingBubble();
 	bool IsLookingRight() const;
 	bool IsLookingLeft() const;
 	bool BubbleIsBeingCreated = false;
@@ -99,5 +98,6 @@ private:
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
+	Bubble* bubble;
 };
 

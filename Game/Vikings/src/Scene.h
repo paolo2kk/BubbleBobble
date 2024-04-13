@@ -17,9 +17,9 @@ public:
     void Render();
     void RenderMenu(const Texture2D* image);
     void Release();
+    AppStatus LoadLevel(int stage);
 
 private:
-    AppStatus LoadLevel(int stage);
     void CheckCollisions();
     void ClearLevel();
     void RenderObjects() const;

@@ -72,12 +72,28 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::LASER_FRAME1] = { 2 * n, 6 * n, n, n };
 	dict_rect[(int)Tile::LASER_FRAME2] = { 3 * n, 6 * n, n, n };
 
+	//lvl 2 default Y = 15
+	dict_rect[(int)Tile::BLOCKWITH3] = { 0, 15 * n, n, n };
+	dict_rect[(int)Tile::BLOCKWITHOUT3] = { 0, 16 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMLVL2] = { 2* n, 15 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMCORNERRIGHTLVL2] = { 4 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMCORNERLEFTLVL2] = { 6 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2] = { 3 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2RIGHT] = { 2 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2LEFT] = { 6 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::CORNERPLATFORMLVL2] = { n, 15 * n, n, n };
+	dict_rect[(int)Tile::CORNERFLOORLVL2] = { 3 * n, 22 * n, n, n };
+
 }
 AppStatus TileMap::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
 
 	if (data.LoadTexture(Resource::IMG_TILES, "images/tilesLVL1.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	if (data.LoadTexture(Resource::IMG_TILES2, "images/dos.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
@@ -137,11 +153,12 @@ Tile TileMap::GetTileIndex(int x, int y) const
 }
 bool TileMap::IsTileStatic(Tile tile) const
 {
-	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST);
+	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3);
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
-	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT);
+	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMLVL2 ||
+		tile == Tile::PLATFORMCORNERLEFTLVL2 || tile == Tile::PLATFORMCORNERRIGHTLVL2 || tile == Tile::CORNERPLATFORMLVL2);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -153,23 +170,23 @@ bool TileMap::IsTileMario(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeRight(Tile tile) const
 {
-	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST  );
+	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST || tile == Tile::PLATFORMCORNERRIGHTLVL2);
 }
 bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLEFINISH);
+	return (tile == Tile::PLATFORMMIDDLEFINISH || tile == Tile::FLOORLVL2RIGHT);
 }
 bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 {
-	return (tile == Tile::PLATFORMEND );
+	return (tile == Tile::PLATFORMEND || tile == Tile::PLATFORMCORNERLEFTLVL2);
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLESTART) ;
+	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2LEFT) ;
 }
 bool TileMap::IsTileFloor(Tile tile) const
 {
-	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST);
+	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
 }
 bool TileMap::IsTileLadderTop(Tile tile) const
 {
