@@ -23,7 +23,7 @@
 #define PLAYER_JUMP_DELAY		2
 
 //Player is levitating when abs(speed) <= this value
-#define PLAYER_LEVITATING_SPEED	4
+#define PLAYER_LEVITATING_SPEED	2
 
 //Gravity affects jumping velocity when jump_delay is 0
 #define GRAVITY_FORCE			1

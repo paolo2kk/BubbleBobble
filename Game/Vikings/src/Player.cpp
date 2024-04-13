@@ -217,6 +217,11 @@ void Player::MoveX()
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
+		else if (map->TestCollisionHalfWallRight(box)) {
+			pos.x = prev_x ;
+			if (state == State::WALKING) Stop();
+
+		}
 		
 	}
 	else if (IsKeyDown(KEY_RIGHT) && initiallyLookingR)
@@ -242,6 +247,11 @@ void Player::MoveX()
 		{
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
+		}
+		else if (map->TestCollisionHalfWallLeft(box)) {
+			pos.x = prev_x ;
+			if (state == State::WALKING) Stop();
+
 		}
 	}
 	else

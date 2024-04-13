@@ -32,8 +32,11 @@ enum class Tile {
 	//second level tiles
 	BLOCKWITH3 = 150, BLOCKWITHOUT3, PLATFORMLVL2, PLATFORMCORNERRIGHTLVL2, 
 	PLATFORMCORNERLEFTLVL2,  FLOORLVL2, FLOORLVL2RIGHT, FLOORLVL2LEFT,
-	CORNERPLATFORMLVL2, CORNERFLOORLVL2,
-	
+	CORNERPLATFORMLVL2, CORNERFLOORLVL2, HALFWALLRIGHTLVL2, HALWALLLEFTLVL2,  
+	//SHADOWMANAGEMENTLVL2
+	SHADOWLVL2, LILSHADOWLVL2, CORNERSHADOWLVL2, LILSHADOWRIGHTLVL2, FLOORSHADOWBOTTOMLVL2, PLATFORMSHADOWWALLLVL2,
+	PLATFORMDEDOS, ASHADOWLVL2, ULTIMAPLATFORMLVL2,
+
 	//Intervals
 	STATIC_FIRST = BLOCKWITH1,
 	STATIC_LAST = BLOCKWITHOUT1,
@@ -67,6 +70,10 @@ public:
 	bool TestCollisionWallLeft(const AABB& box) const;
 	bool TestCollisionWallRight(const AABB& box) const;
 
+	bool TestCollisionHalfWallLeft(const AABB& box) const;
+
+	bool TestCollisionHalfWallRight(const AABB& box) const;
+
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.
@@ -91,9 +98,13 @@ private:
 	bool IsTileHalfCubeRightDEBUG(Tile tile) const;
 	bool IsTileHalfCubeLeft(Tile tile) const;
 	bool IsTileHalfCubeLeftDEBUG(Tile tile) const;
+	bool IsTileHalfWallLeft(Tile tile) const;
+	bool IsTileHalfWallRight(Tile tile) const;
 	bool IsTileFloor(Tile tile) const;
 	bool IsTileLadderTop(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
+	bool CollisionXHalfLeft(const Point& p, int distance) const;
+	bool CollisionXHalfRight(const Point& p, int distance) const;
 	bool CollisionXFLOOR(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 
