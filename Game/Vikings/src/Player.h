@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Bubble.h"
 #include "TileMap.h"
 
 //Representation model size: 32x32
@@ -53,6 +54,7 @@ public:
 	
 	AppStatus Initialise();
 	void SetTileMap(TileMap* tilemap);
+	void SetBubble();
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore();

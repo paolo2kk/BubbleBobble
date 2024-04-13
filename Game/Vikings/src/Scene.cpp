@@ -194,12 +194,16 @@ void Scene::Render()
 	BeginMode2D(camera);
     level->Render();
 
-	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
+	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES) {
 		RenderObjects();
 		player->Draw();
-	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
-		RenderObjectsDebug(YELLOW);
-		player->DrawDebug(GREEN);
+	}
+		
+		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
+			RenderObjectsDebug(YELLOW);
+			player->DrawDebug(GREEN);
+	}
+		
 
 
 

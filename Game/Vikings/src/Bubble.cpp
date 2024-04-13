@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Globals.h"
+#include "Player.h"
 #include <raymath.h>
 
 Bubble::Bubble(const Point& p, State s, Look view) :
@@ -12,6 +13,7 @@ Bubble::Bubble(const Point& p, State s, Look view) :
 	look = view;
 	shoot_delay = SHOOT_DELAY;
 	map = nullptr;
+	isAlive = false;
 }
 
 Bubble::~Bubble()

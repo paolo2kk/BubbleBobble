@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AABB.cpp" />
-    <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Globals.cpp" />
@@ -36,7 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AABB.h" />
-    <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Globals.h" />

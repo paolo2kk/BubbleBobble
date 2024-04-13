@@ -29,6 +29,7 @@ enum class BubbleAnim {
 class Bubble : public Player
 {
 public:
+	Bubble();
 	Bubble(const Point& p, State s, Look view);
 	~Bubble();
 
@@ -58,7 +59,7 @@ private:
 	State state;
 	Look look;
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
-	Player* p;
+
 
 	TileMap* map;
 

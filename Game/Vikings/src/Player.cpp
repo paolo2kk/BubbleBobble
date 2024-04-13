@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Globals.h"
+#include "Bubble.h"
 #include <raymath.h>
 
 Player::Player(const Point& p, State s, Look view) :
@@ -13,6 +14,8 @@ Player::Player(const Point& p, State s, Look view) :
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
 	score = 0;
+	//bubble = nullptr;
+	isAlive = true;
 }
 Player::~Player()
 {
@@ -74,6 +77,10 @@ AppStatus Player::Initialise()
 
 
 	return AppStatus::OK;
+}
+void Player::SetBubble()
+{
+	//bubble->Instantiate(pos, 10, 10, true);
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -186,7 +193,10 @@ void Player::Update()
 	if (inLaser) {
 		LaserProcedures();
 	}
-	 
+	if (IsKeyDown(KEY_E)) {
+		SetBubble();
+
+	}
 }
 void Player::MoveX()
 {

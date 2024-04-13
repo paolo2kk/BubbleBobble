@@ -23,10 +23,10 @@ public:
 	//Draw logical/physical model (hitbox)
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
-
+	void Instantiate(const Point& p, int width, int height, bool lifeStatus);
 protected:
 	Point GetRenderingPosition() const;
-
+	bool isAlive = false;
 	//Logical/physical model
 	Point pos, dir;
 	int width, height;				

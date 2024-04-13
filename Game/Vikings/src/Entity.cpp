@@ -23,7 +23,15 @@ void Entity::SetPos(const Point& p)
 }
 void Entity::Update()
 {
-	pos += dir;
+
+}
+void Entity::Instantiate(const Point& p, int w, int h, bool lifeStatus)
+{
+	pos = p;
+	width = w;
+	height = h;
+	dir = { 0,0 };
+	lifeStatus = isAlive;
 }
 AABB Entity::GetHitbox() const
 {

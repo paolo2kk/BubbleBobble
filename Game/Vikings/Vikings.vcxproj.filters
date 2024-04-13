@@ -34,9 +34,6 @@
     <ClCompile Include="src\AABB.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bubble.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\Object.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="src\AABB.h">
       <Filter>Geometry</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bubble.h">
-      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Object.h">
       <Filter>Entities</Filter>
