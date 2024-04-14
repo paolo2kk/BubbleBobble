@@ -4,7 +4,7 @@
 #include "Globals.h"
 #include <raymath.h>
 
-Player::Player(const Point& p, State s, Look view) :
+Bubble::Bubble(const Point& p, State s, Look view) :
 	Entity(p, PLAYER_PHYSICAL_WIDTH, PLAYER_PHYSICAL_HEIGHT, PLAYER_FRAME_SIZE, PLAYER_FRAME_SIZE)
 {
 	state = s;
@@ -14,10 +14,10 @@ Player::Player(const Point& p, State s, Look view) :
 	score = 0;
 	bubble = nullptr;
 }
-Player::~Player()
+Bubble::~Bubble()
 {
 }
-AppStatus Player::Initialise()
+AppStatus Bubble::Initialise()
 {
 	int i;
 	const int n = PLAYER_FRAME_SIZE;
@@ -36,147 +36,147 @@ AppStatus Player::Initialise()
 	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
+	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
 
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, 30);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 2 * (n + PADDING_X), 0, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, 30);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 2 * (n + PADDING_X), 0, n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::IDLE_RIGHT, 30);
+	sprite->AddKeyFrame((int)BubbleAnim::IDLE_RIGHT, { 0, 0, -n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::IDLE_RIGHT, { 2 * (n + PADDING_X), 0, -n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::IDLE_LEFT, 30);
+	sprite->AddKeyFrame((int)BubbleAnim::IDLE_LEFT, { 0, 0, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::IDLE_LEFT, { 2 * (n + PADDING_X), 0, n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT, ANIM_DELAY);
+	sprite->SetAnimationDelay((int)BubbleAnim::WALKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 5; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::WALKING_RIGHT, { (float)i * (n + PADDING_X), (float)0, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_LEFT, ANIM_DELAY);
+		sprite->AddKeyFrame((int)BubbleAnim::WALKING_RIGHT, { (float)i * (n + PADDING_X), (float)0, -n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::WALKING_LEFT, ANIM_DELAY);
 	for (i = 0; i < 5; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i * (n + PADDING_X), (float)0, n, n });
+		sprite->AddKeyFrame((int)BubbleAnim::WALKING_LEFT, { (float)i * (n + PADDING_X), (float)0, n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 8 * (n + PADDING_X), PADDING_Y + n, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 9 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 8 * (n + PADDING_X),  PADDING_Y + n, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 9 * (n + PADDING_X), PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 10 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 10 * (n + PADDING_X),  PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 11 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 11 * (n + PADDING_X), PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE, ANIM_DELAY);
+	sprite->SetAnimationDelay((int)BubbleAnim::FALLING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::FALLING_RIGHT, { 8 * (n + PADDING_X), PADDING_Y + n, -n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::FALLING_RIGHT, { 9 * (n + PADDING_X),  PADDING_Y + n, -n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::FALLING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::FALLING_LEFT, { 8 * (n + PADDING_X),  PADDING_Y + n, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::FALLING_LEFT, { 9 * (n + PADDING_X), PADDING_Y + n, n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::JUMPING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::JUMPING_RIGHT, { 10 * (n + PADDING_X),  PADDING_Y + n, -n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::JUMPING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::JUMPING_LEFT, { 10 * (n + PADDING_X),  PADDING_Y + n, n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::LEVITATING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::LEVITATING_RIGHT, { 11 * (n + PADDING_X),  PADDING_Y + n, -n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::LEVITATING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::LEVITATING_LEFT, { 11 * (n + PADDING_X), PADDING_Y + n, n, n });
+	sprite->SetAnimationDelay((int)BubbleAnim::SHOOT_BUBBLE, ANIM_DELAY);
 	for (i = 7; i < 10; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE, { (float)i * (n + PADDING_X), 0, n, n });
+		sprite->AddKeyFrame((int)BubbleAnim::SHOOT_BUBBLE, { (float)i * (n + PADDING_X), 0, n, n });
 
-	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+	sprite->SetAnimation((int)BubbleAnim::IDLE_RIGHT);
 
 
 	return AppStatus::OK;
 }
-void Player::SetTileMap(TileMap* tilemap)
+void Bubble::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
-void Player::InitScore()
+void Bubble::InitScore()
 {
 	score = 0;
 }
-void Player::IncrScore(int n)
+void Bubble::IncrScore(int n)
 {
 	score += n;
 }
-int Player::GetScore()
+int Bubble::GetScore()
 {
 	return score;
 }
-bool Player::IsLookingRight() const
+bool Bubble::IsLookingRight() const
 {
 	return look == Look::RIGHT;
 }
-bool Player::IsLookingLeft() const
+bool Bubble::IsLookingLeft() const
 {
 	return look == Look::LEFT;
 }
-bool Player::IsAscending() const
+bool Bubble::IsAscending() const
 {
 	return dir.y < -PLAYER_LEVITATING_SPEED;
 }
-bool Player::IsLevitating() const
+bool Bubble::IsLevitating() const
 {
 	return abs(dir.y) <= PLAYER_LEVITATING_SPEED;
 }
-bool Player::IsDescending() const
+bool Bubble::IsDescending() const
 {
 	return dir.y > PLAYER_LEVITATING_SPEED;
 }
-void Player::SetAnimation(int id)
+void Bubble::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-void Player::Stop()
+void Bubble::Stop()
 {
 	dir = { 0,0 };
 	state = State::IDLE;
 	isStill = true;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
+	if (IsLookingRight())	SetAnimation((int)BubbleAnim::IDLE_RIGHT);
+	else					SetAnimation((int)BubbleAnim::IDLE_LEFT);
 }
 
-void Player::StartWalkingLeft()
+void Bubble::StartWalkingLeft()
 {
 	state = State::WALKING;
 	look = Look::LEFT;
-	SetAnimation((int)PlayerAnim::WALKING_LEFT);
+	SetAnimation((int)BubbleAnim::WALKING_LEFT);
 }
-void Player::StartWalkingRight()
+void Bubble::StartWalkingRight()
 {
 	state = State::WALKING;
 	look = Look::RIGHT;
-	SetAnimation((int)PlayerAnim::WALKING_RIGHT);
+	SetAnimation((int)BubbleAnim::WALKING_RIGHT);
 }
-void Player::StartFalling()
+void Bubble::StartFalling()
 {
 	dir.y = PLAYER_SPEED + 1;
 	state = State::FALLING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+	if (IsLookingRight())	SetAnimation((int)BubbleAnim::FALLING_RIGHT);
+	else					SetAnimation((int)BubbleAnim::FALLING_LEFT);
 }
-void Player::StartJumping()
+void Bubble::StartJumping()
 {
 	dir.y = -PLAYER_JUMP_LIMIT;
 	state = State::JUMPING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+	if (IsLookingRight())	SetAnimation((int)BubbleAnim::JUMPING_RIGHT);
+	else					SetAnimation((int)BubbleAnim::JUMPING_LEFT);
 	jump_delay = PLAYER_JUMP_DELAY;
 }
-void Player::ChangeAnimRight()
+void Bubble::ChangeAnimRight()
 {
 	look = Look::RIGHT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_RIGHT);    break; 
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_RIGHT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_RIGHT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_RIGHT); break;
+		case State::IDLE:	 SetAnimation((int)BubbleAnim::IDLE_RIGHT);    break; 
+		case State::WALKING: SetAnimation((int)BubbleAnim::WALKING_RIGHT); break;
+		case State::JUMPING: SetAnimation((int)BubbleAnim::JUMPING_RIGHT); break;
+		case State::FALLING: SetAnimation((int)BubbleAnim::FALLING_RIGHT); break;
 	}
 }
-void Player::ChangeAnimLeft()
+void Bubble::ChangeAnimLeft()
 {
 	look = Look::LEFT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_LEFT);    break;
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_LEFT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_LEFT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT); break;
+		case State::IDLE:	 SetAnimation((int)BubbleAnim::IDLE_LEFT);    break;
+		case State::WALKING: SetAnimation((int)BubbleAnim::WALKING_LEFT); break;
+		case State::JUMPING: SetAnimation((int)BubbleAnim::JUMPING_LEFT); break;
+		case State::FALLING: SetAnimation((int)BubbleAnim::FALLING_LEFT); break;
 	}
 }
-void Player::Update()
+void Bubble::Update()
 {
-	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
+	//Bubble doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
 	MoveX();
 	MoveY();
@@ -191,7 +191,7 @@ void Player::Update()
 	Warp();
 }
 
-void Player::MoveX()
+void Bubble::MoveX()
 {
 	AABB box;
 	int prev_x = pos.x;
@@ -234,8 +234,7 @@ void Player::MoveX()
 		initiallyLookingR = true;
 		initiallyLookingL = false;
 
-		if (state != State::JUMPING) 
-		{
+		if (state != State::JUMPING) {
 			pos.x += 1;
 		}
 		
@@ -260,26 +259,23 @@ void Player::MoveX()
 	}
 	else
 	{
-		if (state == State::WALKING) 
-		{
+		if (state == State::WALKING) {
 			Stop();
 			isStill = true;
 		}
 	}
 }
-void Player::CreatingBubble() 
+void Bubble::CreatingBubble() 
 {
 
-	if (IsKeyDown(KEY_S)) 
-	{
-		SetAnimation((int)PlayerAnim::SHOOT_BUBBLE);
+	if (IsKeyDown(KEY_S)) {
+		
+		SetAnimation((int)BubbleAnim::SHOOT_BUBBLE);
 		bubble = new Bubble(pos, States::ALIVE, Looks::RIGHT);
-		SetAnimation((int)PlayerAnim::SHOOT_BUBBLE);
-
 	}
 }
 
-void Player::MoveY()
+void Bubble::MoveY()
 {
 	AABB box, prev_box;
 	int prev_x = pos.x;
@@ -396,20 +392,20 @@ void Player::MoveY()
 				//Jumping is represented with 3 different states
 				if (IsAscending())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)BubbleAnim::JUMPING_RIGHT);
+					else					SetAnimation((int)BubbleAnim::JUMPING_LEFT);
 
 					
 				}
 				else if (IsLevitating())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)BubbleAnim::LEVITATING_RIGHT);
+					else					SetAnimation((int)BubbleAnim::LEVITATING_LEFT);
 				}
 				else if (IsDescending())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)BubbleAnim::FALLING_RIGHT);
+					else					SetAnimation((int)BubbleAnim::FALLING_LEFT);
 				}
 			}
 			//We check ground collision when jumping down
@@ -442,7 +438,7 @@ void Player::MoveY()
 		
 	}
 }
-void Player::LaserTag()
+void Bubble::LaserTag()
 {
 	AABB box;
 
@@ -455,10 +451,10 @@ void Player::LaserTag()
 
 }
 
-void Player::LaserProcedures() 
+void Bubble::LaserProcedures() 
 {
 	cFrame++;
-	SetAnimation((int)PlayerAnim::SHOCK_LEFT);
+	SetAnimation((int)BubbleAnim::SHOCK_LEFT);
 
 	while (cFrame < 1) 
 	{
@@ -470,14 +466,14 @@ void Player::LaserProcedures()
 
 	inLaser = false;
 }
-void Player::DrawDebug(const Color& col) const
+void Bubble::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
 	
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
 }
-void Player::Release()
+void Bubble::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_PLAYER);

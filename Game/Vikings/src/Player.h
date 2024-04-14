@@ -29,7 +29,7 @@
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, CLIMBING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, CLIMBING, DEAD, TRANSITIONING };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -43,7 +43,8 @@ enum class PlayerAnim {
 	SHOCK_LEFT, SHOCK_RIGHT,
 	TELEPORT_LEFT, TELEPORT_RIGHT,
 	LASER_ANIM, SHOOT_BUBBLE,
-	NUM_ANIMATIONS
+	TRANSITION,
+	NUM_ANIMATIONS,
 };
 
 class Player: public Entity

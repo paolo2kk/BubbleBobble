@@ -25,6 +25,21 @@ AppStatus ResourceManager::LoadTexture(Resource id, const std::string& file_path
     textures[id] = texture;
     return AppStatus::OK;
 }
+AppStatus ResourceManager::LoadAudio(Resource id, const std::string& file_path)
+{
+    //Load the sound1
+    Sound sound = ::LoadSound(file_path.c_str());
+    if (sound.frameCount == 0)
+    {
+        //Error loading sound
+        LOG("Failed to load sound ", file_path);
+        return AppStatus::ERROR;
+    }
+
+    //Insert the loaded sound into the map with the specified key
+    sounds[id] = sound;
+    return AppStatus::OK;
+}
 
 //Release the texture associated with the key id
 void ResourceManager::ReleaseTexture(Resource id)

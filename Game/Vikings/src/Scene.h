@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Object.h"
+#include "Bubble.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
@@ -29,6 +30,7 @@ private:
     Player *player;
     TileMap *level;
     Camera2D camera;
+    Bubble* bubble;
     std::vector<Object*> objects;
 
     DebugMode debug;

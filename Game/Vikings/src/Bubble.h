@@ -28,6 +28,7 @@ public:
 	void SetTileMap(TileMap * tilemap);
 	void SetAnimation(int id);
 	void Update();
+	void Render();
 	AppStatus Initialise();
 	void DrawDebug(const Color& col) const;
 	void Release();

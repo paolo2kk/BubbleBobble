@@ -7,6 +7,9 @@
 
 enum class Resource {
     IMG_MENU,
+    IMG_MENU2,
+    IMG_MENU3,
+    IMG_MENU4,
     IMG_INSCOIN,
     IMG_PLAYER_1,
     IMG_PLAYER, 
@@ -30,6 +33,7 @@ public:
 
     //Load and unload texture
     AppStatus LoadTexture(Resource id, const std::string& file_path);
+    AppStatus LoadAudio(Resource id, const std::string& file_path);
     void ReleaseTexture(Resource id);
 
     //Get texture by key
@@ -50,4 +54,6 @@ private:
 
     //Dictionary to store loaded textures
     std::unordered_map<Resource, Texture2D> textures;
+    std::unordered_map<Resource, Sound> sounds;
+
 };

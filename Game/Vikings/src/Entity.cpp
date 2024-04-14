@@ -17,13 +17,11 @@ Entity::~Entity()
 		render = nullptr;
 	}
 }
-Entity* Entity::CreateBubble(const Point& p, int width, int height)
-{
-	Entity* newBubble = new Entity(p, width, height);
-	bubble = newBubble;
-	return newBubble;
-}
 
+Point Entity::GetPos()
+{
+	return pos;
+}
 void Entity::SetPos(const Point& p)
 {
 	pos = p;

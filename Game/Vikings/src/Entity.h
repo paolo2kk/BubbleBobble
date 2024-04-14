@@ -25,7 +25,7 @@ public:
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
 
-	virtual Entity* CreateBubble(const Point& p, int width, int height);
+	Point GetPos();
 protected:
 	Point GetRenderingPosition() const;
 
@@ -36,6 +36,5 @@ protected:
 	float maxSeconds = 1;
 	//Representation model
 	int frame_width, frame_height;
-	Entity* bubble;
 	RenderComponent *render;
 };

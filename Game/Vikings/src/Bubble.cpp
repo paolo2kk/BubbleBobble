@@ -10,6 +10,10 @@ Bubble::Bubble(const Point& p, States s, Looks view) :
 {
 	state = s;
 	look = view;
+	if (this->render != nullptr) {
+		render->Draw(16, 16);
+
+	}
 }
 Bubble::~Bubble()
 {
@@ -54,6 +58,11 @@ void Bubble::Update()
 	sprite->Update();
 	SetAnimation((int)BubbleAnim::IDLE);
 
+}
+void Bubble::Render()
+{
+	Point p = GetRenderingPosition();
+	render->Draw(p.x, p.y);
 }
 void Bubble::DrawDebug(const Color& col) const
 {

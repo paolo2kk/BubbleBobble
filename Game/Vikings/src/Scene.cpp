@@ -6,7 +6,7 @@ Scene::Scene()
 {
 	player = nullptr;
     level = nullptr;
-	
+	bubble = nullptr;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
@@ -49,7 +49,18 @@ AppStatus Scene::Init()
 		LOG("Failed to initialise Player");
 		return AppStatus::ERROR;
 	}
-
+	bubble = new Bubble({ 0,0 }, States::ALIVE, Looks::RIGHT);
+	if (bubble == nullptr)
+	{
+		LOG("Failed to allocate memory for Player");
+		return AppStatus::ERROR;
+	}
+	//Initialise player
+	if (bubble->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Player");
+		return AppStatus::ERROR;
+	}
 	//Create level 
     level = new TileMap();
     if (level == nullptr)
@@ -93,7 +104,7 @@ AppStatus Scene::LoadLevel(int stage)
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
-				 2,   5,   0,   0,  63,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				 2,   5,   0,   0,  63,   0,   0, 101,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,  43,  21,  17,  42,  42,  42,  42,  42,  42,  42,  42,  18,   0,  42,  2,
@@ -147,6 +158,13 @@ AppStatus Scene::LoadLevel(int stage)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
+			else if (tile == Tile::BUBBLE)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				bubble->SetPos(pos);
+				map[i] = 0;
+			}
 			else if (tile == Tile::ITEM_APPLE)
 			{
 				pos.x = x * TILE_SIZE;
@@ -189,6 +207,8 @@ void Scene::Update()
 	}
 	level->Update();
 	player->Update();
+	bubble->Update();
+
 	CheckCollisions();
 }
 void Scene::Render()

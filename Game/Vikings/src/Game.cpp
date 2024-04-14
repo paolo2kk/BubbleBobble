@@ -26,6 +26,8 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
+    UnloadImage(customIcon);
+
 }
 AppStatus Game::Initialise(float scale)
 {
@@ -34,8 +36,8 @@ AppStatus Game::Initialise(float scale)
     h = WINDOW_HEIGHT * scale;
 
     //Initialise window
-    InitWindow((int)w, (int)h, "Vikings");
-
+    InitWindow((int)w, (int)h, "Bubble Bobble");
+    SetWindowIcon(customIcon);
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
     if (target.id == 0)

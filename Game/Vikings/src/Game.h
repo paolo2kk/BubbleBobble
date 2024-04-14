@@ -31,8 +31,9 @@ private:
     const Texture2D* img_stage2;
     int timeValue = 0;
     float timer = 0;
-    float totalTime = 2.5f;
+    float totalTime = 1.5f;
     float timeElapsed = 0.0f;
+    Image customIcon = LoadImage("images/bubblun.png");
 
     //To work with original game units and then scale the result
     RenderTexture2D target;
