@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "ResourceManager.h"
 #include <stdio.h>
+#include "raylib.h"
 
 Game::Game()
 {
@@ -17,6 +18,10 @@ Game::Game()
     target = {};
     src = {};
     dst = {};
+
+    InitAudioDevice();
+    mainMenuMusic = LoadMusicStream("music/intro_plus_main_theme_Music.ogg");
+    gamePlayMusic = LoadMusicStream("music/Main_Theme_Music.ogg");
 }
 Game::~Game()
 {
@@ -26,6 +31,11 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
+
+    UnloadMusicStream(mainMenuMusic);
+    UnloadMusicStream(gamePlayMusic);
+    CloseAudioDevice();
+
     UnloadImage(customIcon);
 
 }
@@ -131,10 +141,14 @@ AppStatus Game::Update()
     switch (state)
     {
         case GameState::MAIN_MENU:
+            
+            UpdateMusicStream(mainMenuMusic);
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
+                StopMusicStream(mainMenuMusic);
+                PlayMusicStream(gamePlayMusic);
                 state = GameState::INSERT_COIN;
             }
             break;
@@ -158,9 +172,12 @@ AppStatus Game::Update()
             }
             break;
 
-        case GameState::PLAYING:  
+        case GameState::PLAYING:
+            UpdateMusicStream(gamePlayMusic);
             if (IsKeyPressed(KEY_ESCAPE))
             {
+                StopMusicStream(gamePlayMusic);
+                PlayMusicStream(mainMenuMusic);
                 //FinishPlay();
                 state = GameState::MAIN_MENU;
             }

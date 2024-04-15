@@ -25,6 +25,21 @@ AppStatus ResourceManager::LoadTexture(Resource id, const std::string& file_path
     textures[id] = texture;
     return AppStatus::OK;
 }
+
+AppStatus ResourceManager::LoadMusic(Resource id, const std::string& file_path) {
+    Music* musicStream = new Music(LoadMusicStream(file_path.c_str()));
+
+    // Assuming 'frameCount' might be a valid check to see if any data is loaded
+    if (musicStream->frameCount == 0) {
+        LOG("Failed to load music ", file_path);
+        delete musicStream;
+        return AppStatus::ERROR;
+    }
+    music[id].reset(musicStream);  // Using unique_ptr to manage the Music object
+    return AppStatus::OK;
+}
+
+
 AppStatus ResourceManager::LoadAudio(Resource id, const std::string& file_path)
 {
     //Load the sound1
@@ -55,6 +70,24 @@ void ResourceManager::ReleaseTexture(Resource id)
     }
 }
 
+//Realase the Music 
+void ResourceManager::ReleaseMusic(Resource id) {
+    auto it = music.find(id);
+    if (it != music.end()) {
+        UnloadMusicStream(*(it->second));  // Unload the Music stream before erasing
+        music.erase(it);
+    }
+}
+
+//Get Music by key
+const Music* ResourceManager::GetMusic(Resource id) const {
+    auto it = music.find(id);
+    if (it != music.end()) {
+        return it->second.get();  // Use .get() to return the raw pointer managed by unique_ptr
+    }
+    return nullptr;
+}
+
 //Get a texture by key
 const Texture2D* ResourceManager::GetTexture(Resource id) const
 {
@@ -73,4 +106,9 @@ void ResourceManager::Release()
         UnloadTexture(pair.second);
     }
     textures.clear();
+
+    for (auto& pair : music) {
+        UnloadMusicStream(*(pair.second));
+    }
+    music.clear();
 }

@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 enum class Resource {
     IMG_MENU,
@@ -20,6 +21,8 @@ enum class Resource {
     IMG_BUBBLES,
     IMG_STAGE1,
     IMG_STAGE2,
+    MUSIC_MAIN_MENU,
+    MUSIC_GAMEPLAY
 };
 
 class ResourceManager {
@@ -36,8 +39,15 @@ public:
     AppStatus LoadAudio(Resource id, const std::string& file_path);
     void ReleaseTexture(Resource id);
 
+    //Load and unload Music
+    AppStatus LoadMusic(Resource id, const std::string& file_path);
+    void ReleaseMusic(Resource id);
+
     //Get texture by key
     const Texture2D* GetTexture(Resource id) const;
+
+    //Get music by key
+    const Music* GetMusic(Resource id) const;
 
     //Release resources
     void Release();
@@ -55,5 +65,9 @@ private:
     //Dictionary to store loaded textures
     std::unordered_map<Resource, Texture2D> textures;
     std::unordered_map<Resource, Sound> sounds;
+    std::unordered_map<Resource, Music> music;
+    std::unordered_map<Resource, std::unique_ptr<Music>> music;
+
+
 
 };

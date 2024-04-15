@@ -34,6 +34,8 @@ private:
     float totalTime = 1.5f;
     float timeElapsed = 0.0f;
     Image customIcon = LoadImage("images/bubblun.png");
+    Music mainMenuMusic;
+    Music gamePlayMusic;
 
     //To work with original game units and then scale the result
     RenderTexture2D target;
