@@ -19,7 +19,8 @@ public:
 	//Draw representation model
 	void Draw() const;
 	void DrawTint(const Color& col) const;
-	
+	bool isDrawing = true;
+	bool isAlivee = true;
 	//Draw logical/physical model (hitbox)
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;

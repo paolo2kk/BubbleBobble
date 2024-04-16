@@ -6,12 +6,16 @@ Scene::Scene()
 {
 	player = nullptr;
     level = nullptr;
+<<<<<<< Updated upstream
 	
+=======
+>>>>>>> Stashed changes
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
 	camera.zoom = 1.0f;						//Default zoom
-
+	eTimeSpawnX = GetRandomValue(0, 1);
+	eTimeSpawnY = GetRandomValue(0, 1);
 	debug = DebugMode::OFF;
 }
 Scene::~Scene()
@@ -28,6 +32,19 @@ Scene::~Scene()
         delete level;
         level = nullptr;
     }
+<<<<<<< Updated upstream
+=======
+	for (Entity* obj : objects)
+	{
+		delete obj;
+	}
+	for (Entity* bubl : bubbles)
+	{
+		delete bubl;
+	}
+	objects.clear();
+	bubbles.clear();
+>>>>>>> Stashed changes
 }
 AppStatus Scene::Init()
 {
@@ -44,7 +61,10 @@ AppStatus Scene::Init()
 		LOG("Failed to initialise Player");
 		return AppStatus::ERROR;
 	}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	//Create level 
     level = new TileMap();
     if (level == nullptr)
@@ -75,7 +95,17 @@ AppStatus Scene::LoadLevel(int stage)
 	int x, y, i;
 	Tile tile;
 	Point pos;
+<<<<<<< Updated upstream
 	
+=======
+	int* map = nullptr;
+	Object *obj;
+	Bubble* bubl;
+
+	ClearLevel();
+	size = LEVEL_WIDTH * LEVEL_HEIGHT;
+
+>>>>>>> Stashed changes
 	if(stage == 1)
 	{
 		size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -84,7 +114,11 @@ AppStatus Scene::LoadLevel(int stage)
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+<<<<<<< Updated upstream
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+=======
+				 2,   5,   0,   0,  63,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+>>>>>>> Stashed changes
 				 2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
 				 2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				 2,  43,  21,  17,  42,  42,  42,  42,  42,  42,  42,  42,  18,   0,  42,  2,
@@ -119,21 +153,123 @@ AppStatus Scene::LoadLevel(int stage)
 		LOG("Failed to load level, stage %d doesn't exist", stage);
 		return AppStatus::ERROR;	
 	}
+<<<<<<< Updated upstream
+=======
+	i = 0;
+	for (y = 0; y < LEVEL_HEIGHT; ++y)
+	{
+		for (x = 0; x < LEVEL_WIDTH; ++x)
+		{
+			tile = (Tile)map[i];
+			if (tile == Tile::EMPTY)
+			{
+				map[i] = 0;
+			}
+			else if (tile == Tile::PLAYER)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				player->SetPos(pos);
+				map[i] = 0;
+			}
+			else if (tile == Tile::BUBBLE)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				bubl = new Bubble(pos, Direction::LEFT);
+
+				bubbles.push_back(bubl);
+				map[i] = 0;
+			}
+			else if (tile == Tile::ITEM_APPLE)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::APPLE);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::ITEM_CHILI)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CHILI);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			++i;
+		}
+	}
+	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
+
+>>>>>>> Stashed changes
 	return AppStatus::OK;
+}
+void Scene::BubbleSpawner()
+{
+	int maxTime = GetRandomValue(5, 10);
+
+	switch (stage)
+	{
+	case 2:
+		Point p1 = { 80, 226 };
+		Point p2 = { 160, 226 };
+		if (eTimeSpawnX >= maxTime)
+		{
+			Bubble* bubl = new Bubble(p1, Direction::LEFT);
+			bubbles.push_back(bubl);
+			eTimeSpawnX = 0;
+		}
+		else if (eTimeSpawnY >= maxTime)
+		{
+			Bubble* bubl2 = new Bubble(p2, Direction::RIGHT);
+			bubbles.push_back(bubl2);
+			eTimeSpawnY = 0;
+		}
+		eTimeSpawnX += GetFrameTime();
+		eTimeSpawnY += GetFrameTime();
+	}
 }
 void Scene::Update()
 {
 	Point p1, p2;
 	AABB box;
+	
+	
+		
 
+<<<<<<< Updated upstream
+=======
+	
+
+>>>>>>> Stashed changes
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
 	if (IsKeyPressed(KEY_F1))
 	{
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
+<<<<<<< Updated upstream
 
 	level->Update();
 	player->Update();
+=======
+	//Debug levels instantly
+	if (IsKeyPressed(KEY_ONE)) 
+	{
+		stage = 1;
+		LoadLevel(1);
+	}
+	else if (IsKeyPressed(KEY_TWO)) 
+	{
+		stage = 2;
+		LoadLevel(2); 
+	}
+	level->Update();
+	player->Update();
+	UpdateBubbles();
+	BubbleSpawner();
+	CheckCollisions();
+>>>>>>> Stashed changes
 }
 void Scene::Render()
 {
@@ -148,8 +284,108 @@ void Scene::Render()
 
 	EndMode2D();
 }
+<<<<<<< Updated upstream
+=======
+void Scene::RenderMenu(const Texture2D* image)
+{
+	DrawTexture(*image, 0, 0, WHITE);
+}
+>>>>>>> Stashed changes
 void Scene::Release()
 {
     level->Release();
 	player->Release();
+<<<<<<< Updated upstream
+=======
+}
+void Scene::CheckCollisions()
+{
+	AABB player_box, obj_box;
+
+	player_box = player->GetHitbox();
+	auto it = objects.begin();
+	while (it != objects.end())
+	{
+		obj_box = (*it)->GetHitbox();
+		if (player_box.TestAABB(obj_box))
+		{
+			player->IncrScore((*it)->Points());
+
+			//Delete the object
+			delete* it;
+			//Erase the object from the vector and get the iterator to the next valid element
+			it = objects.erase(it);
+		}
+		else
+		{
+			//Move to the next object
+			++it;
+		}
+	}
+	auto iterator = bubbles.begin();
+	int i = 0;
+	while (iterator != bubbles.end() && i < bubbles.size())
+	{
+		if (bubbles[i]->isAlive() == false)
+		{
+			//Delete the object
+			delete* iterator;
+			//Erase the object from the vector and get the iterator to the next valid element
+			iterator = bubbles.erase(iterator);
+		}
+		else
+		{
+			//Move to the next object
+			++iterator;
+			++i;
+		}
+	}
+}
+void Scene::ClearLevel()
+{
+	for (Object* obj : objects)
+	{
+		delete obj;
+	}
+	objects.clear();
+	for (Bubble* bubl : bubbles)
+	{
+		delete bubl;
+	}
+	bubbles.clear();
+}
+void Scene::UpdateBubbles()
+{
+	for (Bubble* bubl : bubbles)
+	{
+		bubl->Update();
+	}
+}
+void Scene::RenderObjects() 
+{
+	for (Object* obj : objects)
+	{
+		obj->Draw();
+	}
+	for (Bubble* bubl: bubbles)
+	{
+		bubl->Draw();
+	}
+}
+void Scene::RenderObjectsDebug(const Color& col) const
+{
+	for (Object* obj : objects)
+	{
+		obj->DrawDebug(col);
+	}
+	for (Bubble* bubl : bubbles)
+	{
+		bubl->DrawDebug(col);
+	}
+}
+void Scene::RenderGUI() const
+{
+	//Temporal approach
+	DrawText(TextFormat("SCORE : %d", player->GetScore()), 5, 0, 8, LIGHTGRAY);
+>>>>>>> Stashed changes
 }

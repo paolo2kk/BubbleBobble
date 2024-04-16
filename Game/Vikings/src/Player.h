@@ -55,6 +55,7 @@ public:
 	void SetTileMap(TileMap* tilemap);
 	void Update();
 	void DrawDebug(const Color& col) const;
+	void Render();
 	void Release();
 	bool CreatingBubble();
 	bool IsLookingRight() const;

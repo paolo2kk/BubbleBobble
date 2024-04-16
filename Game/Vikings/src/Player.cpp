@@ -15,6 +15,11 @@ Player::Player(const Point& p, State s, Look view) :
 }
 Player::~Player()
 {
+	/*if (bubble != nullptr)
+	{
+		delete bubble;
+		bubble = nullptr;
+	}*/
 }
 AppStatus Player::Initialise()
 {
@@ -111,7 +116,6 @@ void Player::Stop()
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
-
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
@@ -173,7 +177,16 @@ void Player::Update()
 	if (inLaser) {
 		LaserProcedures();
 	}
+<<<<<<< Updated upstream
 	 
+=======
+	if (bubble != nullptr)
+	{
+		bubble->Update();
+	}
+	CreatingBubble();
+	Warp();
+>>>>>>> Stashed changes
 }
 void Player::MoveX()
 {
@@ -225,11 +238,21 @@ void Player::MoveX()
 		}
 
 		box = GetHitbox();
+		
 		if (map->TestCollisionWallRight(box))
 		{
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
+<<<<<<< Updated upstream
+=======
+		else if (map->TestCollisionHalfWallLeft(box)) {
+			pos.x = prev_x ;
+			if (state == State::WALKING) Stop();
+
+		}
+
+>>>>>>> Stashed changes
 	}
 	else
 	{
@@ -241,7 +264,14 @@ void Player::MoveX()
 }
 bool Player::CreatingBubble() 
 {
+<<<<<<< Updated upstream
 	return true;
+=======
+	if (IsKeyDown(KEY_S) && bubble == nullptr)
+	{
+		//bubble = new Bubble(pos, States::ALIVE, Looks::RIGHT);
+	}
+>>>>>>> Stashed changes
 }
 void Player::MoveY()
 {
@@ -393,6 +423,13 @@ void Player::DrawDebug(const Color& col) const
 	
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 18*16, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
+}
+void Player::Render()
+{
+	if (bubble != nullptr && render != nullptr)
+	{
+		//bubble->Render();
+	}
 }
 void Player::Release()
 {
