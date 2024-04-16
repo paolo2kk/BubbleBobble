@@ -14,7 +14,8 @@ Game::Game()
     img_stage1 = nullptr;
     img_stage2 = nullptr;
     credit = 0;
-    time = GetTime();
+    time = 0;
+    shouldGetTime = true;
 
     target = {};
     src = {};
@@ -150,6 +151,16 @@ void Game::incCredit()
     credit++;
     RenderCredit();
 }
+int Game::CheckTimePassed()
+{
+    if (shouldGetTime == true)
+    {
+        time = GetTime();
+        shouldGetTime = false;
+    }
+
+    return GetTime() - time;
+}
 AppStatus Game::BeginPlay()
 {
     scene = new Scene();
@@ -182,10 +193,10 @@ AppStatus Game::Update()
         case GameState::MAIN_MENU:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (time+5<GetTime())
+            if (CheckTimePassed()>5)
             {
                 state = GameState::INSERT_COIN;
-                time = GetTime();
+                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -197,9 +208,10 @@ AppStatus Game::Update()
         case GameState::INSERT_COIN:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (time + 3 < GetTime())
+            if (CheckTimePassed() > 3)
             {
                 state = GameState::TUTORIAL;
+                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -223,8 +235,8 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
-                state = GameState::PLAYING;
+
+                state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -238,12 +250,23 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
-                state = GameState::PLAYING;
+
+                state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
                 incCredit();
+            }
+            break;
+
+        case GameState::INTRO:
+
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (CheckTimePassed() > 7)
+            {
+                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                state = GameState::PLAYING;
+                shouldGetTime = true;
             }
             break;
 
@@ -289,12 +312,10 @@ void Game::Render()
 
         case GameState::TUTORIAL:
             DrawTexture(*img_tutorial, 0, 0, WHITE);
-            RenderCredit();
             break;
 
         case GameState::INTRO:
             DrawTexture(*img_intro, 0, 0, WHITE);
-            RenderCredit();
             break;
 
         case GameState::PLAYER_1:

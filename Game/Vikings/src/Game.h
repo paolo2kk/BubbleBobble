@@ -15,6 +15,7 @@ public:
     void Render();
     void Cleanup();
 
+    int CheckTimePassed();
     const int GetCredit(); 
     void incCredit();
 
@@ -28,6 +29,7 @@ private:
     void RenderCredit();
     int credit;
     int time;
+    bool shouldGetTime;
 
     GameState state;
     Scene *scene;
