@@ -20,12 +20,15 @@ public:
     void Release();
     AppStatus LoadLevel(int stage);
 
+    void RenderGUI(const Texture2D image);
+
 private:
     void CheckCollisions();
     void ClearLevel();
     void RenderObjects() const;
     void RenderObjectsDebug(const Color& col) const;
-    void RenderGUI() const;
+
+
 
     Player *player;
     TileMap *level;

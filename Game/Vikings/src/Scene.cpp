@@ -226,7 +226,6 @@ void Scene::Render()
 		player->DrawDebug(GREEN);
 	}
 
-	RenderGUI();
 
 	EndMode2D();
 }
@@ -287,8 +286,9 @@ void Scene::RenderObjectsDebug(const Color& col) const
 		obj->DrawDebug(col);
 	}
 }
-void Scene::RenderGUI() const
+void Scene::RenderGUI(const Texture2D image)
 {
 	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 5, 0, 8, LIGHTGRAY);
+	DrawTexture(image, 0, 0, WHITE);
+	DrawText(TextFormat("%d", player->GetScore()), 38, 8, 3, WHITE);
 }

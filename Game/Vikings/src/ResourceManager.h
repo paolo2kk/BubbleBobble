@@ -11,6 +11,10 @@ enum class Resource {
     IMG_MENU3,
     IMG_MENU4,
     IMG_INSCOIN,
+    IMG_TUTORIAL,
+    IMG_INTRO,
+    IMG_GAME_OVER,
+    IMG_PLAYER_2,
     IMG_PLAYER_1,
     IMG_PLAYER, 
     IMG_TILES,
@@ -20,6 +24,7 @@ enum class Resource {
     IMG_BUBBLES,
     IMG_STAGE1,
     IMG_STAGE2,
+    IMG_SCORE
 };
 
 class ResourceManager {
