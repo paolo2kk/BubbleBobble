@@ -17,11 +17,11 @@ public:
     AppStatus Init();
     void Update();
     void Render();
-    void RenderMenu(const Texture2D* image);
     void Release();
     AppStatus LoadLevel(int stage);
     int stage = 1;
     void PlayerBubbleSpawn();
+    int Score() const;
 private:
     void BubbleSpawner();
     void CheckCollisions();
@@ -29,7 +29,6 @@ private:
     void UpdateBubbles();
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
-    void RenderGUI() const;
 
     Player *player;
     TileMap *level;
