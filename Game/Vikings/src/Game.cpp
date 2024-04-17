@@ -7,10 +7,13 @@ Game::Game()
 {
 
     scene = nullptr;
-    state = GameState::MAIN_MENU;
+    state = GameState::START;
     img_menu = nullptr;
     img_insert_coin = nullptr;
-    img_intro;
+    img_intro = nullptr;
+    img_explanation = nullptr;
+    img_upc_citm = nullptr;
+    img_pato_productions = nullptr;
     img_player_2 = nullptr;
     img_game_over = nullptr;
     img_tutorial = nullptr;
@@ -19,14 +22,22 @@ Game::Game()
     img_ScoreHeader = nullptr;
     img_stage1 = nullptr;
     img_stage2 = nullptr;
+
+
+    alpha = 1;
+    fadeCondition = true;
+    transCounter = 0;
     
     credit = 0;
-    shouldGetTime = false;
+    shouldGetTime = true;
     time = GetTime();
+
 
     target = {};
     src = {};
     dst = {};
+
+    
 }
 Game::~Game()
 {
@@ -120,6 +131,24 @@ AppStatus Game::LoadResources()
     }
     img_intro = data.GetTexture(Resource::IMG_INTRO);
 
+    if (data.LoadTexture(Resource::IMG_EXPL, "images/Explanation.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_explanation = data.GetTexture(Resource::IMG_EXPL);
+
+    if (data.LoadTexture(Resource::IMG_UPC_CITM, "images/UPC_CITM.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_upc_citm = data.GetTexture(Resource::IMG_UPC_CITM);
+
+    if (data.LoadTexture(Resource::IMG_PATO, "images/Pato Productions.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_pato_productions = data.GetTexture(Resource::IMG_PATO);
+
     if (data.LoadTexture(Resource::IMG_GAME_OVER, "images/Game over.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
@@ -202,6 +231,14 @@ AppStatus Game::Update()
 
     switch (state)
     {
+        case GameState::START:
+            if (transCounter == 6)
+            {
+                shouldGetTime = true;
+                state = GameState::MAIN_MENU;
+            }
+            break;
+
         case GameState::MAIN_MENU:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if ((CheckTimePassed() > 5) && (GetCredit() == 0))
@@ -317,6 +354,27 @@ void Game::Render()
     
     switch (state)
     {
+        case GameState::START:
+            if ((transCounter == 0)||(transCounter==1))
+            {
+                DrawTexture(*img_explanation, 0, 0, WHITE);
+                FadeTransition();
+
+            }
+            else if ((transCounter == 2) || (transCounter == 3))
+            {
+                DrawTexture(*img_upc_citm, 0, 0, WHITE);
+                FadeTransition();
+
+            }
+            else if ((transCounter == 4) || (transCounter == 5))
+            {
+                DrawTexture(*img_pato_productions, 0, 0, WHITE);
+                FadeTransition();
+
+            }
+
+        break;
         case GameState::MAIN_MENU:
             DrawTexture(*img_menu, 0, 0, WHITE);
             RenderCredit();
@@ -393,6 +451,34 @@ void Game::Cleanup()
     UnloadResources();
     CloseWindow();
 }
+void Game::FadeTransition()
+{
+    if ( fadeCondition == true )
+    {
+        DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, alpha));
+        alpha -= 0.02;
+    }
+    else if (fadeCondition == false)
+    {
+        DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, alpha));
+        alpha += 0.02;
+    }
+
+    if (alpha > 1)
+    {
+        alpha = 1;
+        fadeCondition = 1;
+        transCounter++;
+    }
+    if (alpha < 0)
+    {
+        alpha = 0.0;
+        WaitTime(2);
+        fadeCondition = false;
+        transCounter++;
+    }
+}
+
 void Game::UnloadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
@@ -404,6 +490,7 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_PLAYER_2);
     data.ReleaseTexture(Resource::IMG_TUTORIAL);
     data.ReleaseTexture(Resource::IMG_SCORE);
+
 
 
     UnloadRenderTexture(target);
