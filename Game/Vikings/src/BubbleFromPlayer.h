@@ -1,6 +1,8 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
+#include "Player.h"
+#include "BubbleFromPlayer.h"
 
 #define BUBBLE_PHYSICAL_SIZE	14
 #define BUBBLE_FRAME_SIZE		16
@@ -21,14 +23,15 @@ public:
 	void Update();
 
 	void Movement(Directions d);
-	void ClampPos(Directions d);
+	void ClampPos();
 	AppStatus Initialise();
 	bool isAlive();
 	void Release();
 	Directions dire;
 	int stages;
 	void DrawDebug(const Color& col) const;
-
+	void Stomp();
+	void SetPlayer(Player* p);
 private:
 	//void DrawDebug(const Color& col) const;
 	bool inShoot;
@@ -38,4 +41,5 @@ private:
 	float eTime;
 	float lifeTime;
 	float speed;
+	Player* player;
 };

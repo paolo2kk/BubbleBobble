@@ -82,7 +82,7 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
-
+	
 	return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage)
@@ -266,6 +266,10 @@ void Scene::Update()
 	player->Update();
 	UpdateBubbles();
 	BubbleSpawner();
+	for (BubbleFromPlayer* buble : bubblesPlayer)
+	{
+		buble->SetPlayer(player);
+	}
 	CheckCollisions();
 }
 void Scene::Render()
@@ -337,6 +341,24 @@ void Scene::CheckCollisions()
 			//Move to the next object
 			++iterator;
 			++i;
+		}
+	}
+	auto iterate = bubblesPlayer.begin();
+	int o = 0;
+	while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
+	{
+		if (bubblesPlayer[o]->isAlive() == false)
+		{
+			//Delete the object
+			delete* iterate;
+			//Erase the object from the vector and get the iterate to the next valid element
+			iterate = bubblesPlayer.erase(iterate);
+		}
+		else
+		{
+			//Move to the next object
+			++iterate;
+			++o;
 		}
 	}
 }

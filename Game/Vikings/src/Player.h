@@ -14,6 +14,7 @@
 #define PLAYER_SPEED			2
 #define OBJECTIVEJUMP_X			2
 #define INJUMPXSPEED			2
+
 //When jumping, initial jump speed and maximum falling speed
 #define PLAYER_JUMP_FORCE		10
 #define PLAYER_JUMP_LIMIT		9.5
@@ -63,6 +64,8 @@ public:
 	bool IsLookingRight() const;
 	bool IsLookingLeft() const;
 	bool BubbleIsBeingCreated = false;
+	bool IsStompingAbove(const Point& p, int distance);
+	bool TestCollisionFromUp(const AABB& box, int* py);
 
 private:
 	
@@ -97,5 +100,6 @@ private:
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
+
 };
 

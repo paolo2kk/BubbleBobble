@@ -121,8 +121,6 @@ private:
 	bool CollisionYFLOOR(const Point& p, int distance) const;
 
 
-
-
 	//Tile map
 	Tile *map;
 

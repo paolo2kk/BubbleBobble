@@ -2,6 +2,7 @@
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Globals.h"
+#include "BubbleFromPlayer.h"
 #include <raymath.h>
 
 Player::Player(const Point& p, State s, Look view) :
@@ -442,6 +443,37 @@ void Player::LaserTag()
 		inLaser = true;
 	}
 
+}
+bool Player::TestCollisionFromUp(const AABB& box, int* py) 
+{
+	Point p(box.pos.x, *py);	//control point
+	int tile_y;
+	
+	if (IsStompingAbove(p, box.width))
+	{
+		tile_y = p.y / TILE_SIZE;
+
+		*py = tile_y * TILE_SIZE;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool Player::IsStompingAbove(const Point& p, int distance)
+{
+	
+		AABB playerHitbox = GetHitbox();
+
+		if (p.y <= playerHitbox.pos.y + playerHitbox.height &&  
+			p.y >= playerHitbox.pos.y &&                        
+			p.x + distance >= playerHitbox.pos.x &&             
+			p.x <= playerHitbox.pos.x + playerHitbox.width)     
+		{
+			return true;  
+		}
+		return false;     
+	
 }
 
 void Player::LaserProcedures() 

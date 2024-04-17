@@ -13,6 +13,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	logPosXR = pos.x + SHOOT_RANGE;
 	eTime = 0;
 	spawnTime = 0;
+	player = nullptr;
 	lifeTime = GetRandomValue(3, 5);
 	Rectangle rc;
 	const int n = TILE_SIZE;
@@ -70,14 +71,10 @@ AppStatus BubbleFromPlayer::Initialise()
 	return AppStatus::OK;
 
 }
-
 void BubbleFromPlayer::Update()
 {
-
 	pos += dir;
-
 	Movement(dire);
-
 }
 bool BubbleFromPlayer::isAlive()
 {
@@ -90,47 +87,102 @@ bool BubbleFromPlayer::isAlive()
 		return true;
 	}
 }
-void BubbleFromPlayer::ClampPos(Directions d)
+void BubbleFromPlayer::ClampPos()
+{
+	
+	if (pos.y < 32)
+	{
+		if (pos.x <= 127)
+		{
+			dir = {1, 1};
+		}
+		else {
+			dir = { -1, 1 };
+		}
+	}
+	if (pos.y == 32)
+	{
+		if (pos.x <= GetRandomValue(110, 127))
+		{
+			dir = {1, 0};
+		}
+		else if (pos.x > GetRandomValue(127, 140))
+		{
+			dir = { -1, 0 };
+		}
+	}
+	
+}
+void BubbleFromPlayer::SetPlayer(Player* p)
+{
+	player = p;
+}
+void BubbleFromPlayer::Stomp()
 {
 
+	AABB box = GetHitbox();
+	if (player != nullptr) {
+		if (player->TestCollisionFromUp(box, &pos.y))
+		{
+			player->SetPos(player->GetPos() += {0, -1});
+		}
+	}
+	
 }
+
 void BubbleFromPlayer::Movement(Directions d)
 {
-
-	if (d == Directions::LEFT)
+	ClampPos();
+	Stomp();
+	if (pos.y > 32)
 	{
-		switch (stages) {
-		case 1:
-			dir = { -2, 0 };
-			if (pos.x <= logPosXL) {
-				stages++;
-			}
-			break;
-		case 2:
-			dir = { 0, -1 };
-			break;
+		if (d == Directions::LEFT)
+		{
+			switch (stages) {
+			case 1:
+				if (pos.x < 20)
+				{
+					pos.x++;
+					stages++;
+				}
+				
+				dir = { -2, 0 };
+				if (pos.x <= logPosXL) {
+					stages++;
+				}
+				break;
+			case 2:
+				dir = { 0, -1 };
+				break;
 
+
+			}
+		}
+		else if (d == Directions::RIGHT)
+		{
+
+			switch (stages) {
+			case 1:
+				if (pos.x > 226)
+				{
+					pos.x--;
+					stages++;
+				}
+				dir = { 2, 0 };
+				if (pos.x >= logPosXR) {
+					stages++;
+				}
+				break;
+			case 2:
+				dir = { 0, -1 };
+
+				break;
+
+			}
 
 		}
 	}
-	else if (d == Directions::RIGHT)
-	{
-
-		switch (stages) {
-		case 1:
-			dir = { 2, 0 };
-			if (pos.x >= logPosXR) {
-				stages++;
-			}
-			break;
-		case 2:
-			dir = { 0, -1 };
-
-			break;
-
-		}
-
-	}
+	
 }
 void BubbleFromPlayer::DrawDebug(const Color & col) const
 {
