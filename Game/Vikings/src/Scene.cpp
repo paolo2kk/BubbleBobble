@@ -288,13 +288,8 @@ void Scene::Render()
 		player->DrawDebug(GREEN);
 	}
 	
-	RenderGUI();
 
 	EndMode2D();
-}
-void Scene::RenderMenu(const Texture2D* image)
-{
-	DrawTexture(*image, 0, 0, WHITE);
 }
 void Scene::Release()
 {
@@ -422,8 +417,14 @@ void Scene::RenderObjectsDebug(const Color& col) const
 		buble->DrawDebug(col);
 	}
 }
-void Scene::RenderGUI() const
+int Scene::Score() const
 {
-	//Temporal approach
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 5, 0, 8, LIGHTGRAY);
+	if (this == nullptr)
+	{
+		return 000;
+	}
+	else
+	{
+		return player->GetScore();
+	}
 }
