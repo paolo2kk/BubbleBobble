@@ -2,7 +2,7 @@
 #include "Globals.h"
 #include "Scene.h"
 
-enum class GameState { MAIN_MENU, PLAYING, TRANSITIONING, INSERT_COIN, PLAYER_1, TUTORIAL, INTRO, PLAYER_2_AND_1, GAME_OVER};
+enum class GameState { MAIN_MENU, PLAYING, TRANSITIONING, INSERT_COIN, PLAYER_1, TUTORIAL, INTRO, PLAYER_2_AND_1, GAME_OVER, START};
 
 class Game
 {
@@ -20,6 +20,7 @@ public:
     const int GetCredit();
     void incCredit();
     void RenderCredit();
+    void FadeTransition();
 
 private:
     AppStatus BeginPlay();
@@ -33,6 +34,8 @@ private:
     int time;
     bool shouldGetTime;
     float alpha;
+    bool fadeCondition;
+    int transCounter;
 
     GameState state;
     Scene *scene;
@@ -46,6 +49,9 @@ private:
     const Texture2D* img_menu;
     const Texture2D* img_insert_coin;
     const Texture2D* img_ScoreHeader;
+    const Texture2D* img_upc_citm;
+    const Texture2D* img_pato_productions;
+    const Texture2D* img_explanation;
     int timeValue = 0;
     float timer = 0;
     float totalTime = 1.5f;
