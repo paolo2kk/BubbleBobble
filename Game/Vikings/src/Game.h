@@ -32,6 +32,7 @@ private:
     int credit;
     int time;
     bool shouldGetTime;
+    float alpha;
 
     GameState state;
     Scene *scene;

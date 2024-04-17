@@ -19,6 +19,7 @@ Game::Game()
     img_ScoreHeader = nullptr;
     img_stage1 = nullptr;
     img_stage2 = nullptr;
+    alpha = 1;
     
     credit = 0;
     shouldGetTime = false;
@@ -321,6 +322,8 @@ void Game::Render()
             DrawTexture(*img_menu, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
+            DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, alpha));
+            alpha -= 0.01;
             break;
 
         case GameState::INSERT_COIN:
