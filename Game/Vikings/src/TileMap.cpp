@@ -72,6 +72,33 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::LASER_FRAME1] = { 2 * n, 6 * n, n, n };
 	dict_rect[(int)Tile::LASER_FRAME2] = { 3 * n, 6 * n, n, n };
 
+	//lvl 2 default Y = 15
+	dict_rect[(int)Tile::BLOCKWITH3] = { 0, 15 * n, n, n };
+	dict_rect[(int)Tile::BLOCKWITHOUT3] = { 0, 16 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMLVL2] = { 2* n, 15 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMCORNERRIGHTLVL2] = { 4 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMCORNERLEFTLVL2] = { 6 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2] = { 3 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2RIGHT] = { 2 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::FLOORLVL2LEFT] = { 6 * n, 17 * n, n, n };
+	dict_rect[(int)Tile::CORNERPLATFORMLVL2] = { n, 15 * n, n, n };
+	dict_rect[(int)Tile::CORNERFLOORLVL2] = { 3 * n, 22 * n, n, n };
+	dict_rect[(int)Tile::HALFWALLRIGHTLVL2] = { 2 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::HALWALLLEFTLVL2] = { 13 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMDEDOS] = { 9 * n, 20 * n, n, n };
+	dict_rect[(int)Tile::ULTIMAPLATFORMLVL2] = { 3 * n, 25 * n, n, n };
+
+	dict_rect[(int)Tile::SHADOWLVL2] = { n, 16 * n, n, n };
+	dict_rect[(int)Tile::LILSHADOWLVL2] = { 6 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::CORNERSHADOWLVL2] = { 3 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::LILSHADOWRIGHTLVL2] = { 9 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::FLOORSHADOWBOTTOMLVL2] = { 5 * n, 18 * n, n, n };
+	dict_rect[(int)Tile::PLATFORMSHADOWWALLLVL2] = { 7 * n, 20 * n, n, n };
+	dict_rect[(int)Tile::ASHADOWLVL2] = { 6 * n, 25 * n, n, n };
+	dict_rect[(int)Tile::DEBUG_WARP_1] = { 2 * n, 15 * n, n, n };
+	dict_rect[(int)Tile::DEBUG_WARP_2] = { 6 * n, 15 * n, n, n };
+
+
 }
 AppStatus TileMap::Initialise()
 {
@@ -81,6 +108,15 @@ AppStatus TileMap::Initialise()
 	{
 		return AppStatus::ERROR;
 	}
+	if (data.LoadTexture(Resource::IMG_TILES2, "images/dos.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	if (data.LoadTexture(Resource::IMG_BONUS, "images/tileset.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+
 	img_tiles = data.GetTexture(Resource::IMG_TILES);
 
 	laser = new Sprite(img_tiles);
@@ -132,11 +168,12 @@ Tile TileMap::GetTileIndex(int x, int y) const
 }
 bool TileMap::IsTileStatic(Tile tile) const
 {
-	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST);
+	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3);
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
-	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT);
+	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMLVL2 ||
+		   tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -148,23 +185,32 @@ bool TileMap::IsTileMario(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeRight(Tile tile) const
 {
-	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST  );
+	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST || tile == Tile::PLATFORMCORNERLEFTLVL2);
 }
 bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLEFINISH);
+	return (tile == Tile::PLATFORMMIDDLEFINISH || tile == Tile::FLOORLVL2LEFT);
 }
 bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 {
-	return (tile == Tile::PLATFORMEND );
+	return (tile == Tile::PLATFORMEND || tile == Tile::ULTIMAPLATFORMLVL2);
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLESTART) ;
+	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT) ;
+}
+bool TileMap::IsTileHalfWallLeft(Tile tile) const
+{
+	return (tile == Tile::HALWALLLEFTLVL2);
+}
+bool TileMap::IsTileHalfWallRight(Tile tile) const
+{
+	return (tile == Tile::HALFWALLRIGHTLVL2);
+
 }
 bool TileMap::IsTileFloor(Tile tile) const
 {
-	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST);
+	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
 }
 bool TileMap::IsTileLadderTop(Tile tile) const
 {
@@ -178,14 +224,23 @@ bool TileMap::TestCollisionWallRight(const AABB& box) const
 {
 	return CollisionX(box.pos + Point(box.width - 1, 0), box.height);
 }
+bool TileMap::TestCollisionHalfWallLeft(const AABB& box) const
+{
+	return CollisionXHalfLeft(box.pos + Point(box.width - 1, 0), box.height);
+}
+bool TileMap::TestCollisionHalfWallRight(const AABB& box) const
+{
+	return CollisionXHalfRight(box.pos + Point(box.width - 8, 0), box.height);
+}
 bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {
 	Point p(box.pos.x, *py);	//control point
 	int tile_y;
+	Point pFloor(box.pos.x, box.pos.y + 1);	//control point
 	Point p2(box.pos.x - 8, *py);	//control point
 	Point p3(box.pos.x + 8, *py);	//control point
-	Point p22(box.pos.x - 7, *py);	//control point
-	Point p33(box.pos.x + 7, *py);	//control point
+	Point p22(box.pos.x - 7, box.pos.y + 1);	//control point
+	Point p33(box.pos.x + 7, box.pos.y + 1);	//control point
 
 	if (CollisionY(p, box.width))
 	{
@@ -194,7 +249,7 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 		*py = tile_y * TILE_SIZE;
 		return true;
 	}
-	else if (CollisionYFLOOR(p, box.width))
+	else if (CollisionYFLOOR(pFloor, box.width))
 	{
 		tile_y = p.y / TILE_SIZE;
 		*py = tile_y * TILE_SIZE + TILE_SIZE / 2;
@@ -249,6 +304,42 @@ bool TileMap::CollisionX(const Point& p, int distance) const
 	{
 		//One solid tile is sufficient
 		if (IsTileMario(GetTileIndex(x, y)) || IsTileStatic(GetTileIndex(x, y)))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionXHalfLeft(const Point& p, int distance) const
+{
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = p.x / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		//One solid tile is sufficient
+		if (IsTileHalfWallLeft(GetTileIndex(x, y)))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionXHalfRight(const Point& p, int distance) const
+{
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = p.x / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		//One solid tile is sufficient
+		if (IsTileHalfWallRight(GetTileIndex(x, y)))
 			return true;
 	}
 	return false;

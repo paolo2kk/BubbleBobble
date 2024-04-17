@@ -1,4 +1,3 @@
-
 #include "Player.h"
 #include "Sprite.h"
 #include "TileMap.h"
@@ -12,6 +11,7 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
+	score = 0;
 }
 Player::~Player()
 {
@@ -26,7 +26,7 @@ AppStatus Player::Initialise()
 	{
 		return AppStatus::ERROR;
 	}
-
+	
 	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
 	if (render == nullptr)
 	{
@@ -78,6 +78,19 @@ void Player::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
+
+void Player::InitScore()
+{
+	score = 0;
+}
+void Player::IncrScore(int n)
+{
+	score += n;
+}
+int Player::GetScore()
+{
+	return score;
+}
 bool Player::IsLookingRight() const
 {
 	return look == Look::RIGHT;
@@ -107,15 +120,11 @@ void Player::Stop()
 {
 	dir = { 0,0 };
 	state = State::IDLE;
+	isStill = true;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
-void Player::Stop2()
-{
-	state = State::FALLING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
-}
+
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
@@ -130,14 +139,14 @@ void Player::StartWalkingRight()
 }
 void Player::StartFalling()
 {
-	dir.y = PLAYER_SPEED;
+	dir.y = PLAYER_SPEED + 1;
 	state = State::FALLING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
 }
 void Player::StartJumping()
 {
-	dir.y = -PLAYER_JUMP_FORCE;
+	dir.y = -PLAYER_JUMP_LIMIT;
 	state = State::JUMPING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
@@ -177,16 +186,27 @@ void Player::Update()
 	if (inLaser) {
 		LaserProcedures();
 	}
-	 
+	
+	Warp();
 }
+
 void Player::MoveX()
 {
 	AABB box;
 	int prev_x = pos.x;
+	int objectiveJumpX = pos.x;
 
-	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+	
+	if (IsKeyDown(KEY_LEFT) && initiallyLookingL)
 	{
-		pos.x += -PLAYER_SPEED;
+		if (state != State::JUMPING) {
+			pos.x -= 1;
+
+		}
+		initiallyLookingL = true;
+		initiallyLookingR = false;
+
+		isStill = false;
 		if (state == State::IDLE) StartWalkingLeft();
 		else
 		{
@@ -199,10 +219,26 @@ void Player::MoveX()
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
+		else if (map->TestCollisionHalfWallRight(box)) {
+			pos.x = prev_x ;
+			if (state == State::WALKING) Stop();
+
+		}
+		
 	}
-	else if (IsKeyDown(KEY_RIGHT))
+	else if (IsKeyDown(KEY_RIGHT) && initiallyLookingR)
 	{
-		pos.x += PLAYER_SPEED;
+		
+		isStill = false;
+		initiallyLookingR = true;
+		initiallyLookingL = false;
+
+		if (state != State::JUMPING) 
+		{
+			pos.x += 1;
+		}
+		
+	
 		if (state == State::IDLE) StartWalkingRight();
 		else
 		{
@@ -215,50 +251,131 @@ void Player::MoveX()
 			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
+		else if (map->TestCollisionHalfWallLeft(box)) {
+			pos.x = prev_x ;
+			if (state == State::WALKING) Stop();
+
+		}
 	}
 	else
 	{
-		if (state == State::WALKING) Stop();
+		if (state == State::WALKING) 
+		{
+			Stop();
+			isStill = true;
+		}
 	}
 }
+
+
 void Player::MoveY()
 {
 	AABB box, prev_box;
-	int prev_y;
+	int prev_x = pos.x;
+	int prev_y = pos.y;
 
-	
 
 	if (state != State::JUMPING)
 	{
+		initiallyLookingR = true;
+		initiallyLookingL = true;
+
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == State::FALLING) Stop();
 
-			if (IsKeyPressed(KEY_SPACE))
+			if (IsKeyPressed(KEY_X))
 				StartJumping();
 		}
 		else
 		{
 			if (state != State::FALLING) StartFalling();
 		}
+		if (state == State::FALLING) {
+			if (look == Look::RIGHT) {
+				if (map->TestCollisionWallRight(box))
+				{
+					pos.x -= 1;
+				}
+				if (map->TestCollisionHalfWallRight(box))
+				{
+					pos.x -= 1;
+				}
+				if (map->TestCollisionHalfWallLeft(box))
+				{
+					pos.x -= 1;
+				}
+			}
+			else if (look == Look::LEFT) {
+				if (map->TestCollisionWallLeft(box))
+				{
+					pos.x += 1;
+				}
+				if (map->TestCollisionHalfWallLeft(box))
+				{
+					pos.x += 1;
+				}
+				if (map->TestCollisionHalfWallRight(box))
+				{
+					pos.x += 1;
+				}
+			}
+		}
 	}
 	else //state == State::JUMPING
 	{
-		
+		box = GetHitbox();
 		jump_delay--;
 		if (jump_delay == 0)
 		{
+			if (isStill == false) {
+				if (look == Look::RIGHT ) {
+					box = GetHitbox();
+					if (map->TestCollisionWallRight(box))
+					{
+						pos.x -= 2;
+					}
+					if (map->TestCollisionHalfWallRight(box))
+					{
+						pos.x -= 2;
+					}
+					if (map->TestCollisionHalfWallLeft(box))
+					{
+						pos.x -= 2;
+					}
+					pos.x += OBJECTIVEJUMP_X;
+				}
+				else if (look == Look::LEFT)
+				{
+					if (map->TestCollisionWallLeft(box))
+					{
+						pos.x += 2;
+					}
+					if (map->TestCollisionHalfWallLeft(box))
+					{
+						pos.x += 2;
+					}
+					if (map->TestCollisionHalfWallRight(box))
+					{
+						pos.x += 2;
+					}
+					pos.x -= OBJECTIVEJUMP_X;
+
+				}
+			}
+			
 			prev_y = pos.y;
 			prev_box = GetHitbox();
 
 			pos.y += dir.y;
 			dir.y += GRAVITY_FORCE;
 			jump_delay = PLAYER_JUMP_DELAY;
+
 		
 			//Is the jump finished?
-			if (dir.y > PLAYER_JUMP_FORCE)
+			if (dir.y > PLAYER_JUMP_LIMIT)
 			{
 				dir.y = PLAYER_SPEED;
 				StartFalling();
@@ -311,12 +428,11 @@ void Player::MoveY()
 			}
 			
 		}
+		
 	}
 }
 void Player::LaserTag()
 {
-
-
 	AABB box;
 
 	box = GetHitbox();
@@ -326,10 +442,8 @@ void Player::LaserTag()
 		inLaser = true;
 	}
 
-	
-
-
 }
+
 void Player::LaserProcedures() 
 {
 	cFrame++;

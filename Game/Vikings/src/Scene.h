@@ -2,6 +2,9 @@
 #include <raylib.h>
 #include "Player.h"
 #include "TileMap.h"
+#include "Object.h"
+#include "BubbleFromPlayer.h"
+#include "Bubble.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
@@ -14,14 +17,29 @@ public:
     AppStatus Init();
     void Update();
     void Render();
+    void RenderMenu(const Texture2D* image);
     void Release();
-
-private:
     AppStatus LoadLevel(int stage);
+    int stage = 1;
+    void PlayerBubbleSpawn();
+private:
+    void BubbleSpawner();
+    void CheckCollisions();
+    void ClearLevel();
+    void UpdateBubbles();
+    void RenderObjects();
+    void RenderObjectsDebug(const Color& col) const;
+    void RenderGUI() const;
 
     Player *player;
     TileMap *level;
     Camera2D camera;
+    float eBubblingTime;
+    float eTimeSpawnX;
+    float eTimeSpawnY;
+    std::vector<Object*> objects;
+    std::vector<Bubble*> bubbles;
+    std::vector<BubbleFromPlayer*> bubblesPlayer;
 
     DebugMode debug;
 };

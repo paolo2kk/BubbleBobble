@@ -9,7 +9,7 @@ public:
     //Default constructor
     Point() : x(0), y(0) {}
     //Parameterized constructor
-    Point(int px, int py) : x(px), y(py) {}
+    Point(float px, float py) : x(px), y(py) {}
     //Copy constructor
     Point(const Point& p) : x(p.x), y(p.y) {}
     //Destructor

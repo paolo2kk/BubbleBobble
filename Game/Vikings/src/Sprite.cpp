@@ -41,16 +41,19 @@ void Sprite::SetAnimation(int id)
 }
 void Sprite::Update()
 {
-    if (current_delay > 0)
-    {
-        current_delay--;
-        if (current_delay == 0)
+    if (this != nullptr) {
+        if (current_delay > 0)
         {
-            current_frame++;
-            current_frame %= animations[current_anim].frames.size();
-            current_delay = animations[current_anim].delay;
+            current_delay--;
+            if (current_delay == 0)
+            {
+                current_frame++;
+                current_frame %= animations[current_anim].frames.size();
+                current_delay = animations[current_anim].delay;
+            }
         }
     }
+    
 }
 void Sprite::Draw(int x, int y) const
 {
