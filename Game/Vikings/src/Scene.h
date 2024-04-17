@@ -19,8 +19,9 @@ public:
     void RenderMenu(const Texture2D* image);
     void Release();
     AppStatus LoadLevel(int stage);
-
+    int stage = 1;
 private:
+    void BubbleSpawner();
     void CheckCollisions();
     void ClearLevel();
     void UpdateBubbles();
@@ -31,6 +32,9 @@ private:
     Player *player;
     TileMap *level;
     Camera2D camera;
+
+    float eTimeSpawnX;
+    float eTimeSpawnY;
     std::vector<Object*> objects;
     std::vector<Bubble*> bubbles;
 

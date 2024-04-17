@@ -113,8 +113,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\paugc2\Music\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\paugc2\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\paugc2\Desktop\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\paugc2\Desktop\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

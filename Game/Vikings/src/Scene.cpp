@@ -10,7 +10,8 @@ Scene::Scene()
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
 	camera.zoom = 1.0f;						//Default zoom
-
+	eTimeSpawnX = GetRandomValue(-1, 1);
+	eTimeSpawnY = GetRandomValue(-1, 1);
 	debug = DebugMode::OFF;
 }
 Scene::~Scene()
@@ -126,7 +127,7 @@ AppStatus Scene::LoadLevel(int stage)
 				151, 162, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 151,
 				151, 158, 152, 170, 154, 152, 169, 0, 0, 0, 168, 170, 154, 152, 152, 151,
 				151, 162, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 151,
-				151, 159, 155, 155, 157, 101, 156, 155, 155, 157, 0, 156, 155, 155, 155, 151
+				151, 159, 155, 155, 157,  0, 156, 155, 155, 157, 0, 156, 155, 155, 155, 151
 			};
 	}
 	else
@@ -184,6 +185,32 @@ AppStatus Scene::LoadLevel(int stage)
 
 	return AppStatus::OK;
 }
+void Scene::BubbleSpawner()
+{
+	int maxTimeX = GetRandomValue(5, 10);
+	int maxTimeY = GetRandomValue(5, 10);
+
+	switch (stage)
+	{
+	case 2:
+		Point p1 = { 80, 226 };
+		Point p2 = { 160, 226 };
+		if (eTimeSpawnX >= maxTimeX)
+		{
+			Bubble* bubl = new Bubble(p1, Direction::LEFT);
+			bubbles.push_back(bubl);
+			eTimeSpawnX = 0;
+		}
+		else if (eTimeSpawnY >= maxTimeY)
+		{
+			Bubble* bubl2 = new Bubble(p2, Direction::RIGHT);
+			bubbles.push_back(bubl2);
+			eTimeSpawnY = 0;
+		}
+		eTimeSpawnX += GetFrameTime();
+		eTimeSpawnY += GetFrameTime();
+	}
+}
 void Scene::Update()
 {
 	Point p1, p2;
@@ -201,14 +228,20 @@ void Scene::Update()
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
 	//Debug levels instantly
-	if (IsKeyPressed(KEY_ONE))		LoadLevel(1);
+	if (IsKeyPressed(KEY_ONE))
+	{
+		stage = 1;
+		LoadLevel(1);
+	}
 	else if (IsKeyPressed(KEY_TWO))
 	{
+		stage = 2;
 		LoadLevel(2);
 	}
 	level->Update();
 	player->Update();
 	UpdateBubbles();
+	BubbleSpawner();
 	CheckCollisions();
 }
 void Scene::Render()

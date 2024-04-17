@@ -13,7 +13,7 @@ Game::Game()
     img_player_1 = nullptr;
     img_stage1 = nullptr;
     img_stage2 = nullptr;
-
+    
     target = {};
     src = {};
     dst = {};
