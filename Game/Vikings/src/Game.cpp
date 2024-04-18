@@ -166,7 +166,10 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_stage2 = data.GetTexture(Resource::IMG_STAGE2);
-
+    if (data.LoadTexture(Resource::IMG_ITEMS, "images/Items.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
 
     return AppStatus::OK;
 }
