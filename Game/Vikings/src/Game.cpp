@@ -237,6 +237,10 @@ AppStatus Game::Update()
                 shouldGetTime = true;
                 state = GameState::MAIN_MENU;
             }
+            if (IsKeyPressed(KEY_ONE))
+            {
+                state = GameState::INTRO;
+            }
             break;
 
         case GameState::MAIN_MENU:
@@ -250,6 +254,10 @@ AppStatus Game::Update()
             {
                 incCredit();
                 state = GameState::PLAYER_1;
+            }
+            if (IsKeyPressed(KEY_ONE))
+            {
+                state = GameState::PLAYING;
             }
             break;
 
@@ -309,7 +317,7 @@ AppStatus Game::Update()
         case GameState::INTRO:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (CheckTimePassed() > 7)
+            if (CheckTimePassed() > 1)
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;

@@ -451,7 +451,7 @@ bool Player::TestCollisionFromUp(const AABB& box, int* py)
 	
 	if (IsStompingAbove(p, box.width))
 	{
-		tile_y = p.y / TILE_SIZE;
+		tile_y = (p.y +TILE_SIZE )/ TILE_SIZE;
 
 		*py = tile_y * TILE_SIZE;
 		return true;

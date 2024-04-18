@@ -6,6 +6,7 @@
 
 #define BUBBLE_PHYSICAL_SIZE	14
 #define BUBBLE_FRAME_SIZE		16
+#define POGOJUMP				-20
 
 #define PADDINGG_X 1
 #define PADDINGG_Y 6

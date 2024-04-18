@@ -92,7 +92,7 @@ void BubbleFromPlayer::ClampPos()
 	
 	if (pos.y < 32)
 	{
-		if (pos.x <= 127)
+		if (pos.x <= WINDOW_WIDTH / 2)
 		{
 			dir = {1, 1};
 		}
@@ -102,11 +102,11 @@ void BubbleFromPlayer::ClampPos()
 	}
 	if (pos.y == 32)
 	{
-		if (pos.x <= GetRandomValue(110, 127))
+		if (pos.x <= GetRandomValue(110, WINDOW_WIDTH / 2))
 		{
 			dir = {1, 0};
 		}
-		else if (pos.x > GetRandomValue(127, 140))
+		else if (pos.x > GetRandomValue(WINDOW_WIDTH / 2, 140))
 		{
 			dir = { -1, 0 };
 		}
@@ -121,10 +121,10 @@ void BubbleFromPlayer::Stomp()
 {
 
 	AABB box = GetHitbox();
-	if (player != nullptr) {
+	if (player != nullptr && IsKeyDown(KEY_X)) {
 		if (player->TestCollisionFromUp(box, &pos.y))
 		{
-			player->SetPos(player->GetPos() += {0, -1});
+			player->SetPos(player->GetPos() += {0, POGOJUMP});
 		}
 	}
 	
