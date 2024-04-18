@@ -97,7 +97,7 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::ASHADOWLVL2] = { 6 * n, 25 * n, n, n };
 	dict_rect[(int)Tile::DEBUG_WARP_1] = { 2 * n, 15 * n, n, n };
 	dict_rect[(int)Tile::DEBUG_WARP_2] = { 6 * n, 15 * n, n, n };
-
+	dict_rect[(int)Tile::DEBUG_CEILINGLVL1] = { 2 * n, n, n, n };
 
 }
 AppStatus TileMap::Initialise()

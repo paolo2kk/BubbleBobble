@@ -267,8 +267,10 @@ void Player::MoveX()
 		}
 	}
 }
-
-
+void Player::SetState(State state)
+{
+	this->state = state;
+}
 void Player::MoveY()
 {
 	AABB box, prev_box;
@@ -388,13 +390,14 @@ void Player::MoveY()
 				{
 					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
 					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
-
+					canJump = false;
 					
 				}
 				else if (IsLevitating())
 				{
 					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
 					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+					canJump = true;
 				}
 				else if (IsDescending())
 				{
@@ -442,18 +445,17 @@ void Player::LaserTag()
 		cFrame = 0;
 		inLaser = true;
 	}
-
 }
 bool Player::TestCollisionFromUp(const AABB& box, int* py) 
 {
 	Point p(box.pos.x, *py);	//control point
 	int tile_y;
 	
-	if (IsStompingAbove(p, box.width))
+	if (pos.y < p.y && IsStompingAbove(p, box.width) && pos.y +30 > p.y)
 	{
 		tile_y = (p.y +TILE_SIZE )/ TILE_SIZE;
 
-		*py = tile_y * TILE_SIZE;
+		*py -= 10;
 		return true;
 	}
 	else {
@@ -465,17 +467,23 @@ bool Player::IsStompingAbove(const Point& p, int distance)
 	
 		AABB playerHitbox = GetHitbox();
 
-		if (p.y <= playerHitbox.pos.y + playerHitbox.height &&  
-			p.y >= playerHitbox.pos.y &&                        
-			p.x + distance >= playerHitbox.pos.x &&             
-			p.x <= playerHitbox.pos.x + playerHitbox.width)     
+		int displacement = 100;
+		if (p.y <= playerHitbox.pos.y + playerHitbox.height &&
+			p.y >= playerHitbox.pos.y - displacement &&
+			p.x + distance >= playerHitbox.pos.x &&
+			p.x <= playerHitbox.pos.x + playerHitbox.width
+
+			)
 		{
 			return true;  
 		}
 		return false;     
 	
 }
-
+void Player::SetDir(Point p)
+{
+	dir += p;
+}
 void Player::LaserProcedures() 
 {
 	cFrame++;

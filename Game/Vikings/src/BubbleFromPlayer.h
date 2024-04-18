@@ -6,12 +6,12 @@
 
 #define BUBBLE_PHYSICAL_SIZE	14
 #define BUBBLE_FRAME_SIZE		16
-#define POGOJUMP				-20
+#define POGOJUMP				-30
 
 #define PADDINGG_X 1
 #define PADDINGG_Y 6
 
-#define SHOOT_RANGE 40
+#define SHOOT_RANGE 65
 
 enum class Directions { LEFT, RIGHT };
 enum class BubbleAnim {INSHOOT, IDLE, SMASHED, CATCHEDENEMY, NUM_ANIMATIONS};
@@ -33,13 +33,17 @@ public:
 	void DrawDebug(const Color& col) const;
 	void Stomp();
 	void SetPlayer(Player* p);
+
 private:
 	//void DrawDebug(const Color& col) const;
+	void SetAnimation(int id);
+
 	bool inShoot;
 	int logPosXL;
 	int logPosXR;
 	float spawnTime;
 	float eTime;
+	float eTimePogo;
 	float lifeTime;
 	float speed;
 	Player* player;

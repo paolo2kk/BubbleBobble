@@ -22,6 +22,7 @@
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\BubbleFromPlayer.cpp" />
+    <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Globals.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\BubbleFromPlayer.h" />
+    <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Globals.h" />
@@ -115,8 +117,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\gpauc\Music\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,6 +163,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>raylib.lib;WinMM.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\libraries\raylib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

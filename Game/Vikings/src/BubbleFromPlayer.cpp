@@ -18,8 +18,8 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	Rectangle rc;
 	const int n = TILE_SIZE;
 	const int y = 22;
-
-
+	inShoot = true;
+	eTimePogo = 0;
 
 	ResourceManager& data = ResourceManager::Instance();
 	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
@@ -30,17 +30,22 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 
 	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
 
-	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, 30);
+	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
-	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, 30);
+	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 0, 0, n, n });
 	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 2 * (n), 0, n, n });
 
-	sprite->SetAnimation((int)BubbleAnim::IDLE);
+	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
 {
+}
+void BubbleFromPlayer::SetAnimation(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
 }
 AppStatus BubbleFromPlayer::Initialise()
 {
@@ -60,14 +65,14 @@ AppStatus BubbleFromPlayer::Initialise()
 	
 	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
 
-	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, 30);
+	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 0, 0, n, n });
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 2 * (n + p), y, n, n });
-	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, 30);
+	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 0, 0, n, n });
 	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 2 * (n), 0, n, n });
 
-	sprite->SetAnimation((int)BubbleAnim::IDLE); 
+	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
 	return AppStatus::OK;
 
 }
@@ -120,13 +125,22 @@ void BubbleFromPlayer::SetPlayer(Player* p)
 void BubbleFromPlayer::Stomp()
 {
 
-	AABB box = GetHitbox();
-	if (player != nullptr && IsKeyDown(KEY_X)) {
-		if (player->TestCollisionFromUp(box, &pos.y))
+	if (!inShoot)
+	{
+		AABB box = GetHitbox();
+		if (player != nullptr && IsKeyDown(KEY_X))
 		{
-			player->SetPos(player->GetPos() += {0, POGOJUMP});
+			if (eTimePogo > 1)
+			{
+				if (player->TestCollisionFromUp(box, &pos.y))
+				{
+					player->SetPos(player->GetPos() += { 0, POGOJUMP });
+					eTimePogo = 0;
+				}
+			}
 		}
 	}
+	eTimePogo += GetFrameTime();
 	
 }
 
@@ -142,16 +156,22 @@ void BubbleFromPlayer::Movement(Directions d)
 			case 1:
 				if (pos.x < 20)
 				{
+
 					pos.x++;
 					stages++;
 				}
-				
+				inShoot = true;
+				SetAnimation((int)BubbleAnim::INSHOOT);
+
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
 					stages++;
 				}
 				break;
 			case 2:
+				SetAnimation((int)BubbleAnim::IDLE);
+
+				inShoot = false;
 				dir = { 0, -1 };
 				break;
 
@@ -168,12 +188,18 @@ void BubbleFromPlayer::Movement(Directions d)
 					pos.x--;
 					stages++;
 				}
+				inShoot = true;
+				SetAnimation((int)BubbleAnim::INSHOOT);
+
 				dir = { 2, 0 };
 				if (pos.x >= logPosXR) {
 					stages++;
 				}
 				break;
 			case 2:
+				SetAnimation((int)BubbleAnim::IDLE);
+
+				inShoot = false;
 				dir = { 0, -1 };
 
 				break;
