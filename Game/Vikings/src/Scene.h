@@ -21,8 +21,11 @@ public:
     AppStatus LoadLevel(int stage);
     void RandomItemSpawn();
     int stage = 1;
+    int AllObjects;
     void PlayerBubbleSpawn();
     int Score() const;
+    int highScore();
+    void ResetScore() const;
 private:
     void BubbleSpawner();
     void CheckCollisions();
@@ -30,6 +33,8 @@ private:
     void UpdateBubbles();
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
+
+    int HighScore;
 
     Player *player;
     TileMap *level;

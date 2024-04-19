@@ -1,14 +1,15 @@
 #include "Object.h"
 #include "StaticImage.h"
+#include <cstdlib>
+#include "iostream"
 
-Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
+Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
-	type = t; 
 	
 	Rectangle rc;
 	const int n = TILE_SIZE;
 	
-	switch (type)
+	switch (DrawRandObject())
 	{
 		case ObjectType::BLUE_CANDY: rc = {0, 0, n, n}; break;
 		case ObjectType::CAKE: rc = {n, 0, n, n}; break;
@@ -40,6 +41,96 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 }
 Object::~Object()
 {
+
+}
+ObjectType Object::DrawRandObject()
+{
+	int random = GetRandomValue(0, 19);
+
+	switch (random)
+	{
+	case 0:
+		type = ObjectType::APPLE;
+		return ObjectType::APPLE;
+		break;
+	case 1:
+		type = ObjectType::BANANA;
+		return ObjectType::BANANA;
+		break;
+	case 2:
+		type = ObjectType::CHERRY;
+		return ObjectType::CHERRY;
+		break;
+	case 3:
+		type = ObjectType::GRAPE;
+		return ObjectType::GRAPE;
+		break;
+	case 4:
+		type = ObjectType::LEMON;
+		return ObjectType::LEMON;
+		break;
+	case 5:
+		type = ObjectType::ORANGE_OBJ;
+		return ObjectType::ORANGE_OBJ;
+		break;
+	case 6:
+		type = ObjectType::PEAR;
+		return ObjectType::PEAR;
+		break;
+	case 7:
+		type = ObjectType::WATERMELON;
+		return ObjectType::WATERMELON;
+		break;
+	case 8:
+		type = ObjectType::BLUE_CANDY;
+		return ObjectType::BLUE_CANDY;
+		break;
+	case 9:
+		type = ObjectType::CAKE;
+		return ObjectType::CAKE;
+		break;
+	case 10:
+		type = ObjectType::DONUT;
+		return ObjectType::DONUT;
+		break;
+	case 11:
+		type = ObjectType::HAMBURGUER;
+		return ObjectType::HAMBURGUER;
+		break;
+	case 12:
+		type = ObjectType::HOT_DOG;
+		return ObjectType::HOT_DOG;
+		break;
+	case 13:
+		type = ObjectType::ICE_CREAM;
+		return ObjectType::ICE_CREAM;
+		break;
+	case 14:
+		type = ObjectType::PINK_CANDY;
+		return ObjectType::PINK_CANDY;
+		break;
+	case 15:
+		type = ObjectType::PIZZA;
+		return ObjectType::PIZZA;
+		break;
+	case 16:
+		type = ObjectType::POPSICLE;
+		return ObjectType::POPSICLE;
+		break;
+	case 17:
+		type = ObjectType::SUSHI;
+		return ObjectType::SUSHI;
+		break;
+	case 18:
+		type = ObjectType::YELLOW_CANDY;
+		return ObjectType::YELLOW_CANDY;
+		break;
+	case 19:
+		type = ObjectType::MIQUEL;
+		return ObjectType::MIQUEL;
+		break;
+
+	}
 }
 void Object::DrawDebug(const Color& col) const
 {

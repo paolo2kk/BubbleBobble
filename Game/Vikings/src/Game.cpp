@@ -32,6 +32,7 @@ Game::Game()
     shouldGetTime = true;
     time = GetTime();
 
+    stageCounter = 1;
 
     target = {};
     src = {};
@@ -206,8 +207,8 @@ int Game::CheckTimePassed()
 void Game::RenderScore()
 {
     DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
-    DrawText(TextFormat("%d", scene->Score()), 38, 7, 8, WHITE);
-    DrawText(TextFormat("%d", scene->Score()), 38, 7, 8, WHITE);
+    DrawText(TextFormat("%d", scene->Score()), 30, 7, 8, WHITE);
+    DrawText(TextFormat("%d", scene->highScore()), 120, 7, 8, WHITE);
 }
 AppStatus Game::BeginPlay()
 {
@@ -261,6 +262,10 @@ AppStatus Game::Update()
             {
                 incCredit();
                 state = GameState::PLAYER_1;
+            }
+            if (IsKeyPressed(KEY_SPACE))
+            {
+                state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ONE))
             {
@@ -346,8 +351,18 @@ AppStatus Game::Update()
                 state = GameState::GAME_OVER;
                 decCredit();
             }
-            else if (IsKeyPressed(KEY_Q)) {
+            else if (scene->AllObjects == 0) {
+
+                stageCounter++;
+                if (stageCounter >= 3)
+                {
+                    stageCounter = 1;
+                    state = GameState::MAIN_MENU;
+                    decCredit();
+                    break;
+                }
                 state = GameState::TRANSITIONING;
+
             }
             else
             {
@@ -395,6 +410,7 @@ void Game::Render()
             DrawTexture(*img_menu, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
+            scene->ResetScore();
             break;
 
         case GameState::INSERT_COIN:

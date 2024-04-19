@@ -30,7 +30,7 @@ private:
     AppStatus LoadResources();
     void UnloadResources();
 
-
+    int stageCounter;
     int credit;
     int time;
     bool shouldGetTime;

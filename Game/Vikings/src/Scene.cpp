@@ -15,6 +15,8 @@ Scene::Scene()
 	eTimeSpawnX = GetRandomValue(-1, 1);
 	eTimeSpawnY = GetRandomValue(-1, 1);
 	debug = DebugMode::OFF;
+	AllObjects = 0;
+	HighScore = 0;
 }
 Scene::~Scene()
 {
@@ -114,10 +116,10 @@ AppStatus Scene::LoadLevel(int stage)
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
-				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+				2, 5, 0, 0, 59, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 2,
 				2, 43, 21, 17, 42, 42, 42, 42, 42, 42, 42, 42, 18, 0, 42, 2,
 				2, 9, 6, 10, 19, 19, 19, 19, 19, 19, 19, 19, 20, 0, 7, 2,
-				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+				2, 5, 0, 0, 59, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
 				2, 5, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 43, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 2
@@ -135,10 +137,10 @@ AppStatus Scene::LoadLevel(int stage)
 				151, 162, 160, 164, 166, 166, 163, 0, 0, 165, 166, 166, 166, 161, 0, 151,
 				151, 162, 160, 162, 0, 0, 0, 0, 0, 0, 0, 0, 0, 161, 0, 151,
 				151, 162, 160, 158, 152, 152, 152, 167, 0, 168, 152, 152, 152, 161, 0, 151,
-				151, 162, 160, 162, 0, 0,102, 0, 0, 0, 0, 0, 0, 161, 0, 151,
+				151, 162, 160, 162, 0, 0,102, 0, 0, 59, 59, 0, 0, 161, 0, 151,
 				151, 162, 160, 159, 155, 155, 155, 157, 156, 155, 155, 155, 155, 161, 0, 151,
 				151, 162, 165, 166, 166, 166, 166, 163, 165, 166, 166, 166, 166, 163, 0, 151,
-				151, 162, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 151,
+				151, 162, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0, 151,
 				151, 158, 152, 170, 154, 152, 169, 0, 0, 0, 168, 170, 154, 152, 152, 151,
 				151, 162, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 151,
 				151, 159, 155, 155, 157,  0, 156, 155, 155, 157, 0, 156, 155, 155, 155, 151
@@ -176,12 +178,15 @@ AppStatus Scene::LoadLevel(int stage)
 				bubbles.push_back(bubl);
 				map[i] = 0;
 			}
-			else if (tile == Tile::ITEM_APPLE)
+			else if (tile == Tile::OBJECT)
 			{
+				
+
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::APPLE);
+				obj = new Object(pos);
 				objects.push_back(obj);
+				AllObjects++;
 				map[i] = 0;
 			}
 			
@@ -294,7 +299,8 @@ void Scene::Render()
 		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
 	}
-	
+
+
 
 	EndMode2D();
 }
@@ -315,6 +321,7 @@ void Scene::CheckCollisions()
 		if (player_box.TestAABB(obj_box))
 		{
 			player->IncrScore((*it)->Points());
+			AllObjects--;
 
 			//Delete the object
 			delete* it;
@@ -424,6 +431,19 @@ void Scene::RenderObjectsDebug(const Color& col) const
 		buble->DrawDebug(col);
 	}
 }
+int Scene::highScore()
+{
+	if (this == nullptr)
+	{
+		return 000;
+	}
+	else if(player->GetScore()>=HighScore)
+	{
+		HighScore = player->GetScore();
+	}
+	return HighScore;
+
+}
 int Scene::Score() const
 {
 	if (this == nullptr)
@@ -434,4 +454,12 @@ int Scene::Score() const
 	{
 		return player->GetScore();
 	}
+}
+void Scene::ResetScore() const
+{
+	if(this != nullptr)
+	{
+		player->InitScore();
+	}
+
 }
