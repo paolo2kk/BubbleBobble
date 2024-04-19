@@ -41,7 +41,6 @@ void Sprite::SetAnimation(int id)
 }
 void Sprite::Update()
 {
-    if (this != nullptr) {
         if (current_delay > 0)
         {
             current_delay--;
@@ -52,7 +51,6 @@ void Sprite::Update()
                 current_delay = animations[current_anim].delay;
             }
         }
-    }
     
 }
 void Sprite::Draw(int x, int y) const

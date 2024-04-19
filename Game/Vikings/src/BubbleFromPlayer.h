@@ -25,7 +25,7 @@ public:
 
 	void Movement(Directions d);
 	void ClampPos();
-	AppStatus Initialise();
+	//AppStatus Initialise();
 	bool isAlive();
 	void Release();
 	Directions dire;

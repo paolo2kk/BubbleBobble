@@ -448,10 +448,10 @@ void Player::LaserTag()
 }
 bool Player::TestCollisionFromUp(const AABB& box, int* py) 
 {
-	Point p(box.pos.x, *py);	//control point
+	Point p(box.pos.x, *py);	
 	int tile_y;
 	
-	if (pos.y < p.y && IsStompingAbove(p, box.width) && pos.y +30 > p.y)
+	if (pos.y < p.y && IsStompingAbove(p, box.width) /*&& pos.y +30 > p.y*/)
 	{
 		tile_y = (p.y +TILE_SIZE )/ TILE_SIZE;
 
@@ -467,7 +467,7 @@ bool Player::IsStompingAbove(const Point& p, int distance)
 	
 		AABB playerHitbox = GetHitbox();
 
-		int displacement = 100;
+		int displacement = 50;
 		if (p.y <= playerHitbox.pos.y + playerHitbox.height &&
 			p.y >= playerHitbox.pos.y - displacement &&
 			p.x + distance >= playerHitbox.pos.x &&

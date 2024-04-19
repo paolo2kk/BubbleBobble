@@ -6,6 +6,7 @@ Scene::Scene()
 {
 	player = nullptr;
 	level = nullptr;
+	singleBubble = nullptr;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
@@ -28,6 +29,12 @@ Scene::~Scene()
 		level->Release();
 		delete level;
 		level = nullptr;
+	}
+	if (singleBubble != nullptr)
+	{
+		singleBubble->Release();
+		delete singleBubble;
+		singleBubble = nullptr;
 	}
 	for (Entity* obj : objects)
 	{
@@ -187,10 +194,7 @@ AppStatus Scene::LoadLevel(int stage)
 }
 void Scene::RandomItemSpawn()
 {
-	switch (stage)
-	{
-
-	}
+	
 }
 void Scene::BubbleSpawner()
 {
@@ -222,17 +226,20 @@ void Scene::PlayerBubbleSpawn()
 {
 	eBubblingTime += GetFrameTime();
 	
-	if (IsKeyDown(KEY_S) && eBubblingTime >= .4)
+	if (IsKeyPressed(KEY_S) && eBubblingTime >= .4)
 	{
 		if (player->IsLookingLeft())
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 			bubblesPlayer.push_back(buble);
-	
+			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
+
 		}
-		else {
+		else 
+		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::RIGHT);
 			bubblesPlayer.push_back(buble);
+			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 		}
 		eBubblingTime = 0;
 	
@@ -320,42 +327,42 @@ void Scene::CheckCollisions()
 			++it;
 		}
 	}
-	auto iterator = bubbles.begin();
-	int i = 0;
-	while (iterator != bubbles.end() && i < bubbles.size())
-	{
-		if (bubbles[i]->isAlive() == false)
-		{
-			//Delete the object
-			delete* iterator;
-			//Erase the object from the vector and get the iterator to the next valid element
-			iterator = bubbles.erase(iterator);
-		}
-		else
-		{
-			//Move to the next object
-			++iterator;
-			++i;
-		}
-	}
-	auto iterate = bubblesPlayer.begin();
-	int o = 0;
-	while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
-	{
-		if (bubblesPlayer[o]->isAlive() == false)
-		{
-			//Delete the object
-			delete* iterate;
-			//Erase the object from the vector and get the iterate to the next valid element
-			iterate = bubblesPlayer.erase(iterate);
-		}
-		else
-		{
-			//Move to the next object
-			++iterate;
-			++o;
-		}
-	}
+	//auto iterator = bubbles.begin();
+	//int i = 0;
+	//while (iterator != bubbles.end() && i < bubbles.size())
+	//{
+	//	if (bubbles[i]->isAlive() == false)
+	//	{
+	//		//Delete the object
+	//		delete* iterator;
+	//		//Erase the object from the vector and get the iterator to the next valid element
+	//		iterator = bubbles.erase(iterator);
+	//	}
+	//	else
+	//	{
+	//		//Move to the next object
+	//		++iterator;
+	//		++i;
+	//	}
+	//}
+	//auto iterate = bubblesPlayer.begin();
+	//int o = 0;
+	//while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
+	//{
+	//	if (bubblesPlayer[o]->isAlive() == false)
+	//	{
+	//		//Delete the object
+	//		delete* iterate;
+	//		//Erase the object from the vector and get the iterate to the next valid element
+	//		iterate = bubblesPlayer.erase(iterate);
+	//	}
+	//	else
+	//	{
+	//		//Move to the next object
+	//		++iterate;
+	//		++o;
+	//	}
+	//}
 }
 void Scene::ClearLevel()
 {

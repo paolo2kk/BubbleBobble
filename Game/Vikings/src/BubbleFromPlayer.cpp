@@ -34,8 +34,8 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
 	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
 	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 0, 0, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 2 * (n), 0, n, n });
+	for (int i = 0; i < 6; ++i)
+		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
 
 	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
 }
@@ -47,39 +47,43 @@ void BubbleFromPlayer::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-AppStatus BubbleFromPlayer::Initialise()
-{
-	Rectangle rc;
-	const int n = TILE_SIZE;
-	const int p = PADDINGG_X;
-	const int y = 22;
-
-	ResourceManager& data = ResourceManager::Instance();
-	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
-	if (render == nullptr)
-	{
-		LOG("Failed to allocate memory for player sprite");
-		return AppStatus::ERROR;
-	}
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	
-	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 0, 0, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 2 * (n + p), y, n, n });
-	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 0, 0, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { 2 * (n), 0, n, n });
-
-	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
-	return AppStatus::OK;
-
-}
+//AppStatus BubbleFromPlayer::Initialise()
+//{
+//	/*Rectangle rc;
+//	const int n = TILE_SIZE;
+//	const int p = PADDINGG_X;
+//	const int y = 22;
+//
+//	ResourceManager& data = ResourceManager::Instance();
+//	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
+//
+//	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
+//	if (render == nullptr)
+//	{
+//		LOG("Failed to allocate memory for player sprite");
+//		return AppStatus::ERROR;
+//	}
+//	Sprite* sprite = dynamic_cast<Sprite*>(render);
+//	
+//	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
+//
+//	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
+//	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 0, 0, n, n });
+//	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 2 * (n + p), y, n, n });
+//	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
+//	for(int i = 0; i < 6; ++i)
+//		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
+//
+//	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
+//	return AppStatus::OK;*/
+//
+//}
 void BubbleFromPlayer::Update()
 {
 	pos += dir;
 	Movement(dire);
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->Update();
 }
 bool BubbleFromPlayer::isAlive()
 {
@@ -124,7 +128,6 @@ void BubbleFromPlayer::SetPlayer(Player* p)
 }
 void BubbleFromPlayer::Stomp()
 {
-
 	if (!inShoot)
 	{
 		AABB box = GetHitbox();
