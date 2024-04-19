@@ -19,6 +19,7 @@ public:
     int CheckTimePassed();
     const int GetCredit();
     void incCredit();
+    void decCredit();
     void RenderCredit();
     void FadeTransition();
 

@@ -189,6 +189,10 @@ void Game::incCredit()
     credit++;
     RenderCredit();
 }
+void Game::decCredit()
+{
+    credit--;
+}
 int Game::CheckTimePassed()
 {
     if (shouldGetTime == true)
@@ -340,6 +344,7 @@ AppStatus Game::Update()
             {
                 //FinishPlay();
                 state = GameState::GAME_OVER;
+                decCredit();
             }
             else if (IsKeyPressed(KEY_Q)) {
                 state = GameState::TRANSITIONING;
