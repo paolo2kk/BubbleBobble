@@ -48,10 +48,13 @@ Game::~Game()
         scene = nullptr;
     }
     UnloadImage(customIcon);
+    CloseAudioDevice();
 
 }
 AppStatus Game::Initialise(float scale)
 {
+    InitAudioDevice();
+
     float w, h;
     w = WINDOW_WIDTH * scale;
     h = WINDOW_HEIGHT * scale;
@@ -81,6 +84,23 @@ AppStatus Game::Initialise(float scale)
     SetTargetFPS(60);
     //Disable the escape key to quit functionality
     SetExitKey(0);
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/intro_plus_main_theme_Music.ogg") != AppStatus::OK) {
+        // Handle error, perhaps by logging or attempting a graceful shutdown.
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_INSERT_COIN, "music/Main_Theme_Music.ogg") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_JUMP, "music/Jump_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
 
     return AppStatus::OK;
 }
@@ -232,40 +252,44 @@ AppStatus Game::Update()
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
     if(WindowShouldClose()) return AppStatus::QUIT;
 
+
     switch (state)
     {
-        case GameState::START:
-            if (transCounter == 6)
-            {
-                shouldGetTime = true;
-                state = GameState::MAIN_MENU;
-            }
-            if (IsKeyPressed(KEY_ONE))
-            {
-                state = GameState::INTRO;
-            }
-            break;
+    case GameState::START:
+        if (transCounter == 6)
+        {
+            shouldGetTime = true;
+            state = GameState::MAIN_MENU;
+        }
+        if (IsKeyPressed(KEY_ONE))
+        {
+            state = GameState::INTRO;
+        }
+        break;
 
-        case GameState::MAIN_MENU:
-            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if ((CheckTimePassed() > 5) && (GetCredit() == 0))
-            {
-                state = GameState::INSERT_COIN;
-                shouldGetTime = true;
-            }
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                incCredit();
-                state = GameState::PLAYER_1;
-            }
-            if (IsKeyPressed(KEY_ONE))
-            {
-                state = GameState::PLAYING;
-            }
-            break;
+    case GameState::MAIN_MENU:
+        if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+        if ((CheckTimePassed() > 5) && (GetCredit() == 0))
+        {
+            state = GameState::INSERT_COIN;
+            shouldGetTime = true;
+        }
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            incCredit();
+            state = GameState::PLAYER_1;
+        }
+        if (IsKeyPressed(KEY_ONE))
+        {
+            state = GameState::PLAYING;
+        }
+        break;
 
-        case GameState::INSERT_COIN:
+    case GameState::INSERT_COIN:
 
+        StopMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+        PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
+ 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (CheckTimePassed() > 3)
             {
@@ -362,6 +386,9 @@ void Game::Render()
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
     ClearBackground(BLACK);
+
+    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
     
     switch (state)
     {

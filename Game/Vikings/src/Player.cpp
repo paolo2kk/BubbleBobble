@@ -149,6 +149,7 @@ void Player::StartJumping()
 {
 	dir.y = -PLAYER_JUMP_LIMIT;
 	state = State::JUMPING;
+	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_JUMP);
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
 	jump_delay = PLAYER_JUMP_DELAY;

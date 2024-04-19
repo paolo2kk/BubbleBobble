@@ -28,6 +28,9 @@ enum class Resource {
     IMG_BUBBLES,
     IMG_STAGE1,
     IMG_STAGE2,
+    MUSIC_BACKGROUND,
+    MUSIC_INSERT_COIN,
+    SFX_JUMP,
 };
 
 class ResourceManager {
@@ -43,6 +46,15 @@ public:
     AppStatus LoadTexture(Resource id, const std::string& file_path);
     AppStatus LoadAudio(Resource id, const std::string& file_path);
     void ReleaseTexture(Resource id);
+
+    //Load music
+    AppStatus LoadMusic(Resource id, const std::string& file_path);
+    void UnloadMusic(Resource id);
+    const Music* GetMusic(Resource id) const;
+
+    //Load Sound Effect
+    AppStatus LoadSoundEffect(Resource id, const std::string& file_path);
+    void PlaySoundEffect(Resource id);
 
     //Get texture by key
     const Texture2D* GetTexture(Resource id) const;
@@ -63,5 +75,8 @@ private:
     //Dictionary to store loaded textures
     std::unordered_map<Resource, Texture2D> textures;
     std::unordered_map<Resource, Sound> sounds;
+    std::unordered_map<Resource, Music> musicResources;
+    std::unordered_map<Resource, Sound> soundEffects;
+
 
 };
