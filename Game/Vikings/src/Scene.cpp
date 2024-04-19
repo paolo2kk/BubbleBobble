@@ -105,7 +105,7 @@ AppStatus Scene::LoadLevel(int stage)
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
-				2, 5, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 43, 21, 17, 42, 42, 42, 42, 42, 42, 42, 42, 18, 0, 42, 2,
@@ -177,20 +177,20 @@ AppStatus Scene::LoadLevel(int stage)
 				objects.push_back(obj);
 				map[i] = 0;
 			}
-			else if (tile == Tile::ITEM_CHILI)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::CHILI);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
+			
 			++i;
 		}
 	}
 	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
 
 	return AppStatus::OK;
+}
+void Scene::RandomItemSpawn()
+{
+	switch (stage)
+	{
+
+	}
 }
 void Scene::BubbleSpawner()
 {

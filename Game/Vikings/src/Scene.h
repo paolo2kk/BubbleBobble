@@ -19,6 +19,7 @@ public:
     void Render();
     void Release();
     AppStatus LoadLevel(int stage);
+    void RandomItemSpawn();
     int stage = 1;
     void PlayerBubbleSpawn();
     int Score() const;

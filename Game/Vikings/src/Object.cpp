@@ -48,7 +48,26 @@ void Object::DrawDebug(const Color& col) const
 int Object::Points() const
 {
 	if (type == ObjectType::APPLE)		return POINTS_APPLE;
-	else if (type == ObjectType::CHILI)	return POINTS_CHILI;
+	else if (type == ObjectType::BANANA)	return POINTS_BANANA;
+	else if (type == ObjectType::CHERRY)	return POINTS_CHERRY;
+	else if (type == ObjectType::GRAPE)	return POINTS_GRAPE;
+	else if (type == ObjectType::LEMON)	return POINTS_LEMON;
+	else if (type == ObjectType::ORANGE_OBJ)	return POINTS_ORANGE;
+	else if (type == ObjectType::PEAR)	return POINTS_PEAR;
+	else if (type == ObjectType::WATERMELON)	return POINTS_WATERMELON;
+	else if (type == ObjectType::BLUE_CANDY)	return POINTS_BLUE_CANDY;
+	else if (type == ObjectType::CAKE)	return POINTS_CAKE;
+	else if (type == ObjectType::DONUT)	return POINTS_DONUT;
+	else if (type == ObjectType::HAMBURGUER)	return POINTS_HAMBURGUER;
+	else if (type == ObjectType::HOT_DOG)	return POINTS_HOT_DOG;
+	else if (type == ObjectType::ICE_CREAM)	return POINTS_ICE_CREAM;
+	else if (type == ObjectType::PINK_CANDY)	return POINTS_PINK_CANDY;
+	else if (type == ObjectType::PIZZA)	return POINTS_PIZZA;
+	else if (type == ObjectType::POPSICLE)	return POINTS_POPSICLE;
+	else if (type == ObjectType::SUSHI)	return POINTS_SUSHI;
+	else if (type == ObjectType::YELLOW_CANDY)	return POINTS_YELLOW_CANDY;
+	else if (type == ObjectType::MIQUEL)	return POINTS_MIQUEL;
+
 	else
 	{
 		LOG("Internal error: object type invalid when giving points");

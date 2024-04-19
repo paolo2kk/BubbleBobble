@@ -18,13 +18,13 @@ Bubble::Bubble(const Point& p, Direction d) : Entity(p, BUBBLE_PHYSICAL_SIZE, BU
 	
 	switch (dire)
 	{
-	case Direction::LEFT: rc = { n, n, n, n }; break;
-	case Direction::RIGHT: rc = { n, n, n, n }; break;
+	case Direction::LEFT: rc = { n, n + 6, n, n }; break;
+	case Direction::RIGHT: rc = { n, n + 6, n, n }; break;
 
 	default: LOG("Internal error: object creation of invalid type");
 	}
 	ResourceManager& data = ResourceManager::Instance();
-	render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+	render = new StaticImage(data.GetTexture(Resource::IMG_BUBBLES), rc);
 }
 Bubble::~Bubble()
 {
