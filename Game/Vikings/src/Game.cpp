@@ -201,9 +201,9 @@ int Game::CheckTimePassed()
 }
 void Game::RenderScore()
 {
-    DrawTexture(*img_ScoreHeader, 0, 0, WHITE);
-    DrawText(TextFormat("%d", scene->Score()), 38, 8, 8, WHITE);
-    DrawText(TextFormat("%d", scene->Score()), 38, 8, 8, WHITE);
+    DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
+    DrawText(TextFormat("%d", scene->Score()), 38, 7, 8, WHITE);
+    DrawText(TextFormat("%d", scene->Score()), 38, 7, 8, WHITE);
 }
 AppStatus Game::BeginPlay()
 {
@@ -426,25 +426,27 @@ void Game::Render()
             break;
 
         case GameState::PLAYING:
-            scene->Render();
             RenderScore();
+            scene->Render();
+
             break;
         case GameState::TRANSITIONING:
+
             float progress = timeElapsed / totalTime;
             float yPos_stage2 = 224.0f * -progress; 
             if (timeElapsed < totalTime) {
                 DrawTexture(*img_stage1, 0, yPos_stage2, WHITE);
                 DrawTexture(*img_stage2, 0, yPos_stage2 + 224, WHITE);
                 RenderScore();
-
                 timeElapsed += GetFrameTime();
 
             }
             else {
+                RenderScore();
                 timeElapsed = 0;
                 state = GameState::PLAYING;
                 scene->LoadLevel(2);
-                RenderScore();
+
             }
           
             break;
