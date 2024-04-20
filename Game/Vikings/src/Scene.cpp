@@ -17,6 +17,7 @@ Scene::Scene()
 	debug = DebugMode::OFF;
 	AllObjects = 0;
 	HighScore = 0;
+
 }
 Scene::~Scene()
 {
@@ -50,7 +51,12 @@ Scene::~Scene()
 	{
 		delete bubles;
 	}
+	for (Entity* enemy : enemies)
+	{
+		delete enemy;
+	}
 	objects.clear();
+	enemies.clear();
 	bubbles.clear();
 	bubblesPlayer.clear();
 
@@ -91,7 +97,10 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
-	
+	for (Enemy* enemy : enemies)
+	{
+		enemy->SetTileMap(level);
+	}
 	return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage)
@@ -103,6 +112,7 @@ AppStatus Scene::LoadLevel(int stage)
 	int* map = nullptr;
 	Object* obj;
 	Bubble* bubl;
+	Enemy* ene;
 
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -114,12 +124,12 @@ AppStatus Scene::LoadLevel(int stage)
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
-				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+				2, 5, 0, 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
-				2, 5, 0, 0, 59, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 2,
+				2, 5, 0, 0, 59, 0, 0, 103, 0, 0, 0, 59, 0, 0, 0, 2,
 				2, 43, 21, 17, 42, 42, 42, 42, 42, 42, 42, 42, 18, 0, 42, 2,
 				2, 9, 6, 10, 19, 19, 19, 19, 19, 19, 19, 19, 20, 0, 7, 2,
-				2, 5, 0, 0, 59, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 2,
+				2, 5, 0, 0, 59, 0, 0, 103,  0, 0, 0, 59, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
 				2, 5, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 43, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 2
@@ -167,6 +177,15 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				player->SetPos(pos);
+				map[i] = 0;
+			}
+			else if (tile == Tile::ZENCHAN)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				ene = new Enemy(pos, StateEnemy::IDLE,  LookEnemy::LEFT, Type::ZEN_CHAN);
+
+				enemies.push_back(ene);				
 				map[i] = 0;
 			}
 			else if (tile == Tile::BUBBLE)
@@ -231,7 +250,7 @@ void Scene::PlayerBubbleSpawn()
 {
 	eBubblingTime += GetFrameTime();
 	
-	if (IsKeyPressed(KEY_S) && eBubblingTime >= .2)
+	if (IsKeyPressed(KEY_S) && eBubblingTime >= .3)
 	{
 		if (player->IsLookingLeft())
 		{
@@ -278,6 +297,10 @@ void Scene::Update()
 	}
 	level->Update();
 	player->Update();
+	for (Enemy* ene : enemies)
+	{
+		ene->Update();
+	}
 	UpdateBubbles();
 	BubbleSpawner();
 	for (BubbleFromPlayer* buble : bubblesPlayer)
@@ -313,7 +336,7 @@ void Scene::Release()
 }
 void Scene::CheckCollisions()
 {
-	AABB player_box, obj_box;
+	AABB player_box, obj_box, ene_box;
 
 	player_box = player->GetHitbox();
 	auto it = objects.begin();
@@ -322,6 +345,8 @@ void Scene::CheckCollisions()
 		obj_box = (*it)->GetHitbox();
 		if (player_box.TestAABB(obj_box))
 		{
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_ITEM);
+
 			player->IncrScore((*it)->Points());
 			AllObjects--;
 
@@ -334,6 +359,20 @@ void Scene::CheckCollisions()
 		{
 			//Move to the next object
 			++it;
+		}
+	}
+	auto it_enemies = enemies.begin();
+	while (it_enemies != enemies.end())
+	{
+		ene_box = (*it_enemies)->GetHitbox();
+		if (player_box.TestAABB(ene_box))
+		{
+			delete* it_enemies;
+			it_enemies = enemies.erase(it_enemies);
+		}
+		else
+		{
+			++it_enemies;
 		}
 	}
 	//auto iterator = bubbles.begin();
@@ -390,6 +429,11 @@ void Scene::ClearLevel()
 		delete buble;
 	}
 	bubblesPlayer.clear();
+	for (Enemy* enemi : enemies)
+	{
+		delete enemi;
+	}
+	enemies.clear();
 }
 void Scene::UpdateBubbles()
 {
@@ -419,6 +463,10 @@ void Scene::RenderObjects()
 		(*it)->Draw();	
 		++it;
 	}
+	/*for (Enemy* enemi : enemies)
+	{
+		enemi->Draw();
+	}*/
 	
 }
 void Scene::RenderObjectsDebug(const Color& col) const
@@ -434,6 +482,10 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	for (BubbleFromPlayer* buble : bubblesPlayer)
 	{
 		buble->DrawDebug(col);
+	}
+	for (Enemy* enemi : enemies)
+	{
+		enemi->DrawDebug(col);
 	}
 }
 int Scene::highScore()

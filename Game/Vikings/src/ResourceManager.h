@@ -31,6 +31,8 @@ enum class Resource {
     MUSIC_BACKGROUND,
     MUSIC_INSERT_COIN,
     SFX_JUMP,
+    SFX_ITEM,
+    IMG_ZENCHAN,
 };
 
 class ResourceManager {

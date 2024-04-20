@@ -76,8 +76,8 @@ AppStatus Game::Initialise(float scale)
         // Handle error
         return AppStatus::ERROR;
     }
-
-
+    ResourceManager::Instance().LoadSoundEffect(Resource::SFX_ITEM, "music/Eat_Fruit_SFX.wav");
+    
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
 
 
@@ -403,8 +403,7 @@ void Game::Render()
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
     ClearBackground(BLACK);
-    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
+    
     switch (state)
     {
         case GameState::START:
@@ -429,6 +428,8 @@ void Game::Render()
 
         break;
         case GameState::MAIN_MENU:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             DrawTexture(*img_menu, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
@@ -436,6 +437,7 @@ void Game::Render()
             break;
 
         case GameState::INSERT_COIN:
+
             DrawTexture(*img_insert_coin, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
@@ -447,10 +449,13 @@ void Game::Render()
             break;
 
         case GameState::INTRO:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             DrawTexture(*img_intro, 0, 0, WHITE);
             break;
 
         case GameState::PLAYER_1:
+
             DrawTexture(*img_player_1, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
@@ -469,12 +474,15 @@ void Game::Render()
             break;
 
         case GameState::PLAYING:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             RenderScore();
             scene->Render();
 
             break;
         case GameState::TRANSITIONING:
-
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             float progress = timeElapsed / totalTime;
             float yPos_stage2 = 224.0f * -progress; 
             if (timeElapsed < totalTime) {

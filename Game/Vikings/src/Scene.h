@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "BubbleFromPlayer.h"
 #include "Bubble.h"
+#include "Enemy.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
@@ -37,7 +38,9 @@ private:
     int HighScore;
 
     Player *player;
+    std::vector<Enemy*> enemies;
     TileMap *level;
+    Enemy* enemy;
     Camera2D camera;
     float eBubblingTime;
     float eTimeSpawnX;
