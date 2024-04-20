@@ -49,10 +49,12 @@ Game::~Game()
         scene = nullptr;
     }
     UnloadImage(customIcon);
-
+    CloseAudioDevice();
 }
 AppStatus Game::Initialise(float scale)
 {
+    InitAudioDevice();
+
     float w, h;
     w = WINDOW_WIDTH * scale;
     h = WINDOW_HEIGHT * scale;
@@ -61,6 +63,24 @@ AppStatus Game::Initialise(float scale)
     InitWindow((int)w, (int)h, "Bubble Bobble");
     SetWindowIcon(customIcon);
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/intro_plus_main_theme_Music.ogg") != AppStatus::OK) {
+        // Handle error, perhaps by logging or attempting a graceful shutdown.
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_INSERT_COIN, "music/Main_Theme_Music.ogg") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_JUMP, "music/Jump_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+
+
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
     if (target.id == 0)
     {
@@ -274,7 +294,8 @@ AppStatus Game::Update()
             break;
 
         case GameState::INSERT_COIN:
-
+            StopMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (CheckTimePassed() > 3)
             {
@@ -382,7 +403,8 @@ void Game::Render()
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
     ClearBackground(BLACK);
-    
+    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
     switch (state)
     {
         case GameState::START:

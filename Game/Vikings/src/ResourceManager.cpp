@@ -25,6 +25,24 @@ AppStatus ResourceManager::LoadTexture(Resource id, const std::string& file_path
     textures[id] = texture;
     return AppStatus::OK;
 }
+AppStatus ResourceManager::LoadMusic(Resource id, const std::string& file_path) {
+    Music music = LoadMusicStream(file_path.c_str());
+    if (!music.ctxData) {
+        LOG("Failed to load music ", file_path);
+        return AppStatus::ERROR;
+    }
+    musicResources[id] = music;
+    return AppStatus::OK;
+}
+AppStatus ResourceManager::LoadSoundEffect(Resource id, const std::string& file_path) {
+    Sound sound = LoadSound(file_path.c_str());
+    if (!sound.frameCount) {
+        LOG("Failed to load sound effect ", file_path);
+        return AppStatus::ERROR;
+    }
+    soundEffects[id] = sound;
+    return AppStatus::OK;
+}
 AppStatus ResourceManager::LoadAudio(Resource id, const std::string& file_path)
 {
     //Load the sound1
@@ -54,7 +72,18 @@ void ResourceManager::ReleaseTexture(Resource id)
         textures.erase(it);
     }
 }
-
+void ResourceManager::UnloadMusic(Resource id) {
+    if (musicResources.find(id) != musicResources.end()) {
+        UnloadMusicStream(musicResources[id]);
+        musicResources.erase(id);
+    }
+}
+void ResourceManager::PlaySoundEffect(Resource id) {
+    auto it = soundEffects.find(id);
+    if (it != soundEffects.end()) {
+        PlaySound(it->second);
+    }
+}
 //Get a texture by key
 const Texture2D* ResourceManager::GetTexture(Resource id) const
 {
@@ -65,7 +94,13 @@ const Texture2D* ResourceManager::GetTexture(Resource id) const
     //Return nullptr if key is not found
     return nullptr;
 }
-
+const Music* ResourceManager::GetMusic(Resource id) const {
+    auto it = musicResources.find(id);
+    if (it != musicResources.end()) {
+        return &(it->second);
+    }
+    return nullptr;
+}
 void ResourceManager::Release()
 {
     for (auto& pair : textures)
