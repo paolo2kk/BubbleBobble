@@ -16,28 +16,10 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	player = nullptr;
 	lifeTime = GetRandomValue(3, 5);
 	Rectangle rc;
-	const int n = TILE_SIZE;
-	const int y = 22;
 	inShoot = true;
 	eTimePogo = 0;
 
-	ResourceManager& data = ResourceManager::Instance();
-	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
-
-	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
 	
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-
-	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + 1), n + PADDINGG_Y, n, n });
-	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
-	for (int i = 0; i < 6; ++i)
-		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
-
-	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
 {
@@ -47,37 +29,38 @@ void BubbleFromPlayer::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-//AppStatus BubbleFromPlayer::Initialise()
-//{
-//	/*Rectangle rc;
-//	const int n = TILE_SIZE;
-//	const int p = PADDINGG_X;
-//	const int y = 22;
-//
-//	ResourceManager& data = ResourceManager::Instance();
-//	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
-//
-//	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
-//	if (render == nullptr)
-//	{
-//		LOG("Failed to allocate memory for player sprite");
-//		return AppStatus::ERROR;
-//	}
-//	Sprite* sprite = dynamic_cast<Sprite*>(render);
-//	
-//	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
-//
-//	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-//	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 0, 0, n, n });
-//	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { 2 * (n + p), y, n, n });
-//	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY);
-//	for(int i = 0; i < 6; ++i)
-//		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
-//
-//	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
-//	return AppStatus::OK;*/
-//
-//}
+AppStatus BubbleFromPlayer::Initialise()
+{
+	Rectangle rc;
+	const int n = TILE_SIZE;
+	const int p = PADDINGG_X;
+	const int y = 22;
+
+	ResourceManager& data = ResourceManager::Instance();
+	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
+
+	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
+	if (render == nullptr)
+	{
+		LOG("Failed to allocate memory for player sprite");
+		return AppStatus::ERROR;
+	}
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	
+	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
+
+	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + p), y, n, n });
+    sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + p), y, n, n });
+
+	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY + 6);
+	for(int i = 0; i < 6; ++i)
+		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
+
+	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
+	return AppStatus::OK;
+
+}
 void BubbleFromPlayer::Update()
 {
 	pos += dir;
@@ -144,7 +127,6 @@ void BubbleFromPlayer::Stomp()
 		}
 	}
 	eTimePogo += GetFrameTime();
-	
 }
 
 void BubbleFromPlayer::Movement(Directions d)
@@ -156,6 +138,7 @@ void BubbleFromPlayer::Movement(Directions d)
 		if (d == Directions::LEFT)
 		{
 			switch (stages) {
+				SetAnimation((int)BubbleAnim::INSHOOT);
 			case 1:
 				if (pos.x < 20)
 				{
@@ -164,7 +147,6 @@ void BubbleFromPlayer::Movement(Directions d)
 					stages++;
 				}
 				inShoot = true;
-				SetAnimation((int)BubbleAnim::INSHOOT);
 
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
@@ -185,6 +167,7 @@ void BubbleFromPlayer::Movement(Directions d)
 		{
 
 			switch (stages) {
+				SetAnimation((int)BubbleAnim::INSHOOT);
 			case 1:
 				if (pos.x > 226)
 				{
@@ -192,7 +175,6 @@ void BubbleFromPlayer::Movement(Directions d)
 					stages++;
 				}
 				inShoot = true;
-				SetAnimation((int)BubbleAnim::INSHOOT);
 
 				dir = { 2, 0 };
 				if (pos.x >= logPosXR) {

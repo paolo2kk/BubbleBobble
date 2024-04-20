@@ -231,11 +231,12 @@ void Scene::PlayerBubbleSpawn()
 {
 	eBubblingTime += GetFrameTime();
 	
-	if (IsKeyPressed(KEY_S) && eBubblingTime >= .4)
+	if (IsKeyPressed(KEY_S) && eBubblingTime >= .2)
 	{
 		if (player->IsLookingLeft())
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
+			buble->Initialise();
 			bubblesPlayer.push_back(buble);
 			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 
@@ -243,6 +244,7 @@ void Scene::PlayerBubbleSpawn()
 		else 
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::RIGHT);
+			buble->Initialise();
 			bubblesPlayer.push_back(buble);
 			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 		}
@@ -410,9 +412,12 @@ void Scene::RenderObjects()
 	{
 		bubl->Draw();
 	}
-	for (BubbleFromPlayer* buble : bubblesPlayer)
+	auto it = bubblesPlayer.begin();
+	while (it != bubblesPlayer.end())
 	{
-		buble->Draw();
+
+		(*it)->Draw();	
+		++it;
 	}
 	
 }
