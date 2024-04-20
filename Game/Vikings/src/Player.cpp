@@ -140,7 +140,7 @@ void Player::StartWalkingRight()
 }
 void Player::StartFalling()
 {
-	dir.y = PLAYER_SPEED + 1;
+	dir.y = PLAYER_SPEED;
 	state = State::FALLING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
@@ -381,7 +381,7 @@ void Player::MoveY()
 			//Is the jump finished?
 			if (dir.y > PLAYER_JUMP_LIMIT)
 			{
-				dir.y = PLAYER_SPEED;
+				dir.y = 1;
 				StartFalling();
 			}
 			else

@@ -22,7 +22,7 @@ Enemy::~Enemy()
 AppStatus Enemy::Initialise()
 {
 	int i;
-	const int n = PLAYER_FRAME_SIZE;
+	const int n = ENEMY_FRAME_SIZE;
 	ResourceManager& data = ResourceManager::Instance();
 	if (data.LoadTexture(Resource::IMG_ZENCHAN, "images/zenchan.png") != AppStatus::OK)
 	{

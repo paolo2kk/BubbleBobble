@@ -3,7 +3,7 @@
 #include "TileMap.h"
 
 //Representation model size: 32x32
-#define ENEMY_FRAME_SIZE		17
+#define ENEMY_FRAME_SIZE		16
 //Logical model size: 12x28
 #define ENEMY_PHYSICAL_WIDTH	10
 #define ENEMY_PHYSICAL_HEIGHT	12

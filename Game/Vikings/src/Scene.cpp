@@ -97,10 +97,15 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
-	for (Enemy* enemy : enemies)
-	{
-		enemy->SetTileMap(level);
-	}
+	
+		for (Enemy* enemy : enemies)
+		{
+			if (enemy != nullptr) {
+				enemy->SetTileMap(level);
+
+			}
+		}
+
 	return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage)
@@ -184,8 +189,9 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				ene = new Enemy(pos, StateEnemy::IDLE,  LookEnemy::LEFT, Type::ZEN_CHAN);
-
+				ene->Initialise();
 				enemies.push_back(ene);				
+
 				map[i] = 0;
 			}
 			else if (tile == Tile::BUBBLE)
@@ -199,8 +205,6 @@ AppStatus Scene::LoadLevel(int stage)
 			}
 			else if (tile == Tile::OBJECT)
 			{
-				
-
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				obj = new Object(pos);
@@ -325,14 +329,16 @@ void Scene::Render()
 		player->DrawDebug(GREEN);
 	}
 
-
-
 	EndMode2D();
 }
 void Scene::Release()
 {
 	level->Release();
 	player->Release();
+	for (Enemy* ene : enemies)
+	{
+		ene->Release();
+	}
 }
 void Scene::CheckCollisions()
 {
@@ -463,10 +469,10 @@ void Scene::RenderObjects()
 		(*it)->Draw();	
 		++it;
 	}
-	/*for (Enemy* enemi : enemies)
+	for (Enemy* enemi : enemies)
 	{
 		enemi->Draw();
-	}*/
+	}
 	
 }
 void Scene::RenderObjectsDebug(const Color& col) const
