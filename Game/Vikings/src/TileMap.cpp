@@ -158,13 +158,16 @@ void TileMap::Update()
 }
 Tile TileMap::GetTileIndex(int x, int y) const
 {
-	int idx = x + y*width;
-	if(idx < 0 || idx >= size)
-	{
-		LOG("Error: Index out of bounds. Tile map dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
-		return Tile::AIR;
+	if (this != nullptr) {
+		int idx = x + y * width;
+		if (idx < 0 || idx >= size)
+		{
+			LOG("Error: Index out of bounds. Tile map dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
+				return Tile::AIR;
+		}
+		return map[x + y * width];
 	}
-	return map[x + y * width];
+	
 }
 bool TileMap::IsTileStatic(Tile tile) const
 {

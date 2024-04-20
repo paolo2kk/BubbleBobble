@@ -1,7 +1,7 @@
 #pragma once
 
 //Displaying scale factor
-#define GAME_SCALE_FACTOR	2.0f
+#define GAME_SCALE_FACTOR	4.0f
 
 //Function return values
 enum class AppStatus { OK = 0, ERROR, QUIT };

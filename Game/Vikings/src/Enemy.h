@@ -62,18 +62,11 @@ private:
 
 	//Animation management
 	void SetAnimation(int id);
-	void Stop();
 	void StartWalkingLeft();
 	void StartWalkingRight();
 	void StartFalling();
 	void StartJumping();
-	void ChangeAnimRight();
-	void ChangeAnimLeft();
-
-	//Jump steps
-	bool IsAscending() const;
-	bool IsLevitating() const;
-	bool IsDescending() const;
+	
 	bool isStill = false;
 	
 

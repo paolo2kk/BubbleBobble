@@ -190,6 +190,7 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				ene = new Enemy(pos, StateEnemy::IDLE,  LookEnemy::LEFT, Type::ZEN_CHAN);
 				ene->Initialise();
+				ene->SetTileMap(level);
 				enemies.push_back(ene);				
 
 				map[i] = 0;

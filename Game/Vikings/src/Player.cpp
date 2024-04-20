@@ -511,6 +511,6 @@ void Player::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_PLAYER);
-
+	map->Release();
 	render->Release();
 }

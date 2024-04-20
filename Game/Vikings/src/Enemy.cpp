@@ -81,7 +81,6 @@ void Enemy::Update()
 	MoveX();
 	MoveY();
 	Warp();
-
 }
 
 void Enemy::DrawDebug(const Color& col) const
@@ -118,7 +117,7 @@ void Enemy::MoveX()
 	int objectiveJumpX = pos.x;
 
 
-	if (IsKeyDown(KEY_LEFT))
+	if (IsLookingLeft())
 	{
 		if (state != StateEnemy::JUMPING) {
 			pos.x -= 1;
@@ -128,23 +127,23 @@ void Enemy::MoveX()
 		if (state == StateEnemy::IDLE) StartWalkingLeft();
 		else
 		{
-			if (IsLookingRight()) ChangeAnimLeft();
+			if (IsLookingRight()) ;
 		}
 
 		box = GetHitbox();
 		if (map->TestCollisionWallLeft(box))
 		{
 			pos.x = prev_x;
-			if (state == StateEnemy::WALKING) Stop();
+			if (state == StateEnemy::WALKING) look = LookEnemy::RIGHT;
 		}
 		else if (map->TestCollisionHalfWallRight(box)) {
 			pos.x = prev_x;
-			if (state == StateEnemy::WALKING) Stop();
+			if (state == StateEnemy::WALKING) ;
 
 		}
 
 	}
-	else if (IsKeyDown(KEY_RIGHT))
+	else if (IsLookingRight())
 	{
 
 		isStill = false;
@@ -158,18 +157,18 @@ void Enemy::MoveX()
 		if (state == StateEnemy::IDLE) StartWalkingRight();
 		else
 		{
-			if (IsLookingLeft()) ChangeAnimRight();
+			if (IsLookingLeft());
 		}
 
 		box = GetHitbox();
 		if (map->TestCollisionWallRight(box))
 		{
 			pos.x = prev_x;
-			if (state == StateEnemy::WALKING) Stop();
+			if (state == StateEnemy::WALKING) look = LookEnemy::LEFT;
 		}
 		else if (map->TestCollisionHalfWallLeft(box)) {
 			pos.x = prev_x;
-			if (state == StateEnemy::WALKING) Stop();
+			if (state == StateEnemy::WALKING);
 
 		}
 	}
@@ -177,7 +176,6 @@ void Enemy::MoveX()
 	{
 		if (state == StateEnemy::WALKING)
 		{
-			Stop();
 			isStill = true;
 		}
 	}
@@ -198,7 +196,7 @@ void Enemy::MoveY()
 		box = GetHitbox();
 		if (map->TestCollisionGround(box, &pos.y))
 		{
-			if (state == StateEnemy::FALLING) Stop();
+			if (state == StateEnemy::FALLING);
 
 			if (IsKeyPressed(KEY_X))
 				StartJumping();
@@ -304,7 +302,6 @@ void Enemy::MoveY()
 				if (!map->TestCollisionGround(prev_box, &prev_y) &&
 					map->TestCollisionGround(box, &pos.y))
 				{
-					Stop();
 				}
 
 			}
@@ -314,7 +311,6 @@ void Enemy::MoveY()
 
 				if (map->TestCollisionHead(box, &pos.y))
 				{
-					Stop();
 				}
 			}
 
@@ -328,27 +324,18 @@ void Enemy::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-void Enemy::Stop()
-{
-	dir = { 0,0 };
-	state = StateEnemy::IDLE;
-	isStill = true;
-	if (IsLookingRight())	SetAnimation((int)EnemyAnim::WALKING_RIGHT);
-	else					SetAnimation((int)EnemyAnim::WALKING_LEFT);
-}
+
 
 void Enemy::StartWalkingLeft()
 {
 	state = StateEnemy::WALKING;
 	look = LookEnemy::LEFT;
-	SetAnimation((int)EnemyAnim::WALKING_LEFT);
 }
 
 void Enemy::StartWalkingRight()
 {
 	state = StateEnemy::WALKING;
 	look = LookEnemy::RIGHT;
-	SetAnimation((int)EnemyAnim::WALKING_RIGHT);
 }
 
 void Enemy::StartFalling()
@@ -366,36 +353,3 @@ void Enemy::StartJumping()
 	jump_delay = PLAYER_JUMP_DELAY;
 }
 
-void Enemy::ChangeAnimRight()
-{
-	look = LookEnemy::RIGHT;
-	switch (state)
-	{
-	case StateEnemy::WALKING: SetAnimation((int)EnemyAnim::WALKING_RIGHT); break;
-	}
-}
-
-void Enemy::ChangeAnimLeft()
-{
-	look = LookEnemy::RIGHT;
-	switch (state)
-	{
-	case StateEnemy::WALKING: SetAnimation((int)EnemyAnim::WALKING_LEFT); break;
-	}
-}
-
-bool Enemy::IsAscending() const
-{
-	return dir.y < -ENEMY_LEVITATING_SPEED;
-}
-
-bool Enemy::IsLevitating() const
-{
-	return abs(dir.y) <= ENEMY_LEVITATING_SPEED;
-
-}
-
-bool Enemy::IsDescending() const
-{
-	return dir.y > ENEMY_LEVITATING_SPEED;
-}

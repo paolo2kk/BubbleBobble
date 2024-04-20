@@ -19,7 +19,6 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	inShoot = true;
 	eTimePogo = 0;
 
-	
 }
 BubbleFromPlayer::~BubbleFromPlayer()
 {
@@ -142,7 +141,6 @@ void BubbleFromPlayer::Movement(Directions d)
 			case 1:
 				if (pos.x < 20)
 				{
-
 					pos.x++;
 					stages++;
 				}
