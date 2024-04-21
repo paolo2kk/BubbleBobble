@@ -359,5 +359,7 @@ void Enemy::Release()
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_ZENCHAN);
 
-	render->Release();
+	render->Release();  
+	delete render;      
+	render = nullptr;   
 }

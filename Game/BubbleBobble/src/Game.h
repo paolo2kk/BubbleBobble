@@ -58,7 +58,6 @@ private:
     float timer = 0;
     float totalTime = 1.5f;
     float timeElapsed = 0.0f;
-    Image customIcon = LoadImage("images/bubblun.png");
 
     //To work with original game units and then scale the result
     RenderTexture2D target;

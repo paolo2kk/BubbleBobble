@@ -48,7 +48,6 @@ Game::~Game()
         delete scene;
         scene = nullptr;
     }
-    UnloadImage(customIcon);
     CloseAudioDevice();
 }
 AppStatus Game::Initialise(float scale)
@@ -61,7 +60,6 @@ AppStatus Game::Initialise(float scale)
 
     //Initialise window
     InitWindow((int)w, (int)h, "Bubble Bobble");
-    SetWindowIcon(customIcon);
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
     if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/intro_plus_main_theme_Music.ogg") != AppStatus::OK) {
         // Handle error, perhaps by logging or attempting a graceful shutdown.
@@ -246,6 +244,14 @@ void Game::RenderScore()
 }
 AppStatus Game::BeginPlay()
 {
+    if (scene != nullptr)
+    {
+        scene->Release();
+        delete scene;
+        scene = nullptr;
+    }
+
+    // Create new scene
     scene = new Scene();
     if (scene == nullptr)
     {
@@ -575,8 +581,12 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_PLAYER_2);
     data.ReleaseTexture(Resource::IMG_TUTORIAL);
     data.ReleaseTexture(Resource::IMG_SCORE);
-
-
+    
+    data.UnloadMusic(Resource::MUSIC_BACKGROUND);
+    data.UnloadMusic(Resource::MUSIC_INSERT_COIN);
+    data.UnloadMusic(Resource::SFX_JUMP);
+    data.UnloadMusic(Resource::SFX_BUBBLE);
+    data.UnloadMusic(Resource::SFX_PICKUP);
 
     UnloadRenderTexture(target);
 }
