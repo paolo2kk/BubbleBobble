@@ -49,9 +49,18 @@ AppStatus Enemy::Initialise()
 	sprite->SetAnimationDelay((int)ZenChanAnimations::ANGRY_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
 		sprite->AddKeyFrame((int)ZenChanAnimations::ANGRY_RIGHT, { (float)i * n, n, -n, n });
-	if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
-	if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
+	
+	if (type == EnemyType::ZENCHAN) {
+		if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
+		if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
 
+	}
+	else {
+		if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenChanAnimations::ANGRY_LEFT);
+		if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenChanAnimations::ANGRY_RIGHT);
+
+	}
+	
 
 	return AppStatus::OK;
 }
