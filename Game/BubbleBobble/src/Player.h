@@ -42,7 +42,7 @@ enum class PlayerAnim {
 	CLIMBING_LEFT, CLIMBING_RIGHT,
 	SHOCK_LEFT, SHOCK_RIGHT,
 	TELEPORT_LEFT, TELEPORT_RIGHT,
-	LASER_ANIM, SHOOT_BUBBLE,
+	LASER_ANIM, SHOOT_BUBBLE_L, SHOOT_BUBBLE_R,
 	TRANSITION,
 	NUM_ANIMATIONS,
 };
@@ -73,6 +73,9 @@ public:
 	void DecLiv();
 	void IncLiv();
 	int GetLives() const;
+	bool isGod = false;
+	bool IsGod();
+	void SetAnimation(int id);
 
 private:
 	
@@ -83,7 +86,6 @@ private:
 	void LaserProcedures();
 
 	//Animation management
-	void SetAnimation(int id);
 	void Stop();
 	void StartWalkingLeft();
 	void StartWalkingRight();

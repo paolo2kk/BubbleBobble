@@ -28,6 +28,7 @@ public:
     int highScore();
     void ResetScore() const;
     bool returnMenu = false;
+    bool passStage = false;
 private:
     void BubbleSpawner();
     void CheckCollisions();
