@@ -125,7 +125,18 @@ void Player::Stop()
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
 }
-
+void Player::IncLiv()
+{
+	lives++;
+}
+void Player::DecLiv()
+{
+	lives--;
+}
+int Player::GetLives() const
+{
+	return lives;
+}
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;

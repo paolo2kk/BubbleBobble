@@ -1,0 +1,5 @@
+Project executed on 21-04-2024 at 15:27:00.
+main.cpp(13): Application start
+ResourceManager.cpp(40): Failed to load sound effect 
+main.cpp(34): Application finish
+main.cpp(37): Bye :)

@@ -255,7 +255,7 @@ bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 	else if (CollisionYFLOOR(pFloor, box.width))
 	{
 		tile_y = p.y / TILE_SIZE;
-		*py = tile_y * TILE_SIZE + TILE_SIZE / 2;
+		*py = tile_y * TILE_SIZE + TILE_SIZE / 2 ;
 		return true;
 	}
 	else if (CollisionYHalfRight(p2, box.width)) 

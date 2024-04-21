@@ -51,7 +51,6 @@ void Entity::Warp()
 {
 	if (pos.y > WINDOW_HEIGHT) {
 		pos.y = -TILE_SIZE;
-		
 	}
 }
 void Entity::DrawTint(const Color& col) const

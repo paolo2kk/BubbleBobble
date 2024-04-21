@@ -69,6 +69,11 @@ public:
 	bool TestCollisionFromUp(const AABB& box, int* py);
 	void SetState(State state);
 	bool canJump = true;
+	int lives = 3;
+	void DecLiv();
+	void IncLiv();
+	int GetLives() const;
+
 private:
 	
 	//Player mechanics

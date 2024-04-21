@@ -116,7 +116,7 @@ void Bubble::LeftMovement(Direction d)
 			break;
 		case 5:
 			dir = { 0, -1 };
-
+			
 			break;
 		}
 
