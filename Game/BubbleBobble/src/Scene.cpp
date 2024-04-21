@@ -15,7 +15,7 @@ Scene::Scene()
 	eTimeSpawnY = GetRandomValue(-1, 1);
 	debug = DebugMode::OFF;
 	AllObjects = 0;
-	HighScore = 0;
+
 
 }
 Scene::~Scene()
@@ -547,19 +547,6 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	{
 		enemi->DrawDebug(RED);
 	}
-}
-int Scene::highScore()
-{
-	if (this == nullptr)
-	{
-		return 000;
-	}
-	else if(player->GetScore()>=HighScore)
-	{
-		HighScore = player->GetScore();
-	}
-	return HighScore;
-
 }
 int Scene::Score() const
 {

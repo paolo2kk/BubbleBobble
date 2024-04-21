@@ -118,8 +118,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\toncg\Documents\GitHub\Project1Test\raylib\include;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\toncg\Documents\GitHub\Project1Test\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\include;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\include;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,6 +159,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
