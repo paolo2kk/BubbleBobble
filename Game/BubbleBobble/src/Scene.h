@@ -51,7 +51,6 @@ private:
     std::vector<Object*> objects;
     std::vector<Bubble*> bubbles;
     std::vector<BubbleFromPlayer*> bubblesPlayer;
-    BubbleFromPlayer* singleBubble;
 
     DebugMode debug;
 };

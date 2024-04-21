@@ -6,7 +6,6 @@ Scene::Scene()
 {
 	player = nullptr;
 	level = nullptr;
-	singleBubble = nullptr;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
@@ -33,28 +32,29 @@ Scene::~Scene()
 		delete level;
 		level = nullptr;
 	}
-	if (singleBubble != nullptr)
-	{
-		singleBubble->Release();
-		delete singleBubble;
-		singleBubble = nullptr;
-	}
+	
 	for (Entity* obj : objects)
 	{
 		delete obj;
+		obj = nullptr;
 	}
 	for (Entity* bubl : bubbles)
 	{
-		ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 		delete bubl;
+		bubl = nullptr;
 	}
-	for (Entity* bubles : bubblesPlayer)
+	for (BubbleFromPlayer* bubles : bubblesPlayer)
 	{
+		bubles->Release();
 		delete bubles;
+		bubles = nullptr;
+		
 	}
-	for (Entity* enemy : enemies)
+	for (Enemy* enemy : enemies)
 	{
+		enemy->Release();
 		delete enemy;
+		enemy = nullptr;
 	}
 	objects.clear();
 	enemies.clear();
@@ -282,7 +282,6 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 			buble->Initialise();
 			bubblesPlayer.push_back(buble);
-			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 
 		}
 		else 
@@ -290,7 +289,6 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::RIGHT);
 			buble->Initialise();
 			bubblesPlayer.push_back(buble);
-			BubbleFromPlayer* singleBubble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 		}
 		eBubblingTime = 0;
 	
