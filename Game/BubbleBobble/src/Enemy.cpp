@@ -4,13 +4,14 @@
 #include "Globals.h"
 #include <raymath.h>
 
-Enemy::Enemy(const Point& p, EnemyState s, EnemyLook l) :
+Enemy::Enemy(const Point& p, EnemyState s, EnemyLook l, EnemyType t ) :
 	Entity(p, ENEMY_PHYSICAL_WIDTH, ENEMY_PHYSICAL_HEIGTH, ENEMY_FRAME_SIZE, ENEMY_FRAME_SIZE)
 {
 	state = s;
 	look = l;
 	angryTimer = 0;
 	eJumpFrame = 0;
+	type = t;
 }
 Enemy::~Enemy()
 {
@@ -42,9 +43,15 @@ AppStatus Enemy::Initialise()
 	sprite->SetAnimationDelay((int)ZenChanAnimations::WALK_LEFT, ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
 		sprite->AddKeyFrame((int)ZenChanAnimations::WALK_LEFT, { (float)i * n, 0, n, n });
-
+	sprite->SetAnimationDelay((int)ZenChanAnimations::ANGRY_LEFT, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)ZenChanAnimations::ANGRY_LEFT, { (float)i * n, n, n, n });
+	sprite->SetAnimationDelay((int)ZenChanAnimations::ANGRY_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 4; ++i)
+		sprite->AddKeyFrame((int)ZenChanAnimations::ANGRY_RIGHT, { (float)i * n, n, -n, n });
 	if (look == EnemyLook::LEFT) sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
 	if (look == EnemyLook::RIGHT) sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
+
 
 	return AppStatus::OK;
 }
@@ -59,14 +66,23 @@ void Enemy::SetTileMap(TileMap* tilemap)
 }
 void Enemy::Update()
 {
-	MoveX();
+
+	switch (type) {
+	case EnemyType::ZENCHAN:
+		MoveXzenchan();
+		break;
+
+	case EnemyType::BANEBOU:
+		MoveXbanebou();
+		break;
+	}
 	MoveY();
 	Warp();
 	
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
-void Enemy::MoveX()
+void Enemy::MoveXzenchan()
 {
 	int prev_x = pos.x;
 	AABB box = GetHitbox();
@@ -74,7 +90,8 @@ void Enemy::MoveX()
 
 	if (IsLookingRight()) {
 		pos.x += 1;
-	}else if(IsLookingLeft()) {
+	}
+	else if (IsLookingLeft()) {
 		pos.x -= 1;
 	}
 	if (map->TestCollisionWallLeft(box)) {
@@ -89,7 +106,7 @@ void Enemy::MoveX()
 	if (pos.x == 17)
 	{
 		look = EnemyLook::RIGHT;
-		 sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
+		sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
 
 	}
 	if (pos.x == WINDOW_WIDTH - 26)
@@ -97,7 +114,7 @@ void Enemy::MoveX()
 		sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
 
 		look = EnemyLook::LEFT;
-		
+
 	}
 	else if (map->TestCollisionWallRight(box)) {
 		sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
@@ -110,6 +127,55 @@ void Enemy::MoveX()
 
 		look = EnemyLook::RIGHT;
 	}
+
+
+}
+void Enemy::MoveXbanebou()
+{
+	int prev_x = pos.x;
+	AABB box = GetHitbox();
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+
+	if (IsLookingRight()) {
+		pos.x += 1;
+	}
+	else if (IsLookingLeft()) {
+		pos.x -= 1;
+	}
+	if (map->TestCollisionWallLeft(box)) {
+		pos.x = prev_x;
+
+		look = EnemyLook::RIGHT;
+	}
+	else if (map->TestCollisionHalfWallLeft(box)) {
+		look = EnemyLook::LEFT;
+		sprite->SetAnimation((int)ZenChanAnimations::ANGRY_LEFT);
+	}
+	if (pos.x == 17)
+	{
+		look = EnemyLook::RIGHT;
+		sprite->SetAnimation((int)ZenChanAnimations::ANGRY_RIGHT);
+
+	}
+	if (pos.x == WINDOW_WIDTH - 26)
+	{
+		sprite->SetAnimation((int)ZenChanAnimations::ANGRY_LEFT);
+
+		look = EnemyLook::LEFT;
+
+	}
+	else if (map->TestCollisionWallRight(box)) {
+		sprite->SetAnimation((int)ZenChanAnimations::ANGRY_LEFT);
+
+		look = EnemyLook::LEFT;
+	}
+	else if (map->TestCollisionHalfWallRight(box))
+	{
+		sprite->SetAnimation((int)ZenChanAnimations::ANGRY_RIGHT);
+
+		look = EnemyLook::RIGHT;
+	}
+
 
 }
 bool Enemy::IsLookingRight()

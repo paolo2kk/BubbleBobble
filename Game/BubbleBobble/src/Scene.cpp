@@ -132,7 +132,7 @@ AppStatus Scene::LoadLevel(int stage)
 				2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
 				2, 5, 0, 0, 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 0, 2,
 				2, 3, 4, 12, 11, 11, 11, 11, 11, 11, 11, 11, 13, 0, 16, 2,
-				2, 5, 0, 0, 59, 0, 0, 103, 0, 0, 0, 59, 0, 0, 0, 2,
+				2, 5, 0, 0, 59, 0, 0, 104, 0, 0, 0, 59, 0, 0, 0, 2,
 				2, 43, 21, 17, 42, 42, 42, 42, 42, 42, 42, 42, 18, 0, 42, 2,
 				2, 9, 6, 10, 19, 19, 19, 19, 19, 19, 19, 19, 20, 0, 7, 2,
 				2, 5, 0, 0, 59, 0, 103, 0,  0, 0, 0, 59, 0, 0, 0, 2,
@@ -189,7 +189,18 @@ AppStatus Scene::LoadLevel(int stage)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + 8;
-				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT);
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::ZENCHAN);
+				enemy->Initialise();
+				enemies.push_back(enemy);
+				map[i] = 0;
+
+				map[i] = 0;
+			}
+			else if (tile == Tile::BANEBOU)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + 8;
+				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::BANEBOU);
 				enemy->Initialise();
 				enemies.push_back(enemy);
 				map[i] = 0;
