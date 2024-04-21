@@ -45,6 +45,7 @@ Scene::~Scene()
 	}
 	for (Entity* bubl : bubbles)
 	{
+		ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 		delete bubl;
 	}
 	for (Entity* bubles : bubblesPlayer)
@@ -353,7 +354,7 @@ void Scene::CheckCollisions()
 		obj_box = (*it)->GetHitbox();
 		if (player_box.TestAABB(obj_box))
 		{
-			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_ITEM);
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 
 			player->IncrScore((*it)->Points());
 			AllObjects--;

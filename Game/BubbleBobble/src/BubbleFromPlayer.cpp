@@ -18,7 +18,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	Rectangle rc;
 	inShoot = true;
 	eTimePogo = 0;
-	
+	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
 {

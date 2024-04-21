@@ -76,7 +76,14 @@ AppStatus Game::Initialise(float scale)
         // Handle error
         return AppStatus::ERROR;
     }
-    ResourceManager::Instance().LoadSoundEffect(Resource::SFX_ITEM, "music/Eat_Fruit_SFX.wav");
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_BUBBLE, "music/Bubble_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_PICKUP, "music/Eat_Fruit_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
     
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
 
