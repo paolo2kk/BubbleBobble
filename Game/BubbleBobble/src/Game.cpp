@@ -23,7 +23,7 @@ Game::Game()
     img_stage1 = nullptr;
     img_stage2 = nullptr;
 
-
+    HighScore = 0;
     alpha = 1;
     fadeCondition = true;
     transCounter = 0;
@@ -68,10 +68,11 @@ AppStatus Game::Initialise(float scale)
         return AppStatus::ERROR;
     }
 
-    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_INSERT_COIN, "music/Main_Theme_Music.ogg") != AppStatus::OK) {
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::MUSIC_INSERT_COIN, "music/Start.wav") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
     }
+
     if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_JUMP, "music/Jump_SFX.wav") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
@@ -235,7 +236,13 @@ void Game::RenderScore()
 {
     DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
     DrawText(TextFormat("%d", scene->Score()), 30, 7, 8, WHITE);
-    DrawText(TextFormat("%d", scene->highScore()), 120, 7, 8, WHITE);
+
+    if (scene->Score() >= HighScore)
+    {
+        HighScore = scene->Score();
+    }
+
+    DrawText(TextFormat("%d", HighScore), 120, 7, 8, WHITE);
 }
 AppStatus Game::BeginPlay()
 {
@@ -293,6 +300,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_SPACE))
             {
                 state = GameState::INTRO;
+                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ONE))
             {
@@ -301,8 +309,6 @@ AppStatus Game::Update()
             break;
 
         case GameState::INSERT_COIN:
-            StopMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-            PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (CheckTimePassed() > 3)
             {
@@ -332,6 +338,7 @@ AppStatus Game::Update()
             {
 
                 state = GameState::INTRO;
+                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -347,6 +354,7 @@ AppStatus Game::Update()
             {
 
                 state = GameState::INTRO;
+                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -357,7 +365,7 @@ AppStatus Game::Update()
         case GameState::INTRO:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (CheckTimePassed() > 1)
+            if (CheckTimePassed() > 7)
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
@@ -438,10 +446,14 @@ void Game::Render()
 
             }
 
+
         break;
         case GameState::MAIN_MENU:
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
+            if (transCounter == 6)
+            {
+                ResourceManager::Instance().PlaySoundEffect(Resource::MUSIC_INSERT_COIN);
+                transCounter++;
+            }
             DrawTexture(*img_menu, 0, 0, WHITE);
             RenderCredit();
             RenderScore();
@@ -462,7 +474,6 @@ void Game::Render()
 
         case GameState::INTRO:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             DrawTexture(*img_intro, 0, 0, WHITE);
             break;
 
@@ -487,14 +498,13 @@ void Game::Render()
 
         case GameState::PLAYING:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
+
             RenderScore();
             scene->Render();
 
             break;
         case GameState::TRANSITIONING:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INSERT_COIN));
             float progress = timeElapsed / totalTime;
             float yPos_stage2 = 224.0f * -progress; 
             if (timeElapsed < totalTime) {
@@ -548,7 +558,7 @@ void Game::FadeTransition()
     if (alpha < 0)
     {
         alpha = 0.0;
-        WaitTime(2);
+        WaitTime(3);
         fadeCondition = false;
         transCounter++;
     }

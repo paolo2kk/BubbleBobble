@@ -25,7 +25,6 @@ public:
     int AllObjects;
     void PlayerBubbleSpawn();
     int Score() const;
-    int highScore();
     void ResetScore() const;
     bool returnMenu = false;
     bool passStage = false;
@@ -37,8 +36,6 @@ private:
     void UpdateBubbles();
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
-
-    int HighScore;
 
     Player *player;
     std::vector<Enemy*> enemies;

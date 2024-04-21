@@ -37,6 +37,7 @@ private:
     float alpha;
     bool fadeCondition;
     int transCounter;
+    int HighScore;
 
     GameState state;
     Scene *scene;
