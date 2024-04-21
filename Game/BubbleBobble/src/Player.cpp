@@ -66,9 +66,12 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 11 * (n + PADDING_X),  PADDING_Y + n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 11 * (n + PADDING_X), PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE, ANIM_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE_L, ANIM_DELAY);
 	for (i = 7; i < 10; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE, { (float)i * (n + PADDING_X), 0, n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE_L, { (float)i * (n + PADDING_X) - 1, 0, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE_R, ANIM_DELAY);
+	for (i = 7; i < 10; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE_R, { (float)i * (n + PADDING_X)  - 1, 0, -n, n });
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
@@ -199,7 +202,23 @@ void Player::Update()
 	if (inLaser) {
 		LaserProcedures();
 	}
-	
+	if (IsKeyPressed(KEY_F2))
+	{
+		if (isGod == false) {
+			isGod = true;
+		}
+		else {
+			isGod = false;
+		}
+	}
+	if (IsLookingRight() && IsKeyPressed(KEY_S))
+	{
+		sprite->SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_R);
+	} else if (IsLookingLeft() && IsKeyPressed(KEY_S))
+	{
+		sprite->SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_L);
+	}
+
 	Warp();
 }
 
@@ -278,6 +297,10 @@ void Player::MoveX()
 			isStill = true;
 		}
 	}
+}
+bool Player::IsGod()
+{
+	return isGod;
 }
 void Player::SetState(State state)
 {

@@ -61,7 +61,7 @@ void Enemy::Update()
 {
 	MoveX();
 	MoveY();
-
+	Warp();
 	
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -82,6 +82,10 @@ void Enemy::MoveX()
 
 		look = EnemyLook::RIGHT;
 	}
+	else if (map->TestCollisionHalfWallLeft(box)) {
+		look = EnemyLook::LEFT;
+		sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
+	}
 	if (pos.x == 17)
 	{
 		look = EnemyLook::RIGHT;
@@ -95,10 +99,16 @@ void Enemy::MoveX()
 		look = EnemyLook::LEFT;
 		
 	}
-	else if (map->TestCollisionHalfWallRight(box)) {
-		pos.x = prev_x;
+	else if (map->TestCollisionWallRight(box)) {
+		sprite->SetAnimation((int)ZenChanAnimations::WALK_LEFT);
 
 		look = EnemyLook::LEFT;
+	}
+	else if (map->TestCollisionHalfWallRight(box))
+	{
+		sprite->SetAnimation((int)ZenChanAnimations::WALK_RIGHT);
+
+		look = EnemyLook::RIGHT;
 	}
 
 }
@@ -126,7 +136,7 @@ void Enemy::MoveY()
 		{
 			if (state == EnemyState::FALLING) Stop();
 
-			if (IsKeyPressed(KEY_X))
+			if (IsKeyPressed(KEY_SPACE))
 				StartJumping();
 		}
 		else

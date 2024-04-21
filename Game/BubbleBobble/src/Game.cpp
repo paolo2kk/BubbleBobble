@@ -372,7 +372,7 @@ AppStatus Game::Update()
                 state = GameState::GAME_OVER;
                 decCredit();
             }
-            else if (scene->AllObjects == 0) {
+            else if (scene->passStage == true) {
 
                 stageCounter++;
                 if (stageCounter >= 3)
@@ -383,7 +383,7 @@ AppStatus Game::Update()
                     break;
                 }
                 state = GameState::TRANSITIONING;
-
+                scene->passStage = false;
             }
             else
             {
@@ -502,7 +502,6 @@ void Game::Render()
                 timeElapsed = 0;
                 state = GameState::PLAYING;
                 scene->LoadLevel(2);
-
             }
           
             break;

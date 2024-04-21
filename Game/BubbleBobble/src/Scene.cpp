@@ -118,6 +118,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Object* obj;
 	Bubble* bubl;
 	Enemy* ene;
+	
 
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -157,7 +158,7 @@ AppStatus Scene::LoadLevel(int stage)
 				151, 162, 165, 166, 166, 166, 166, 163, 165, 166, 166, 166, 166, 163, 0, 151,
 				151, 162, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0, 151,
 				151, 158, 152, 170, 154, 152, 169, 0, 0, 0, 168, 170, 154, 152, 152, 151,
-				151, 162, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 151,
+				151, 162, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0,103, 0, 0, 151,
 				151, 159, 155, 155, 157,  0, 156, 155, 155, 157, 0, 156, 155, 155, 155, 151
 			};
 	}
@@ -218,7 +219,13 @@ AppStatus Scene::LoadLevel(int stage)
 		}
 	}
 	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
+	for (Enemy* enemy : enemies)
+	{
+		if (enemy != nullptr) {
+			enemy->SetTileMap(level);
 
+		}
+	}
 	return AppStatus::OK;
 }
 void Scene::RandomItemSpawn()
@@ -257,6 +264,7 @@ void Scene::PlayerBubbleSpawn()
 	
 	if (IsKeyPressed(KEY_S) && eBubblingTime >= .3)
 	{
+		
 		if (player->IsLookingLeft())
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
@@ -283,7 +291,10 @@ void Scene::Update()
 	Point p1, p2;
 	AABB box;
 	PlayerBubbleSpawn();
-	
+	if (enemies.size() == 0)
+	{
+		passStage = true;
+	}
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
 	if (IsKeyPressed(KEY_F1))
 	{
@@ -330,7 +341,9 @@ void Scene::Render()
 		RenderObjectsDebug(YELLOW);
 		player->DrawDebug(GREEN);
 	}
-
+	if (player->IsGod()) {
+		DrawText("God Mode", 0, WINDOW_HEIGHT - TILE_SIZE, 100, GOLD);
+	}
 	EndMode2D();
 }
 void Scene::Release()
@@ -345,8 +358,12 @@ void Scene::Release()
 void Scene::CheckCollisions()
 {
 	AABB player_box, obj_box, ene_box;
-
+	AABB bubble_box;
 	player_box = player->GetHitbox();
+	for (BubbleFromPlayer* bubble : bubblesPlayer)
+	{
+		bubble_box = bubble->GetHitbox();
+	}
 	auto it = objects.begin();
 	while (it != objects.end())
 	{
@@ -369,23 +386,41 @@ void Scene::CheckCollisions()
 			++it;
 		}
 	}
-	auto it_enemies = enemies.begin();
-	while (it_enemies != enemies.end())
+	auto itEnem = enemies.begin();
+	while (itEnem != enemies.end())
 	{
-		ene_box = (*it_enemies)->GetHitbox();
+		Point pOrigin = {30, 200};
+		ene_box = (*itEnem)->GetHitbox();
+
 		if (player_box.TestAABB(ene_box))
 		{
-			player->DecLiv();
-			if (player->GetLives() <= 0)
+			if (player->IsGod() == false)
 			{
-				returnMenu = true;
+				player->DecLiv();
+				player->SetPos(pOrigin);
+				if (player->GetLives() <= 0) {
+					returnMenu = true;
+				}
+
 			}
+			
 		}
-		else
-		{
-			++it_enemies;
+		++itEnem;
+	}
+	auto itEnemBubble = enemies.begin();
+	while (itEnemBubble != enemies.end()) {
+
+		ene_box = (*itEnemBubble)->GetHitbox();
+
+		if (bubble_box.TestAABB(ene_box)) {
+			delete* itEnemBubble;
+			itEnemBubble = enemies.erase(itEnemBubble);
+		}
+		else {
+			++itEnemBubble;
 		}
 	}
+
 	
 }
 void Scene::BubbleDespawn()
