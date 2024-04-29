@@ -6,6 +6,8 @@ Sprite::Sprite(const Texture2D * texture)
     current_anim = -1;
     current_frame = 0;
     current_delay = 0;
+    mode = AnimMode::AUTOMATIC;
+    animation_complete = false; 
 }
 Sprite::~Sprite()
 {
@@ -37,7 +39,21 @@ void Sprite::SetAnimation(int id)
         current_anim = id;
         current_frame = 0;
         current_delay = animations[current_anim].delay;
+        animation_complete = false;
+
     }
+}
+int Sprite::GetAnimation() const
+{
+    return current_anim;
+}
+void Sprite::SetManualMode()
+{
+    mode = AnimMode::MANUAL;
+}
+void Sprite::SetAutomaticMode()
+{
+    mode = AnimMode::AUTOMATIC;
 }
 void Sprite::Update()
 {
@@ -46,12 +62,47 @@ void Sprite::Update()
             current_delay--;
             if (current_delay == 0)
             {
-                current_frame++;
-                current_frame %= animations[current_anim].frames.size();
-                current_delay = animations[current_anim].delay;
+                if (mode == AnimMode::AUTOMATIC)
+                {
+                    current_frame++;
+                    current_frame %= animations[current_anim].frames.size();
+                    current_delay = animations[current_anim].delay;
+
+                    //Animation is complete when we repeat from the first frame
+                    animation_complete = (current_frame == 0);
+                }
+           
             }
         }
     
+}
+void Sprite::NextFrame()
+{
+    //Next frame is only available in manual animation mode
+    if (mode == AnimMode::MANUAL)
+    {
+        current_delay--;
+        if (current_delay <= 0)
+        {
+            current_frame++;
+            current_frame %= animations[current_anim].frames.size();
+            current_delay = animations[current_anim].delay;
+        }
+    }
+}
+void Sprite::PrevFrame()
+{
+    //Previous frame is only available in manual animation mode
+    if (mode == AnimMode::MANUAL)
+    {
+        current_delay--;
+        if (current_delay <= 0)
+        {
+            current_frame--;
+            current_frame %= animations[current_anim].frames.size();
+            current_delay = animations[current_anim].delay;
+        }
+    }
 }
 void Sprite::Draw(int x, int y) const
 {

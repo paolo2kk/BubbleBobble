@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "RenderComponent.h"
 #include "AABB.h"
+enum class Look { RIGHT, LEFT };
 
 class Entity
 {
@@ -13,8 +14,12 @@ public:
 	Entity(const Point& p, int width, int height);
 	Entity(const Point& p, int width, int height, int frame_width, int frame_height);
 	virtual ~Entity();
-
+	
+	void Set(const Point& p, const Point& d, int w, int h, int framew, int frameh);
 	void SetPos(const Point& p);
+	
+	void SetAlive(bool b);
+	bool IsAlive() const;
 	void Update();
 	AABB GetHitbox() const;
 
@@ -26,10 +31,10 @@ public:
 	//Draw logical/physical model (hitbox)
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
-
 	Point GetPos();
 protected:
 	Point GetRenderingPosition() const;
+	bool isAlive;
 
 	//Logical/physical model
 	Point pos, dir;

@@ -34,6 +34,7 @@ enum class Resource {
     SFX_PICKUP,
     SFX_BUBBLE,
     IMG_ZENCHAN,
+    IMG_ENEMIES,
 };
 
 class ResourceManager {

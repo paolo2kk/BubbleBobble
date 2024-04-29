@@ -371,7 +371,7 @@ AppStatus Game::Update()
         case GameState::INTRO:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (CheckTimePassed() > 7)
+            if (CheckTimePassed() > .1)
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;

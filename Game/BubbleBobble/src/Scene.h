@@ -6,7 +6,9 @@
 #include "BubbleFromPlayer.h"
 #include "Bubble.h"
 #include "Enemy.h"
-
+#include "EnemyManager.h"
+#include "ShotManager.h"
+#include "ParticleManager.h"
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
 class Scene
@@ -47,6 +49,10 @@ private:
     float eTimeSpawnY;
     std::vector<Object*> objects;
     std::vector<Bubble*> bubbles;
+    EnemyManager* enemies;
+    ShotManager* shots;
+    ParticleManager* particles;
+
     std::vector<BubbleFromPlayer*> bubblesPlayer;
 
     DebugMode debug;

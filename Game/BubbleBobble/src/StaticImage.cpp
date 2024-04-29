@@ -14,10 +14,8 @@ void StaticImage::Draw(int x, int y) const
 }
 void StaticImage::DrawTint(int x, int y, const Color& col) const
 {
-	if (this != 0x0000000000000000 ||this !=  nullptr) {
 		DrawTextureRec(*img, rc, { (float)x, (float)y }, col);
 
-	}
 }
 void StaticImage::Release()
 {

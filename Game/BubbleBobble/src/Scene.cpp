@@ -6,6 +6,10 @@ Scene::Scene()
 {
 	player = nullptr;
 	level = nullptr;
+	enemies = nullptr;
+	shots = nullptr;
+	particles = nullptr;
+
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
@@ -49,15 +53,23 @@ Scene::~Scene()
 		delete bubles;
 		bubles = nullptr;
 		
-	}
-	for (Enemy* enemy : enemies)
+	}if (enemies != nullptr)
 	{
-		enemy->Release();
-		delete enemy;
-		enemy = nullptr;
+		enemies->Release();
+		delete enemies;
+		enemies = nullptr;
+	}
+	if (shots != nullptr)
+	{
+		delete shots;
+		shots = nullptr;
+	}
+	if (particles != nullptr)
+	{
+		delete particles;
+		particles = nullptr;
 	}
 	objects.clear();
-	enemies.clear();
 	bubbles.clear();
 	bubblesPlayer.clear();
 
@@ -98,14 +110,54 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
-	
-		for (Enemy* enemy : enemies)
-		{
-			if (enemy != nullptr) {
-				enemy->SetTileMap(level);
 
-			}
-		}
+	//Create enemy manager
+	enemies = new EnemyManager();
+	if (enemies == nullptr)
+	{
+		LOG("Failed to allocate memory for Enemy Manager");
+		return AppStatus::ERROR;
+	}
+	//Initialise enemy manager
+	if (enemies->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Enemy Manager");
+		return AppStatus::ERROR;
+	}
+
+	//Create shot manager 
+	shots = new ShotManager();
+	if (shots == nullptr)
+	{
+		LOG("Failed to allocate memory for Shot Manager");
+		return AppStatus::ERROR;
+	}
+	//Initialise shot manager
+	if (shots->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Shot Manager");
+		return AppStatus::ERROR;
+	}
+
+	//Create particle manager 
+	particles = new ParticleManager();
+	if (particles == nullptr)
+	{
+		LOG("Failed to allocate memory for Particle Manager");
+		return AppStatus::ERROR;
+	}
+	//Initialise particle manager
+	if (particles->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Particle Manager");
+		return AppStatus::ERROR;
+	}
+	shots->SetTileMap(level);
+	//Assign the particle manager reference to the shot manager to add particles when shots collide
+	shots->SetParticleManager(particles);
+	//Assign the shot manager reference to the enemy manager so enemies can add shots
+	enemies->SetShotManager(shots);
+
 
 	return AppStatus::OK;
 }
@@ -169,6 +221,8 @@ AppStatus Scene::LoadLevel(int stage)
 		LOG("Failed to load level, stage %d doesn't exist", stage);
 		return AppStatus::ERROR;
 	}
+	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
+
 	i = 0;
 	for (y = 0; y < LEVEL_HEIGHT; ++y)
 	{
@@ -186,28 +240,7 @@ AppStatus Scene::LoadLevel(int stage)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
-			else if (tile == Tile::ZENCHAN)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + 8;
-				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::ZENCHAN);
-				enemy->Initialise();
-				enemies.push_back(enemy);
-				map[i] = 0;
-
-				map[i] = 0;
-			}
-			else if (tile == Tile::BANEBOU)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + 8;
-				enemy = new Enemy(pos, EnemyState::ANGRY, EnemyLook::LEFT, EnemyType::BANEBOU);
-				enemy->Initialise();
-				enemies.push_back(enemy);
-				map[i] = 0;
-
-				map[i] = 0;
-			}
+			
 			else if (tile == Tile::BUBBLE)
 			{
 				pos.x = x * TILE_SIZE;
@@ -230,14 +263,8 @@ AppStatus Scene::LoadLevel(int stage)
 			++i;
 		}
 	}
-	level->Load(map, LEVEL_WIDTH, LEVEL_HEIGHT);
-	for (Enemy* enemy : enemies)
-	{
-		if (enemy != nullptr) {
-			enemy->SetTileMap(level);
+	delete[] map;
 
-		}
-	}
 	return AppStatus::OK;
 }
 void Scene::RandomItemSpawn()

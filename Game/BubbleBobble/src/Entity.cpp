@@ -2,11 +2,21 @@
 #include <cmath>
 #include "Globals.h"
 
-Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(w), frame_height(h), render(nullptr)
+Entity::Entity() :
+	pos({ 0,0 }), dir({ 0,0 }), width(0), height(0), frame_width(0), frame_height(0), render(nullptr)
 {
+	isAlive = false;
+}
+Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(w), frame_height(h), render(nullptr)
+
+{
+	isAlive = true;
+
 }
 Entity::Entity(const Point& p, int w, int h, int frame_w, int frame_h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
 {
+	isAlive = true;
+
 }
 Entity::~Entity()
 {
@@ -25,6 +35,10 @@ void Entity::SetPos(const Point& p)
 {
 	pos = p;
 }
+bool Entity::IsAlive() const
+{
+	return isAlive;
+}
 void Entity::Update()
 {
 	pos += dir;
@@ -41,6 +55,20 @@ Point Entity::GetRenderingPosition() const
 	p.x = pos.x + width / 2 - frame_width / 2;
 	p.y = pos.y - (frame_height-1);
 	return p;
+}
+void Entity::SetAlive(bool b)
+{
+	isAlive = b;
+}
+void Entity::Set(const Point& p, const Point& d, int w, int h, int framew, int frameh)
+{
+	pos = p;
+	dir = d;
+	width = w;
+	height = h;
+	frame_width = framew;
+	frame_height = frameh;
+	isAlive = true;
 }
 void Entity::Draw() const
 {

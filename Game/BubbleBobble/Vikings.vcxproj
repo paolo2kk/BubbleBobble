@@ -23,15 +23,20 @@
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\BubbleFromPlayer.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
+    <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Object.cpp" />
+    <ClCompile Include="src\Particle.cpp" />
+    <ClCompile Include="src\ParticleManager.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\RenderComponent.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Shot.cpp" />
+    <ClCompile Include="src\ShotManager.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\StaticImage.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
@@ -41,16 +46,21 @@
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\BubbleFromPlayer.h" />
     <ClInclude Include="src\Enemy.h" />
+    <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\MemLeaks.h" />
     <ClInclude Include="src\Object.h" />
+    <ClInclude Include="src\Particle.h" />
+    <ClInclude Include="src\ParticleManager.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\RenderComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Shot.h" />
+    <ClInclude Include="src\ShotManager.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\StaticImage.h" />
     <ClInclude Include="src\TileMap.h" />
@@ -118,8 +128,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\include;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\include;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\paugc2\Music\raylib\include;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\include;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\paugc2\Music\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,13 +171,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>raylib.lib;WinMM.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)\libraries\raylib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
