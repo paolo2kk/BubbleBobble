@@ -327,11 +327,10 @@ void Scene::Update()
 {
 	Point p1, p2;
 	AABB box;
+	AABB hitbox;
+
 	PlayerBubbleSpawn();
-	if (enemies.size() == 0)
-	{
-		passStage = true;
-	}
+	
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
 	if (IsKeyPressed(KEY_F1))
 	{
@@ -350,10 +349,11 @@ void Scene::Update()
 	}
 	level->Update();
 	player->Update();
-	for (Enemy* ene : enemies)
-	{
-		ene->Update();
-	}
+	hitbox = player->GetHitbox();
+
+	enemies->Update(hitbox);
+	shots->Update(hitbox);
+	particles->Update();
 	UpdateBubbles();
 	BubbleSpawner();
 	BubbleDespawn();
@@ -370,13 +370,16 @@ void Scene::Render()
 
 	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES) {
 		RenderObjects();
+		enemies->Draw();
 		player->Draw();
-		
+		shots->Draw();
 	}
 
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
 		RenderObjectsDebug(YELLOW);
+		enemies->DrawDebug();
 		player->DrawDebug(GREEN);
+		shots->DrawDebug(GRAY);
 	}
 	if (player->IsGod()) {
 		DrawText("God Mode", 0, WINDOW_HEIGHT - TILE_SIZE, 100, GOLD);
