@@ -2,11 +2,11 @@
 #include <cmath>
 #include "Globals.h"
 
-Entity::Entity() :
-	pos({ 0,0 }), dir({ 0,0 }), width(0), height(0), frame_width(0), frame_height(0), render(nullptr)
-{
-	isAlive = false;
-}
+//Entity::Entity() :
+//	pos({ 0,0 }), dir({ 0,0 }), width(0), height(0), frame_width(0), frame_height(0), render(nullptr)
+//{
+//	isAlive = false;
+//}
 Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(w), frame_height(h), render(nullptr)
 
 {

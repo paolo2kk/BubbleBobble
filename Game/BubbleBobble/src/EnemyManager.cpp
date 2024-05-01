@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
-
+#include "Slime.h"
+#include "Turret.h"
 
 EnemyManager::EnemyManager()
 {
@@ -26,13 +27,13 @@ void EnemyManager::SetShotManager(ShotManager* shots)
 }
 void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look look)
 {
-	Enemy *enemy;
-	
-	if(type == EnemyType::SLIME)
+	Enemy* enemy;
+
+	if (type == EnemyType::SLIME)
 	{
 		enemy = new Slime(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE);
 	}
-	else if(type == EnemyType::TURRET)
+	else if (type == EnemyType::TURRET)
 	{
 		enemy = new Turret(pos, TURRET_PHYSICAL_WIDTH, TURRET_PHYSICAL_HEIGHT, TURRET_FRAME_SIZE, TURRET_FRAME_SIZE);
 	}
@@ -41,7 +42,7 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 		LOG("Internal error: trying to add a new enemy with invalid type");
 		return;
 	}
-		
+
 	enemy->Initialise(look, area);
 	enemies.push_back(enemy);
 }
@@ -90,7 +91,7 @@ void EnemyManager::Draw() const
 void EnemyManager::DrawDebug() const
 {
 	for (const Enemy* enemy : enemies)
-	{	
+	{
 		enemy->DrawVisibilityArea(DARKGRAY);
 		enemy->DrawHitbox(RED);
 	}

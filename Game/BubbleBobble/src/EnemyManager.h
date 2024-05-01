@@ -1,5 +1,7 @@
 #pragma once
 #include "Enemy.h"
+#include "Turret.h"
+#include "Slime.h"
 #include "ShotManager.h"
 
 class EnemyManager

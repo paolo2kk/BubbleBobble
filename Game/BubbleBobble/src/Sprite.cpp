@@ -55,6 +55,10 @@ void Sprite::SetAutomaticMode()
 {
     mode = AnimMode::AUTOMATIC;
 }
+bool Sprite::IsAnimationComplete() const
+{
+    return animation_complete;
+}
 void Sprite::Update()
 {
         if (current_delay > 0)

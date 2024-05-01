@@ -10,7 +10,7 @@ class Entity
 {
 public:
 
-	Entity(){}
+	Entity(){isAlive = false;}
 	Entity(const Point& p, int width, int height);
 	Entity(const Point& p, int width, int height, int frame_width, int frame_height);
 	virtual ~Entity();

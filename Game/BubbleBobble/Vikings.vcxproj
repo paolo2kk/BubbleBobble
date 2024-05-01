@@ -37,9 +37,11 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Shot.cpp" />
     <ClCompile Include="src\ShotManager.cpp" />
+    <ClCompile Include="src\Slime.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\StaticImage.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\Turret.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AABB.h" />
@@ -61,9 +63,13 @@
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shot.h" />
     <ClInclude Include="src\ShotManager.h" />
+    <ClInclude Include="src\Slime.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\StaticImage.h" />
     <ClInclude Include="src\TileMap.h" />
+    <ClInclude Include="src\Turret.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -128,8 +134,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\paugc2\Music\raylib\include;C:\Users\toncg\Documents\GitHub\Project1Test\raylib\include;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\paugc2\Music\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\gpauc\Music\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

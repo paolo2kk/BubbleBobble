@@ -40,7 +40,6 @@ private:
     void RenderObjectsDebug(const Color& col) const;
 
     Player *player;
-    std::vector<Enemy*> enemies;
     TileMap *level;
     Enemy* enemy;
     Camera2D camera;

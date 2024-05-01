@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 
+
 //Representation model size: 32x32
 #define SLIME_FRAME_SIZE		32
 //Logical model size: 24x30

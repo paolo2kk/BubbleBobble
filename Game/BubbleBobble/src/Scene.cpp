@@ -53,7 +53,8 @@ Scene::~Scene()
 		delete bubles;
 		bubles = nullptr;
 		
-	}if (enemies != nullptr)
+	}
+	if (enemies != nullptr)
 	{
 		enemies->Release();
 		delete enemies;
@@ -390,10 +391,7 @@ void Scene::Release()
 {
 	level->Release();
 	player->Release();
-	for (Enemy* ene : enemies)
-	{
-		ene->Release();
-	}
+	
 }
 void Scene::CheckCollisions()
 {
@@ -426,41 +424,6 @@ void Scene::CheckCollisions()
 			++it;
 		}
 	}
-	auto itEnem = enemies.begin();
-	while (itEnem != enemies.end())
-	{
-		Point pOrigin = {30, 200};
-		ene_box = (*itEnem)->GetHitbox();
-
-		if (player_box.TestAABB(ene_box))
-		{
-			if (player->IsGod() == false)
-			{
-				player->DecLiv();
-				player->SetPos(pOrigin);
-				if (player->GetLives() <= 0) {
-					returnMenu = true;
-				}
-
-			}
-			
-		}
-		++itEnem;
-	}
-	auto itEnemBubble = enemies.begin();
-	while (itEnemBubble != enemies.end()) {
-
-		ene_box = (*itEnemBubble)->GetHitbox();
-
-		if (bubble_box.TestAABB(ene_box)) {
-			delete* itEnemBubble;
-			itEnemBubble = enemies.erase(itEnemBubble);
-		}
-		else {
-			++itEnemBubble;
-		}
-	}
-
 	
 }
 void Scene::BubbleDespawn()
@@ -519,11 +482,7 @@ void Scene::ClearLevel()
 		delete buble;
 	}
 	bubblesPlayer.clear();
-	for (Enemy* enemi : enemies)
-	{
-		delete enemi;
-	}
-	enemies.clear();
+	
 }
 void Scene::UpdateBubbles()
 {
@@ -553,10 +512,7 @@ void Scene::RenderObjects()
 		(*it)->Draw();	
 		++it;
 	}
-	for (Enemy* enemi : enemies)
-	{
-		enemi->Draw();
-	}
+	
 	
 }
 void Scene::RenderObjectsDebug(const Color& col) const
@@ -573,10 +529,7 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	{
 		buble->DrawDebug(BLUE);
 	}
-	for (Enemy* enemi : enemies)
-	{
-		enemi->DrawDebug(RED);
-	}
+	
 }
 int Scene::Score() const
 {
