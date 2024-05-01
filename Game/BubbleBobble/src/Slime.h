@@ -1,8 +1,9 @@
 #pragma once
 #include "Enemy.h"
+#include "TileMap.h"
 
 #define SLIME_SPEED			1
-#define SLIME_ANIM_DELAY	(4*ANIM_DELAY)
+#define SLIME_ANIM_DELAY	(2 * ANIM_DELAY)
 
 #define SLIME_SHOT_OFFSET_X_LEFT	-14
 #define SLIME_SHOT_OFFSET_X_RIGHT	 26
@@ -26,7 +27,7 @@ struct Step
 class Slime : public Enemy
 {
 public:
-	Slime(const Point& p, int width, int height, int frame_width, int frame_height);
+	Slime(const Point& p, int width, int height, int frame_width, int frame_height, TileMap* map);
 	~Slime();
 
 	//Initialize the enemy with the specified look and area
@@ -40,14 +41,14 @@ public:
 
 private:
 	//Create the pattern behaviour
-	void InitPattern();
-
+	void MoveX();
+	void MoveY();
 	//Update looking direction according to the current step of the pattern
 	void UpdateLook(int anim_id);
 
 	int attack_delay;	//delay between attacks
 	SlimeState state;
-
+	TileMap* map;
 	int current_step;	//current step of the pattern
 	int current_frames;	//number of frames in the current step
 	std::vector<Step> pattern;

@@ -5,6 +5,7 @@
 EnemyManager::EnemyManager()
 {
 	shots = nullptr;
+	map = nullptr;
 }
 EnemyManager::~EnemyManager()
 {
@@ -25,6 +26,9 @@ void EnemyManager::SetShotManager(ShotManager* shots)
 {
 	this->shots = shots;
 }
+void EnemyManager::SetTileMap(TileMap* level) {
+	map = level;
+}
 void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look look)
 {
 
@@ -33,7 +37,7 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 
 	if (type == EnemyType::SLIME)
 	{
-		enemy = new Slime(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE);
+		enemy = new Slime(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
 	}
 	else if (type == EnemyType::TURRET)
 	{

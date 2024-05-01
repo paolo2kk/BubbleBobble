@@ -155,6 +155,7 @@ AppStatus Scene::Init()
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
 	//Assign the tile map reference to the shot manager to check collisions when shots are shot
+	enemies->SetTileMap(level);
 	shots->SetTileMap(level);
 	//Assign the particle manager reference to the shot manager to add particles when shots collide
 	shots->SetParticleManager(particles);
