@@ -77,7 +77,6 @@ Scene::~Scene()
 }
 AppStatus Scene::Init()
 {
-	//Create player
 	player = new Player({ 0,0 }, State::IDLE, Look::RIGHT);
 	if (player == nullptr)
 	{
@@ -90,27 +89,6 @@ AppStatus Scene::Init()
 		LOG("Failed to initialise Player");
 		return AppStatus::ERROR;
 	}
-	//Create level 
-	level = new TileMap();
-	if (level == nullptr)
-	{
-		LOG("Failed to allocate memory for Level");
-		return AppStatus::ERROR;
-	}
-	//Initialise level
-	if (level->Initialise() != AppStatus::OK)
-	{
-		LOG("Failed to initialise Level");
-		return AppStatus::ERROR;
-	}
-	//Load level
-	if (LoadLevel(1) != AppStatus::OK)
-	{
-		LOG("Failed to load Level 1");
-		return AppStatus::ERROR;
-	}
-	//Assign the tile map reference to the player to check collisions while navigating
-	player->SetTileMap(level);
 
 	//Create enemy manager
 	enemies = new EnemyManager();
@@ -153,12 +131,35 @@ AppStatus Scene::Init()
 		LOG("Failed to initialise Particle Manager");
 		return AppStatus::ERROR;
 	}
+
+	//Create level 
+	level = new TileMap();
+	if (level == nullptr)
+	{
+		LOG("Failed to allocate memory for Level");
+		return AppStatus::ERROR;
+	}
+	//Initialise level
+	if (level->Initialise() != AppStatus::OK)
+	{
+		LOG("Failed to initialise Level");
+		return AppStatus::ERROR;
+	}
+	//Load level
+	if (LoadLevel(1) != AppStatus::OK)
+	{
+		LOG("Failed to load Level 1");
+		return AppStatus::ERROR;
+	}
+
+	//Assign the tile map reference to the player to check collisions while navigating
+	player->SetTileMap(level);
+	//Assign the tile map reference to the shot manager to check collisions when shots are shot
 	shots->SetTileMap(level);
 	//Assign the particle manager reference to the shot manager to add particles when shots collide
 	shots->SetParticleManager(particles);
 	//Assign the shot manager reference to the enemy manager so enemies can add shots
 	enemies->SetShotManager(shots);
-
 
 	return AppStatus::OK;
 }
@@ -172,7 +173,8 @@ AppStatus Scene::LoadLevel(int stage)
 	Object* obj;
 	Bubble* bubl;
 	Enemy* ene;
-	
+	AABB hitbox, area;
+
 
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -241,7 +243,14 @@ AppStatus Scene::LoadLevel(int stage)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
-			
+			else if (tile == Tile::ZENCHAN)
+			{
+
+				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				area = level->GetSweptAreaX(hitbox);
+				enemies->Add(pos, EnemyType::SLIME, area);
+			}
 			else if (tile == Tile::BUBBLE)
 			{
 				pos.x = x * TILE_SIZE;
@@ -482,7 +491,9 @@ void Scene::ClearLevel()
 		delete buble;
 	}
 	bubblesPlayer.clear();
-	
+	enemies->Release();
+	shots->Clear();
+	particles->Clear();
 }
 void Scene::UpdateBubbles()
 {

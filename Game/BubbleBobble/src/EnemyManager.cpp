@@ -27,7 +27,9 @@ void EnemyManager::SetShotManager(ShotManager* shots)
 }
 void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look look)
 {
-	Enemy* enemy;
+
+
+	Enemy* enemy = nullptr;
 
 	if (type == EnemyType::SLIME)
 	{
@@ -43,8 +45,15 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 		return;
 	}
 
-	enemy->Initialise(look, area);
-	enemies.push_back(enemy);
+	if (enemy)
+	{
+		enemy->Initialise(look, area);
+		enemies.push_back(enemy);
+	}
+	else
+	{
+		LOG("Failed to create enemy");
+	}
 }
 AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
 {

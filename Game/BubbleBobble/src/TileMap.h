@@ -88,6 +88,7 @@ public:
 
 	//Test if there is a ground tile one pixel below the given box
 	bool TestFalling(const AABB& box) const;
+	AABB GetSweptAreaX(const AABB& hitboxbox) const;
 
 private:
 	void InitTileDictionary();

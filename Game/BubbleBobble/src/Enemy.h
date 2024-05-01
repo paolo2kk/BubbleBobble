@@ -3,7 +3,7 @@
 
 
 //Representation model size: 32x32
-#define SLIME_FRAME_SIZE		32
+#define SLIME_FRAME_SIZE		16
 //Logical model size: 24x30
 #define SLIME_PHYSICAL_WIDTH	24
 #define SLIME_PHYSICAL_HEIGHT	30
