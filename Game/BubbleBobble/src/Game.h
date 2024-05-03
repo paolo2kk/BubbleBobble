@@ -16,7 +16,7 @@ public:
     void Cleanup();
 
     void RenderScore();
-    int CheckTimePassed();
+    bool pastTime(int time);
     const int GetCredit();
     void incCredit();
     void decCredit();
@@ -32,8 +32,7 @@ private:
 
     int stageCounter;
     int credit;
-    int time;
-    bool shouldGetTime;
+    int frameCounter;
     float alpha;
     bool fadeCondition;
     int transCounter;

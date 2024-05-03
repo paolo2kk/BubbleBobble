@@ -27,10 +27,8 @@ Game::Game()
     alpha = 1;
     fadeCondition = true;
     transCounter = 0;
-    
+    frameCounter = 0;
     credit = 0;
-    shouldGetTime = true;
-    time = GetTime();
 
     stageCounter = 1;
 
@@ -220,15 +218,15 @@ void Game::decCredit()
 {
     credit--;
 }
-int Game::CheckTimePassed()
+bool Game::pastTime(int time)
 {
-    if (shouldGetTime == true)
+    frameCounter++;
+    if (frameCounter / 60 == time)
     {
-        time = GetTime();
-        shouldGetTime = false;
+        frameCounter = 0;
+        return true;
     }
-
-    return GetTime() - time;
+    return false;
 }
 void Game::RenderScore()
 {
@@ -282,7 +280,7 @@ AppStatus Game::Update()
         case GameState::START:
             if (transCounter == 6)
             {
-                shouldGetTime = true;
+              
                 state = GameState::MAIN_MENU;
             }
             if (IsKeyPressed(KEY_ONE))
@@ -293,10 +291,9 @@ AppStatus Game::Update()
 
         case GameState::MAIN_MENU:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if ((CheckTimePassed() > 5) && (GetCredit() == 0))
+            if (pastTime(5) && (GetCredit() == 0))
             {
                 state = GameState::INSERT_COIN;
-                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -306,7 +303,6 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_SPACE))
             {
                 state = GameState::INTRO;
-                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ONE))
             {
@@ -316,10 +312,9 @@ AppStatus Game::Update()
 
         case GameState::INSERT_COIN:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (CheckTimePassed() > 3)
+            if (pastTime(3))
             {
                 state = GameState::TUTORIAL;
-                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -344,7 +339,6 @@ AppStatus Game::Update()
             {
 
                 state = GameState::INTRO;
-                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -360,7 +354,6 @@ AppStatus Game::Update()
             {
 
                 state = GameState::INTRO;
-                shouldGetTime = true;
             }
             if (IsKeyPressed(KEY_ENTER))
             {
@@ -371,18 +364,16 @@ AppStatus Game::Update()
         case GameState::INTRO:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            if (CheckTimePassed() > .1)
+            if (pastTime(5))
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
-                shouldGetTime = true;
             }
             break;
         case GameState::GAME_OVER:
-            if (CheckTimePassed() > 3)
+            if (pastTime(3))
             {
                 state = GameState::MAIN_MENU;
-                shouldGetTime = true;
             }
             break;
 
