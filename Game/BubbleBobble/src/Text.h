@@ -26,4 +26,3 @@ private:
 	const Texture2D* img;	//reference to the texture containing the characters
 };
 
-
