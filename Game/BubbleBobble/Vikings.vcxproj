@@ -45,6 +45,8 @@
     <ClCompile Include="src\Text.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +79,8 @@
     <ClInclude Include="src\Text.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </ClInclude>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -147,8 +151,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(ProjectDir)\libraries\raylib\lib;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\lib;$(ProjectDir)\libraries\raylib\include;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\raylib\lib;C:\Users\gpauc\Documents\GitHub\BubbleBobble-PatoProductions\raylib\lib;$(ProjectDir)\libraries\raylib\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

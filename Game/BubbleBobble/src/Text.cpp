@@ -25,9 +25,10 @@ AppStatus Text::Initialise(Resource id, const std::string& file_path, char first
 	this->first_character = first_character;
 	this->character_size = character_size;
 
+
 	//Calculate the number of columns and rows in the bitmap grid
-	columns = img->width / character_size;
-	rows = img->height / character_size;
+	columns = 80 / character_size;
+	rows = 8 / character_size;
 
 	return AppStatus::OK;
 }
@@ -44,7 +45,9 @@ void Text::Draw(int x, int y, const std::string& text, const Color& col) const
 
 		//Update the horizontal offset to position the next character
 		//Distance between each character is equal to the character size
+
 		offset_x += character_size;
+
 	}
 }
 void Text::DrawCharacter(int x, int y, char c, const Color& col) const
@@ -55,8 +58,8 @@ void Text::DrawCharacter(int x, int y, char c, const Color& col) const
 	char_index = c - first_character;
 
 	//Calculate the coordinates of the character in the texture grid
-	coord_x = char_index % columns;
-	coord_y = char_index / columns;
+		coord_x = char_index % columns;
+		coord_y = char_index / columns;
 
 	//Check if the calculated coordinates are out of bounds
 	if (coord_x < 0 || coord_x >= columns || coord_y < 0 || coord_y >= rows)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Scene.h"
+#include "Text.h"
 
 enum class GameState { MAIN_MENU, PLAYING, TRANSITIONING, INSERT_COIN, PLAYER_1, TUTORIAL, INTRO, PLAYER_2_AND_1, GAME_OVER, START};
 
@@ -61,4 +62,5 @@ private:
     //To work with original game units and then scale the result
     RenderTexture2D target;
     Rectangle src, dst;
+    Text* text_;
 };

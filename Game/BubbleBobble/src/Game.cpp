@@ -30,6 +30,8 @@ Game::Game()
     frameCounter = 0;
     credit = 0;
 
+    text_ = new Text();
+
     stageCounter = 1;
 
     target = {};
@@ -55,6 +57,7 @@ AppStatus Game::Initialise(float scale)
     float w, h;
     w = WINDOW_WIDTH * scale;
     h = WINDOW_HEIGHT * scale;
+
 
     //Initialise window
     InitWindow((int)w, (int)h, "Bubble Bobble");
@@ -191,6 +194,9 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_stage2 = data.GetTexture(Resource::IMG_STAGE2);
+
+    text_->Initialise(Resource::IMG_TEXT, "images/NUMBERS.png", '0', 8);
+
     if (data.LoadTexture(Resource::IMG_ITEMS, "images/Items.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
@@ -204,9 +210,9 @@ const int Game::GetCredit()
 }
 void Game::RenderCredit()
 {
-    if (GetCredit() < 99999)
+    if (GetCredit() < 999)
     {
-        DrawText(TextFormat("%d", GetCredit()), 225, 214, 8, WHITE);
+        text_->Draw(225, 215, TextFormat("%d",credit), WHITE);
     }
 }
 void Game::incCredit()
@@ -231,14 +237,13 @@ bool Game::pastTime(int time)
 void Game::RenderScore()
 {
     DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
-    DrawText(TextFormat("%d", scene->Score()), 30, 7, 8, WHITE);
+    text_->Draw(35, 8, TextFormat("%d", scene->Score()), WHITE);
 
     if (scene->Score() >= HighScore)
     {
         HighScore = scene->Score();
     }
-
-    DrawText(TextFormat("%d", HighScore), 120, 7, 8, WHITE);
+    text_->Draw(122, 8, TextFormat("%d", HighScore), WHITE);
 }
 AppStatus Game::BeginPlay()
 {
