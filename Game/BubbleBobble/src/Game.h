@@ -31,6 +31,7 @@ private:
     AppStatus LoadResources();
     void UnloadResources();
 
+    int TittleOffset;
     int stageCounter;
     int credit;
     int frameCounter;

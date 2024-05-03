@@ -25,6 +25,7 @@ Game::Game()
 
     HighScore = 0;
     alpha = 1;
+    TittleOffset= 0;
     fadeCondition = true;
     transCounter = 0;
     frameCounter = 0;
@@ -456,7 +457,21 @@ void Game::Render()
                 ResourceManager::Instance().PlaySoundEffect(Resource::MUSIC_INSERT_COIN);
                 transCounter++;
             }
-            DrawTexture(*img_menu, 0, 0, WHITE);
+
+            DrawTexture(*img_menu, TittleOffset, 0, WHITE);
+            if (frameCounter % 3 == 0)
+            {
+                if (TittleOffset == -WINDOW_WIDTH * 3)
+                {
+                    TittleOffset = 0;
+                }
+                else
+                {
+                    TittleOffset -= WINDOW_WIDTH;
+                }
+            }
+
+
             RenderCredit();
             RenderScore();
             scene->ResetScore();
