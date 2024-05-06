@@ -140,6 +140,10 @@ int Player::GetLives() const
 {
 	return lives;
 }
+void Player::StartFalling()
+{
+	dir.y = 1;
+}
 void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
@@ -151,13 +155,6 @@ void Player::StartWalkingRight()
 	state = State::WALKING;
 	look = Look::RIGHT;
 	SetAnimation((int)PlayerAnim::WALKING_RIGHT);
-}
-void Player::StartFalling()
-{
-	dir.y = PLAYER_SPEED;
-	state = State::FALLING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
 }
 void Player::StartJumping()
 {

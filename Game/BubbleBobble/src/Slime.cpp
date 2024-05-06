@@ -66,48 +66,81 @@ bool Slime::Update(const AABB& box)
 
 	MoveX();
 	MoveY();
+	StartFalling();
+
 	sprite->Update();
 
 	return shoot;
 }
 void Slime::MoveX()
 {
-	AABB box = GetHitbox();
+	AABB box;
 	int prev_x = pos.x;
-
-	if (look == Look::RIGHT) {
-		pos += {1,0};
-	}else if (look == Look::LEFT) {
-		pos += {-1, 0};
-	}
-	
-	if (map->TestCollisionWallLeft(box))
+	box = GetHitbox();
+	if (look == Look::RIGHT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
-		pos.x = prev_x;
-		look = Look::RIGHT;
+		pos.x += SLIME_SPEED;
+		if (map->TestCollisionWallRight(box))
+		{
+			pos.x = prev_x;
+			look = Look::LEFT;
+			SetAnimation((int)SlimeAnim::WALKING_LEFT);
+		}
 	}
-	else if (map->TestCollisionHalfWallRight(box)) {
-		pos.x = prev_x;
-		look = Look::RIGHT;
-
-	}
-
-	if (map->TestCollisionWallRight(box))
+	else if (look == Look::LEFT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
-		pos.x = prev_x;
-		look = Look::RIGHT;
-
+		pos.x += -SLIME_SPEED;
+		if (map->TestCollisionWallLeft(box))
+		{
+			pos.x = prev_x;
+			look = Look::RIGHT;
+			SetAnimation((int)SlimeAnim::WALKING_RIGHT);
+		}
 	}
-	else if (map->TestCollisionHalfWallLeft(box)) {
-		pos.x = prev_x;
-		look = Look::RIGHT;
-
-	}
+}
+void Slime::SetAnimation(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
+}
+void Slime::StartFalling()
+{
+	dir.y = 1;
+}
+void Slime::Stop()
+{
+	dir = { 0,0 };
+	state = SlimeState::ROAMING;
 }
 void Slime::MoveY()
 {
+	AABB box, prev_box;
+	int prev_x = pos.x;
+	int prev_y = pos.y;
 
+
+	if (state != SlimeState::JUMPING)
+	{
+		pos.y += 1;
+		box = GetHitbox();
+		if (map->TestCollisionGround(box, &pos.y))
+		{
+			if (state == SlimeState::FALLING) Stop();
+
+			if (IsKeyPressed(KEY_X))
+				dir.y = -1;
+		}
+		else
+		{
+			if (state != SlimeState::FALLING) StartFalling();
+		}
+		
+		
+	}
+	
+	
 }
+
 void Slime::UpdateLook(int anim_id)
 {
 	SlimeAnim anim = (SlimeAnim)anim_id;

@@ -11,7 +11,7 @@
 
 #define SLIME_SHOT_SPEED	4
 
-enum class SlimeState { ROAMING, ATTACK };
+enum class SlimeState { ROAMING, ATTACK, FALLING, JUMPING };
 enum class SlimeAnim {
 	IDLE_LEFT, IDLE_RIGHT, WALKING_LEFT, WALKING_RIGHT,
 	ATTACK_LEFT, ATTACK_RIGHT, NUM_ANIMATIONS
@@ -42,7 +42,10 @@ public:
 private:
 	//Create the pattern behaviour
 	void MoveX();
+	void SetAnimation(int id);
 	void MoveY();
+	void StartFalling();
+	void Stop();
 	//Update looking direction according to the current step of the pattern
 	void UpdateLook(int anim_id);
 
