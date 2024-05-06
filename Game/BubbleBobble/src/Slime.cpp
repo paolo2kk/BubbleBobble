@@ -67,7 +67,7 @@ bool Slime::Update(const AABB& box)
 	MoveX();
 	MoveY();
 	StartFalling();
-
+	Warp();
 	sprite->Update();
 
 	return shoot;
@@ -122,11 +122,11 @@ void Slime::MoveY()
 	if (state != SlimeState::JUMPING)
 	{
 		pos.y += 1;
+		
 		box = GetHitbox();
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == SlimeState::FALLING) Stop();
-
 			if (IsKeyPressed(KEY_X))
 				dir.y = -1;
 		}
