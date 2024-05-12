@@ -120,6 +120,26 @@ void Player::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
+void Player::BubbleShot()
+{
+	Point p, d;
+	p = { pos.x, pos.y };
+
+	elapsedTimeBubble += GetFrameTime();
+	if (IsKeyPressed(KEY_SPACE) && elapsedTimeBubble >= .25)
+	{
+		if (IsLookingLeft()) {
+			d = { -16, 0 };
+			SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_L);
+		}
+		else if (IsLookingRight()) {
+			d = { 16, 0 };
+			SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_R);
+		}
+		shots->Add(p, d);
+		elapsedTimeBubble = 0;
+	}
+}
 void Player::Stop()
 {
 	dir = { 0,0 };
@@ -215,7 +235,9 @@ void Player::Update()
 	{
 		sprite->SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_L);
 	}
-
+	if (IsKeyPressed(KEY_B)) {
+		BubbleShot();
+	}
 	Warp();
 }
 
