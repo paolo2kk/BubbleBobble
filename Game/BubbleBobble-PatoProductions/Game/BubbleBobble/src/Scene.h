@@ -19,6 +19,7 @@ public:
 
     AppStatus Init();
     void Update();
+    void CheckBubbleEnemyCollisions();
     void Render();
     void Release();
     AppStatus LoadLevel(int stage);
@@ -41,7 +42,6 @@ private:
 
     Player *player;
     TileMap *level;
-    Enemy* enemy;
     Camera2D camera;
     float eBubblingTime;
     float eTimeSpawnX;
@@ -51,7 +51,7 @@ private:
     EnemyManager* enemies;
     ShotManager* shots;
     ParticleManager* particles;
-
+    std::vector<Enemy*> enemy;
     std::vector<BubbleFromPlayer*> bubblesPlayer;
 
     DebugMode debug;

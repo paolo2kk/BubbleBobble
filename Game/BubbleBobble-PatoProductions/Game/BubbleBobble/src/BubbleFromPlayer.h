@@ -3,6 +3,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "BubbleFromPlayer.h"
+#include "EnemyManager.h"
 
 #define BUBBLE_PHYSICAL_SIZE	14
 #define BUBBLE_FRAME_SIZE		16
@@ -24,6 +25,7 @@ public:
 	void Update();
 
 	void Movement(Directions d);
+	void CollisionEnemy();
 	void ClampPos();
 	AppStatus Initialise();
 	bool isAlive();
@@ -33,7 +35,6 @@ public:
 	void DrawDebug(const Color& col) const;
 	void Stomp();
 	void SetPlayer(Player* p);
-
 private:
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);

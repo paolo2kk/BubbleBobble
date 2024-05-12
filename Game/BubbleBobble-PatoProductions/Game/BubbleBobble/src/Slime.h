@@ -34,12 +34,10 @@ public:
 	//Initialize the enemy with the specified look and area
 	AppStatus Initialise(Look look, const AABB& area) override;
 
-	void BubbleSetter(BubbleFromPlayer* bub);
 
 	//Update the enemy according to its logic, return true if the enemy must shoot
 	bool Update(const AABB& box) override;
 
-	void CollideWithBubble();
 
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
@@ -60,6 +58,5 @@ private:
 	int current_step;	//current step of the pattern
 	int current_frames;	//number of frames in the current step
 	std::vector<Step> pattern;
-	std::vector<BubbleFromPlayer*> bubbles;
 };
 

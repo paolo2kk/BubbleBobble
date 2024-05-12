@@ -57,12 +57,7 @@ AppStatus Slime::Initialise(Look look, const AABB& area)
 
 	return AppStatus::OK;
 }
-void Slime::BubbleSetter(BubbleFromPlayer* bub)
-{
-	for(BubbleFromPlayer * buble: bubbles) {
-		bubbles.push_back(bub);
-	}
-}
+
 bool Slime::Update(const AABB& box)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -73,28 +68,11 @@ bool Slime::Update(const AABB& box)
 	MoveY();
 	StartFalling();
 	Warp();
-	CollideWithBubble();
 	sprite->Update();
 
 	return shoot;
 }
-void Slime::CollideWithBubble()
-{
-	AABB box = GetHitbox();
-	AABB bubbleBox;
-	for (BubbleFromPlayer* buble : bubbles) 
-	{
-		bubbleBox = buble->GetHitbox();
-		bool hit = box.TestAABB(bubbleBox);
 
-		if (hit)
-		{
-			pos.x = 100;
-		}
-	}	
-	
-	
-}
 void Slime::MoveX()
 {
 	AABB box;

@@ -36,7 +36,9 @@ public:
 	
 	//Delete all enemies and clear the enemy vector
 	void Release();
-
+	const std::vector<Enemy*>& GetEnemies() const {
+		return enemies;
+	}
 private:
 	std::vector<Enemy*> enemies;
 	TileMap* map;
