@@ -15,7 +15,7 @@ public:
 
 	//Set the ShotManager reference for managing enemy shots
 	void SetShotManager(ShotManager* shots);
-
+	void DestroyEnemy(Enemy* enemy);
 	void SetTileMap(TileMap* level);
 
 	//Add a new enemy with the given position, type, action area and looking direction
@@ -36,7 +36,9 @@ public:
 	
 	//Delete all enemies and clear the enemy vector
 	void Release();
-
+	const std::vector<Enemy*>& GetEnemies() const {
+		return enemies;
+	}
 private:
 	std::vector<Enemy*> enemies;
 	TileMap* map;

@@ -109,6 +109,15 @@ void EnemyManager::DrawDebug() const
 		enemy->DrawHitbox(RED);
 	}
 }
+void EnemyManager::DestroyEnemy(Enemy* enemy)
+{
+	auto it = std::find(enemies.begin(), enemies.end(), enemy);
+	if (it != enemies.end())
+	{
+		delete* it;
+		enemies.erase(it);
+	}
+}
 void EnemyManager::Release()
 {
 	for (Enemy* enemy : enemies)

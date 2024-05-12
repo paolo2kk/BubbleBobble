@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.h"
-
+#include "BubbleFromPlayer.h"
 
 //Representation model size: 32x32
 #define SLIME_FRAME_SIZE		16
@@ -39,7 +39,6 @@ public:
 protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it
 	bool IsVisible(const AABB& hitbox);
-
 	Look look;
 	AABB visibility_area;
 };
