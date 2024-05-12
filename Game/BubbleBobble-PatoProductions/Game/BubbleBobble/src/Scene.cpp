@@ -42,11 +42,6 @@ Scene::~Scene()
 		delete obj;
 		obj = nullptr;
 	}
-	for (Entity* ene : enemy)
-	{
-		delete ene;
-		ene = nullptr;
-	}
 	for (Entity* bubl : bubbles)
 	{
 		delete bubl;
@@ -75,7 +70,6 @@ Scene::~Scene()
 		delete particles;
 		particles = nullptr;
 	}
-	enemy.clear();
 	objects.clear();
 	bubbles.clear();
 	bubblesPlayer.clear();
@@ -367,7 +361,7 @@ void Scene::Update()
 	level->Update();
 	player->Update();
 	hitbox = player->GetHitbox();
-	CheckBubbleEnemyCollisions();
+
 	enemies->Update(hitbox);
 	shots->Update(hitbox);
 	particles->Update();
@@ -379,31 +373,6 @@ void Scene::Update()
 		buble->SetPlayer(player);
 	}
 	CheckCollisions();
-}
-void Scene::CheckBubbleEnemyCollisions()
-{
-	for (Bubble* bubl : bubbles)
-	{
-		AABB bubbleBox = bubl->GetHitbox();
-
-		const std::vector<Enemy*>& enemyList = enemies->GetEnemies();
-		for (auto it = enemyList.begin(); it != enemyList.end(); ++it)
-		{
-			AABB enemyBox = (*it)->GetHitbox();
-
-			if (bubbleBox.TestAABB(enemyBox))
-			{
-				// Remove the enemy from the list and delete it
-				delete* it;
-				//enemies->RemoveEnemy(it);
-				delete player;
-				// Remove the bubble that caused the collision
-				delete bubl;
-				bubbles.erase(std::remove(bubbles.begin(), bubbles.end(), bubl), bubbles.end());
-				break;
-			}
-		}
-	}
 }
 void Scene::Render()
 {
