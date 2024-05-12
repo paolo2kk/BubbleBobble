@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
-#include "ShotManager.h"
 
 //Representation model size: 32x32
 #define PLAYER_FRAME_SIZE		17
@@ -77,8 +76,6 @@ public:
 	bool IsGod();
 	void SetAnimation(int id);
 
-	void BubbleShot();
-
 private:
 	
 	//Player mechanics
@@ -111,8 +108,6 @@ private:
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
-	float elapsedTimeBubble = 0;
 
-	ShotManager* shots;
 };
 

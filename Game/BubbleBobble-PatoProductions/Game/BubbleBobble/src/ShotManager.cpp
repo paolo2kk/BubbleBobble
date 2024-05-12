@@ -35,10 +35,6 @@ void ShotManager::Add(const Point& pos, const Point& dir)
 			break;
 		}
 	}
-	for (BubbleFromPlayer* bub : bubbles)
-	{
-		bub->Initialise();
-	}
 	if(!found) LOG("Not enough space to add a new shot in the ShotManager!");
 }
 void ShotManager::Clear()
@@ -77,11 +73,6 @@ void ShotManager::Update(const AABB& player_hitbox)
 			}
 		}
 	}
-	for (BubbleFromPlayer* buble : bubbles)
-	{
-		buble->Update();
-	}
-
 }
 void ShotManager::Draw() const
 {
@@ -89,18 +80,9 @@ void ShotManager::Draw() const
 	//of each Entity object
 	for (const Shot& shot : shots)
 		if (shot.IsAlive())	shot.Draw();
-	for (BubbleFromPlayer* bubl : bubbles)
-	{
-		bubl->Draw();
-	}
 }
 void ShotManager::DrawDebug(const Color& col) const
 {
 	for (const Shot& shot : shots)
 		if (shot.IsAlive()) shot.DrawHitbox(col);
-	for (BubbleFromPlayer* buble : bubbles)
-	{
-		buble->DrawDebug(BLUE);
-	}
-
 }

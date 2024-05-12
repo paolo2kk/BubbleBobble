@@ -3,7 +3,7 @@
 #include "Shot.h"
 #include "TileMap.h"
 #include "ParticleManager.h"
-#include "BubbleFromPlayer.h"
+
 #define MAX_SHOTS		16
 
 class ShotManager
@@ -37,7 +37,7 @@ public:
 
 private:
 	std::array<Shot, MAX_SHOTS> shots;
-	std::vector<BubbleFromPlayer*> bubbles;
+
 	//Reference to the TileMap object
 	//This class does not own the object, it only holds a reference to it
 	TileMap *map;
