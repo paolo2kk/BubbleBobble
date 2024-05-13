@@ -46,6 +46,10 @@ private:
 	float spawnTime;
 	float eTime;
 	float eTimePogo;
+	float eTimeCatch = 0;
+	float eTimeCatchGreen = 1.5;
+	float eTimeCatchYellow = 1;
+	float eTimeCatchRed = 1;
 	float lifeTime;
 	float speed;
 	Player* player;

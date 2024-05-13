@@ -155,6 +155,18 @@ void BubbleFromPlayer::EnemyCatch()
 		bubbleStages++;
 		break;
 	case 1:
+		if (eTimeCatch > eTimeCatchGreen) bubbleStages++;
+		eTimeCatch += GetFrameTime();
+		break;
+	case 2:
+		eTimeCatch = 0;
+		SetAnimation((int)BubbleAnim::ZENCHANY);
+		bubbleStages++;
+		break;
+	case 3:
+		if (eTimeCatch > eTimeCatchYellow) bubbleStages++;
+		eTimeCatch += GetFrameTime();
+
 		break;
 	}
 }
@@ -183,7 +195,8 @@ void BubbleFromPlayer::Movement(Directions d)
 				}
 				break;
 			case 2:
-				SetAnimation((int)BubbleAnim::IDLE);
+				if(!inCatch) SetAnimation((int)BubbleAnim::IDLE);
+
 
 				inShoot = false;
 				dir = { 0, -1 };
@@ -211,7 +224,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				}
 				break;
 			case 2:
-				SetAnimation((int)BubbleAnim::IDLE);
+				if (!inCatch) SetAnimation((int)BubbleAnim::IDLE);
 
 				inShoot = false;
 				dir = { 0, -1 };
