@@ -30,6 +30,9 @@ public:
     void ResetScore() const;
     bool returnMenu = false;
     bool passStage = false;
+
+    Player* player;
+
 private:
     void BubbleSpawner();
     void CheckCollisions();
@@ -39,7 +42,6 @@ private:
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
 
-    Player *player;
     TileMap *level;
     Enemy* enemy;
     Camera2D camera;

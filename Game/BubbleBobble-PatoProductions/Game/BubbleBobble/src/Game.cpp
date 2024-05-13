@@ -22,6 +22,8 @@ Game::Game()
     img_ScoreHeader = nullptr;
     img_stage1 = nullptr;
     img_stage2 = nullptr;
+    img_life_bub = nullptr;
+    img_life_bob = nullptr;
 
     HighScore = 0;
     alpha = 1;
@@ -122,6 +124,18 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_menu = data.GetTexture(Resource::IMG_MENU);
+
+    if (data.LoadTexture(Resource::IMG_LIFE_BOB, "images/1.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_life_bob = data.GetTexture(Resource::IMG_LIFE_BOB);
+
+    if (data.LoadTexture(Resource::IMG_LIFE_BUB, "images/2.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_life_bub = data.GetTexture(Resource::IMG_LIFE_BUB);
 
     if (data.LoadTexture(Resource::IMG_INSCOIN, "images/InsertCoin.png") != AppStatus::OK)
     {
@@ -235,7 +249,7 @@ bool Game::pastTime(int time)
     }
     return false;
 }
-void Game::RenderScore()
+void Game::RenderUI()
 {
     DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
     text_->Draw(35, 8, TextFormat("%d", scene->Score()), WHITE);
@@ -245,6 +259,31 @@ void Game::RenderScore()
         HighScore = scene->Score();
     }
     text_->Draw(122, 8, TextFormat("%d", HighScore), WHITE);
+
+
+}
+void Game::RenderLives()
+{
+    if (scene != nullptr)
+{
+
+    if (scene->player->lives == 3)
+    {
+        DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bub, 8, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bub, 16, WINDOW_HEIGHT - 8, WHITE);
+    }
+    else if (scene->player->lives == 2)
+    {
+        DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bub, 16, WINDOW_HEIGHT - 8, WHITE);
+    }
+    else if (scene->player->lives == 1)
+    {
+        DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT-8, WHITE);
+    }
+
+}
 }
 AppStatus Game::BeginPlay()
 {
@@ -473,7 +512,7 @@ void Game::Render()
 
 
             RenderCredit();
-            RenderScore();
+            RenderUI();
             scene->ResetScore();
             break;
 
@@ -481,12 +520,12 @@ void Game::Render()
 
             DrawTexture(*img_insert_coin, 0, 0, WHITE);
             RenderCredit();
-            RenderScore();
+            RenderUI();
             break;
 
         case GameState::TUTORIAL:
             DrawTexture(*img_tutorial, 0, 0, WHITE);
-            RenderScore();
+            RenderUI();
             break;
 
         case GameState::INTRO:
@@ -498,26 +537,27 @@ void Game::Render()
 
             DrawTexture(*img_player_1, 0, 0, WHITE);
             RenderCredit();
-            RenderScore();
+            RenderUI();
             break;
 
         case GameState::PLAYER_2_AND_1:
             DrawTexture(*img_player_2, 0, 0, WHITE);
             RenderCredit();
-            RenderScore();
+            RenderUI();
             break;
 
         case GameState::GAME_OVER:
             DrawTexture(*img_game_over, 0, 0, WHITE);
             RenderCredit();
-            RenderScore();
+            RenderUI();
             break;
 
         case GameState::PLAYING:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
 
-            RenderScore();
+            RenderUI();
             scene->Render();
+            RenderLives();
 
             break;
         case GameState::TRANSITIONING:
@@ -525,17 +565,20 @@ void Game::Render()
             float progress = timeElapsed / totalTime;
             float yPos_stage2 = 224.0f * -progress; 
             if (timeElapsed < totalTime) {
+
                 DrawTexture(*img_stage1, 0, yPos_stage2, WHITE);
                 DrawTexture(*img_stage2, 0, yPos_stage2 + 224, WHITE);
-                RenderScore();
+                RenderUI();
+                RenderLives();
                 timeElapsed += GetFrameTime();
 
             }
             else {
-                RenderScore();
+                RenderUI();
                 timeElapsed = 0;
                 state = GameState::PLAYING;
                 scene->LoadLevel(2);
+                RenderLives();
             }
           
             break;

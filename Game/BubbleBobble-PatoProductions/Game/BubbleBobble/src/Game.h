@@ -16,7 +16,8 @@ public:
     void Render();
     void Cleanup();
 
-    void RenderScore();
+    void RenderUI();
+    void RenderLives();
     bool pastTime(int time);
     const int GetCredit();
     void incCredit();
@@ -55,6 +56,8 @@ private:
     const Texture2D* img_upc_citm;
     const Texture2D* img_pato_productions;
     const Texture2D* img_explanation;
+    const Texture2D* img_life_bob;
+    const Texture2D* img_life_bub;
     int timeValue = 0;
     float timer = 0;
     float totalTime = 1.5f;
