@@ -8,13 +8,13 @@
 #define BUBBLE_FRAME_SIZE		16
 #define POGOJUMP				-30
 
-#define PADDINGG_X 1
+#define PADDINGG_X 0
 #define PADDINGG_Y 6
 
 #define SHOOT_RANGE 65
 
 enum class Directions { LEFT, RIGHT };
-enum class BubbleAnim {INSHOOT, IDLE, SMASHED, CATCHEDENEMY, NUM_ANIMATIONS};
+enum class BubbleAnim {INSHOOT, IDLE, SMASHED, ZENCHANG, ZENCHANY, ZENCHANR, ZENCHANBLINK, NUM_ANIMATIONS};
 class BubbleFromPlayer : public Entity
 {
 public:
@@ -32,11 +32,13 @@ public:
 	int stages;
 	void DrawDebug(const Color& col) const;
 	void Stomp();
+	void EnemyCatch();
 	void SetPlayer(Player* p);
-
+	bool inCatch = false;
 private:
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);
+	int bubbleStages = 0;
 
 	bool inShoot;
 	int logPosXL;

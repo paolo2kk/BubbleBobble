@@ -33,7 +33,7 @@ AppStatus BubbleFromPlayer::Initialise()
 	Rectangle rc;
 	const int n = TILE_SIZE;
 	const int p = PADDINGG_X;
-	const int y = 22;
+	const int y = 16;
 
 	ResourceManager& data = ResourceManager::Instance();
 	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
@@ -56,6 +56,23 @@ AppStatus BubbleFromPlayer::Initialise()
 	for(int i = 0; i < 6; ++i)
 		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
 
+	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANG, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { 0, 2*y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { n, 2*	y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { 2*n, 2 * y, n, n });
+
+	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANY, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 6*n, 2 * y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 7*n, 2 * y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 8 * n, 2 * y, n, n });
+
+	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANR, ANIM_DELAY);
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 9 * n, 2 * y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 10 * n, 2 * y, n, n });
+	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 11 * n, 2 * y, n, n });
+
+
+
 	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
 	return AppStatus::OK;
 
@@ -66,6 +83,8 @@ void BubbleFromPlayer::Update()
 	Movement(dire);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
+
+	if (inCatch) EnemyCatch();
 }
 bool BubbleFromPlayer::isAlive()
 {
@@ -126,6 +145,18 @@ void BubbleFromPlayer::Stomp()
 		}
 	}
 	eTimePogo += GetFrameTime();
+}
+void BubbleFromPlayer::EnemyCatch()
+{
+	switch (bubbleStages)
+	{
+	case 0:
+		SetAnimation((int)BubbleAnim::ZENCHANG);
+		bubbleStages++;
+		break;
+	case 1:
+		break;
+	}
 }
 
 void BubbleFromPlayer::Movement(Directions d)

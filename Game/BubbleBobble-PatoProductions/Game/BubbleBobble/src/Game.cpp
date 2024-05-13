@@ -284,7 +284,7 @@ AppStatus Game::Update()
     switch (state)
     {
         case GameState::START:
-            if (transCounter == .1)
+            if (transCounter == 6)
             {
               
                 state = GameState::MAIN_MENU;

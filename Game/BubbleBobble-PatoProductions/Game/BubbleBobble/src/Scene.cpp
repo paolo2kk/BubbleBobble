@@ -408,7 +408,6 @@ void Scene::CheckCollisions()
 	AABB player_box, obj_box, ene_box;
 	player_box = player->GetHitbox();
 
-	// Check collisions between player bubbles and enemies
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();
@@ -417,12 +416,35 @@ void Scene::CheckCollisions()
 			AABB enemy_box = enemy->GetHitbox();
 			if (bubble_box.TestAABB(enemy_box))
 			{
-				// Destroy the enemy
 				enemies->DestroyEnemy(enemy);
-				// Delete the bubble
 				bubble->SetAlive(false);
-				break; // No need to check further collisions for this bubble
+				bubble->inCatch = true;
+				
+				break;
 			}
+		}
+	}
+
+	auto it = objects.begin();
+	while (it != objects.end())
+	{
+		obj_box = (*it)->GetHitbox();
+		if (player_box.TestAABB(obj_box))
+		{
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
+
+			player->IncrScore((*it)->Points());
+			AllObjects--;
+
+			//Delete the object
+			delete* it;
+			//Erase the object from the vector and get the iterator to the next valid element
+			it = objects.erase(it);
+		}
+		else
+		{
+			//Move to the next object
+			++it;
 		}
 	}
 }
@@ -514,7 +536,6 @@ void Scene::RenderObjects()
 		(*it)->Draw();	
 		++it;
 	}
-	
 	
 }
 void Scene::RenderObjectsDebug(const Color& col) const
