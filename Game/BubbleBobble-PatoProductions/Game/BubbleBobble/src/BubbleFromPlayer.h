@@ -15,6 +15,7 @@
 
 enum class Directions { LEFT, RIGHT };
 enum class BubbleAnim {INSHOOT, IDLE, SMASHED, ZENCHANG, ZENCHANY, ZENCHANR, ZENCHANBLINK, NUM_ANIMATIONS};
+enum class BubbleStages {GREENSTAGE, GREENSTAGE_, YELLOWSTAGE, YELLOWSTAGE_, REDSTAGE, REDSTAGE_};
 class BubbleFromPlayer : public Entity
 {
 public:
@@ -38,7 +39,7 @@ public:
 private:
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);
-	int bubbleStages = 0;
+	int bubbleStages = (int)BubbleStages::GREENSTAGE;
 
 	bool inShoot;
 	int logPosXL;

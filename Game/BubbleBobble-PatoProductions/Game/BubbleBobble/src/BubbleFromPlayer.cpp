@@ -150,23 +150,31 @@ void BubbleFromPlayer::EnemyCatch()
 {
 	switch (bubbleStages)
 	{
-	case 0:
+	case (int)BubbleStages::GREENSTAGE:
 		SetAnimation((int)BubbleAnim::ZENCHANG);
 		bubbleStages++;
 		break;
-	case 1:
+	case (int)BubbleStages::GREENSTAGE_:
 		if (eTimeCatch > eTimeCatchGreen) bubbleStages++;
 		eTimeCatch += GetFrameTime();
 		break;
-	case 2:
+	case (int)BubbleStages::YELLOWSTAGE:
 		eTimeCatch = 0;
 		SetAnimation((int)BubbleAnim::ZENCHANY);
 		bubbleStages++;
 		break;
-	case 3:
+	case (int)BubbleStages::YELLOWSTAGE_:
 		if (eTimeCatch > eTimeCatchYellow) bubbleStages++;
 		eTimeCatch += GetFrameTime();
-
+		break;
+	case (int)BubbleStages::REDSTAGE:
+		eTimeCatch = 0;
+		SetAnimation((int)BubbleAnim::ZENCHANR);
+		bubbleStages++;
+		break;
+	case (int)BubbleStages::REDSTAGE_:
+		if (eTimeCatch > eTimeCatchRed) bubbleStages++;
+		eTimeCatch += GetFrameTime();
 		break;
 	}
 }
