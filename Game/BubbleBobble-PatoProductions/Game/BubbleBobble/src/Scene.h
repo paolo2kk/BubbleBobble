@@ -9,6 +9,7 @@
 #include "EnemyManager.h"
 #include "ShotManager.h"
 #include "ParticleManager.h"
+
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
 class Scene

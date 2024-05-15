@@ -8,6 +8,7 @@
 enum class Resource {
     IMG_TEXT,
     IMG_MENU,
+    IMG_ANIMATIONS,
     IMG_LIFE_BOB,
     IMG_LIFE_BUB,
     IMG_TUTORIAL,
