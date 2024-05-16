@@ -4,7 +4,6 @@
 #include "Globals.h"
 #include "BubbleFromPlayer.h"
 #include <raymath.h>
-#include "Animations.h"
 
 
 Player::Player(const Point& p, State s, Look view) :
@@ -15,7 +14,6 @@ Player::Player(const Point& p, State s, Look view) :
 	jump_delay = PLAYER_JUMP_DELAY;
 	map = nullptr;
 	score = 0;
-	animation_ = new Anim;
 }
 Player::~Player()
 {
@@ -152,7 +150,6 @@ void Player::StartWalkingLeft()
 	state = State::WALKING;
 	look = Look::LEFT;
 	SetAnimation((int)PlayerAnim::WALKING_LEFT);
-	//animation_->SetAnimation((int)Animations::BOB_WALK_L);
 }
 void Player::StartWalkingRight()
 {

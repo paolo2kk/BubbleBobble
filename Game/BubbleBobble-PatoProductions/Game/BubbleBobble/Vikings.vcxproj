@@ -20,10 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AABB.cpp" />
-    <ClCompile Include="src\Animations.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </ClCompile>
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\BubbleFromPlayer.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
@@ -55,10 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AABB.h" />
-    <ClInclude Include="src\Animations.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </ClInclude>
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\BubbleFromPlayer.h" />
     <ClInclude Include="src\Enemy.h" />
@@ -154,8 +146,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\theki\OneDrive\Escriptori\Project1Test\Game\BubbleBobble-PatoProductions\raylib\include;C:\Users\toncg\Desktop\raylib\raylib\include;C:\Users\gpauc\Music\raylib\include;C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\theki\OneDrive\Escriptori\Project1Test\Game\BubbleBobble-PatoProductions\raylib\lib;C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\toncg\Documents\GitHub\BubbleBobble-PatoProductions\Game\BubbleBobble-PatoProductions\raylib\include;C:\Users\theki\OneDrive\Escriptori\Project1Test\Game\BubbleBobble-PatoProductions\raylib\include;C:\Users\toncg\Desktop\raylib\raylib\include;C:\Users\gpauc\Music\raylib\include;C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\toncg\Documents\GitHub\BubbleBobble-PatoProductions\Game\BubbleBobble-PatoProductions\raylib\lib;C:\Users\theki\OneDrive\Escriptori\Project1Test\Game\BubbleBobble-PatoProductions\raylib\lib;C:\Users\paugc2\Documents\GitHub\BubbleBobble-PatoProductions\raylib\lib;C:\Users\gpauc\Music\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

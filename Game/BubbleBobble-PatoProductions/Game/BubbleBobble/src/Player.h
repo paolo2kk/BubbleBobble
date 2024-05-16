@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
 #include "TileMap.h"
-#include "Animations.h"
 
 //Representation model size: 32x32
 #define PLAYER_FRAME_SIZE		17
@@ -109,6 +108,5 @@ private:
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
-	Anim* animation_;
 };
 
