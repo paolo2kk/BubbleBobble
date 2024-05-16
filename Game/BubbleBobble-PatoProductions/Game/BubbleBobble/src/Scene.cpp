@@ -414,12 +414,17 @@ void Scene::CheckCollisions()
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB enemy_box = enemy->GetHitbox();
-			if (bubble_box.TestAABB(enemy_box))
+			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide)
 			{
 				enemies->DestroyEnemy(enemy);
 				bubble->SetAlive(false);
 				bubble->inCatch = true;
-				
+				if (bubble->hasEndedFromCatch) {
+					Point pos = bubble->GetPos();
+					AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+					AABB area = level->GetSweptAreaX(hitbox);
+					enemies->Add(pos, EnemyType::SLIME, area);
+				}
 				break;
 			}
 		}

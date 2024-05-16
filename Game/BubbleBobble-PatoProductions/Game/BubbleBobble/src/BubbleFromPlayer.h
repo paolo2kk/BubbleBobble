@@ -15,7 +15,7 @@
 
 enum class Directions { LEFT, RIGHT };
 enum class BubbleAnim {INSHOOT, IDLE, SMASHED, ZENCHANG, ZENCHANY, ZENCHANR, ZENCHANBLINK, NUM_ANIMATIONS};
-enum class BubbleStages {GREENSTAGE, GREENSTAGE_, YELLOWSTAGE, YELLOWSTAGE_, REDSTAGE, REDSTAGE_};
+enum class BubbleStages {GREENSTAGE, GREENSTAGE_, YELLOWSTAGE, YELLOWSTAGE_, REDSTAGE, REDSTAGE_, ENDED};
 class BubbleFromPlayer : public Entity
 {
 public:
@@ -36,6 +36,10 @@ public:
 	void EnemyCatch();
 	void SetPlayer(Player* p);
 	bool inCatch = false;
+	bool hasEndedFromCatch = false;
+	bool canCollide;
+	Point GetPos() const;
+
 private:
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);

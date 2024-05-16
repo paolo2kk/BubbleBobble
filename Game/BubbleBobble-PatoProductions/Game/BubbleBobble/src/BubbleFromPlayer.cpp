@@ -18,6 +18,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	Rectangle rc;
 	inShoot = true;
 	eTimePogo = 0;
+	canCollide = true;
 	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
@@ -88,14 +89,18 @@ void BubbleFromPlayer::Update()
 }
 bool BubbleFromPlayer::isAlive()
 {
-	eTime += GetFrameTime();
-	if (eTime >= lifeTime)
+	if (!inCatch)
 	{
-		return false;
+		eTime += GetFrameTime();
+		if (eTime >= lifeTime)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
-	else {
-		return true;
-	}
+	
 }
 void BubbleFromPlayer::ClampPos()
 {
@@ -146,6 +151,10 @@ void BubbleFromPlayer::Stomp()
 	}
 	eTimePogo += GetFrameTime();
 }
+Point BubbleFromPlayer::GetPos() const
+{
+	return pos;
+}
 void BubbleFromPlayer::EnemyCatch()
 {
 	switch (bubbleStages)
@@ -176,6 +185,10 @@ void BubbleFromPlayer::EnemyCatch()
 		if (eTimeCatch > eTimeCatchRed) bubbleStages++;
 		eTimeCatch += GetFrameTime();
 		break;
+	case(int)BubbleStages::ENDED:
+		hasEndedFromCatch = true;
+		
+		break;
 	}
 }
 
@@ -204,7 +217,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				break;
 			case 2:
 				if(!inCatch) SetAnimation((int)BubbleAnim::IDLE);
-
+				canCollide = false;
 
 				inShoot = false;
 				dir = { 0, -1 };
@@ -233,6 +246,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				break;
 			case 2:
 				if (!inCatch) SetAnimation((int)BubbleAnim::IDLE);
+				canCollide = false;
 
 				inShoot = false;
 				dir = { 0, -1 };
