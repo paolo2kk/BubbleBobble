@@ -419,14 +419,19 @@ void Scene::CheckCollisions()
 				enemies->DestroyEnemy(enemy);
 				bubble->SetAlive(false);
 				bubble->inCatch = true;
-				if (bubble->hasEndedFromCatch) {
-					Point pos = bubble->GetPos();
-					AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
-					AABB area = level->GetSweptAreaX(hitbox);
-					enemies->Add(pos, EnemyType::SLIME, area);
-				}
+				
 				break;
 			}
+			
+		}
+		if (bubble->hasEndedFromCatch) {
+			Point pos = bubble->GetPos();
+			pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
+			AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+			AABB area = level->GetSweptAreaX(hitbox);
+			enemies->Add(pos, EnemyType::SLIME, area);
+			bubble->inCatch = true;
+			bubble->hasEndedFromCatch = false;
 		}
 	}
 
