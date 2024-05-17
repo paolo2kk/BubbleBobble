@@ -451,6 +451,7 @@ void Scene::CheckCollisions()
 			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 
 			player->IncrScore((*it)->Points());
+			(*it)->DrawPoints();
 			AllObjects--;
 
 			//Delete the object
@@ -590,3 +591,4 @@ void Scene::ResetScore() const
 	}
 
 }
+

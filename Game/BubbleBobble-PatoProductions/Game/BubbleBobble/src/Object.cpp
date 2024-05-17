@@ -35,6 +35,9 @@ Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL
 
 		default: LOG("Internal error: object creation of invalid type");
 	}
+
+
+
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
 
@@ -164,4 +167,29 @@ int Object::Points() const
 		LOG("Internal error: object type invalid when giving points");
 		return 0;
 	}
+}
+void Object::DrawPoints()
+{
+	Rectangle rc;
+	const int n = TILE_SIZE;
+
+	switch (Points())
+	{
+	case POINTS_BLUE_CANDY:
+		rc = { 0, n*2, n, n }; 
+		break;
+	case POINTS_BANANA:
+		rc = { 17 * n,n * 2, n, n };
+		break;
+	case POINTS_CHERRY:
+		rc = { 21 * n,n * 2, n, n };
+		break;
+
+	default: LOG("Internal error: object creation of invalid type");
+	}
+
+	ResourceManager& data = ResourceManager::Instance();
+	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
+
+
 }

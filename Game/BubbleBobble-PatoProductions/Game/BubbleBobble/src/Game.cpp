@@ -40,8 +40,6 @@ Game::Game()
     target = {};
     src = {};
     dst = {};
-
-    
 }
 Game::~Game()
 {
@@ -212,7 +210,7 @@ AppStatus Game::LoadResources()
 
     text_->Initialise(Resource::IMG_TEXT, "images/NUMBERS.png", '0', 8);
 
-    if (data.LoadTexture(Resource::IMG_ITEMS, "images/Items.png") != AppStatus::OK)
+    if (data.LoadTexture(Resource::IMG_ITEMS, "images/Objects.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
