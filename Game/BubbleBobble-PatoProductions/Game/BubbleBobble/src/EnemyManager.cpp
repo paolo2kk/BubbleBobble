@@ -13,13 +13,6 @@ EnemyManager::~EnemyManager()
 }
 AppStatus EnemyManager::Initialise()
 {
-	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_ENEMIES, "images/enemies.png") != AppStatus::OK)
-	{
-		LOG("Failed to load enemies sprite texture");
-		return AppStatus::ERROR;
-	}
-
 	return AppStatus::OK;
 }
 void EnemyManager::SetShotManager(ShotManager* shots)

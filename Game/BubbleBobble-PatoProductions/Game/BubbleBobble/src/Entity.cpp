@@ -11,13 +11,11 @@ Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), h
 
 {
 	isAlive = true;
-    render_ = nullptr;
     img_animations = nullptr;
 }
 Entity::Entity(const Point& p, int w, int h, int frame_w, int frame_h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
 {
 	isAlive = true;
-
 }
 Entity::~Entity()
 {
@@ -76,6 +74,14 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::ZENCHAN_BUBBLE_GREEN, { i * n, n * 3, n, n });
 
+    Anima->SetAnimationDelay((int)Animations::ZENCHAN_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::ZENCHAN_BUBBLE_YELLOW, { i * n, n * 3, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::ZENCHAN_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::ZENCHAN_BUBBLE_RED, { i * n, n * 3, n, n });
+
     Anima->SetAnimationDelay((int)Animations::ZENCHAN_BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::ZENCHAN_BUBBLE_BLUE, { i * n, n * 4, n, n });
@@ -97,6 +103,14 @@ AppStatus Entity::InitializeAnimations()
     Anima->SetAnimationDelay((int)Animations::PULPUL_BUBBLE_GREEN, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::PULPUL_BUBBLE_GREEN, { i * n, n * 8, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::PULPUL_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::PULPUL_BUBBLE_YELLOW, { i * n, n * 8, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::PULPUL_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::PULPUL_BUBBLE_RED, { i * n, n * 8, n, n });
 
     Anima->SetAnimationDelay((int)Animations::PULPUL_BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
@@ -127,6 +141,14 @@ AppStatus Entity::InitializeAnimations()
     Anima->SetAnimationDelay((int)Animations::BENEBOU_BUBBLE_GREEN, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::BENEBOU_BUBBLE_GREEN, { i * n, n * 13, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BENEBOU_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::BENEBOU_BUBBLE_YELLOW, { i * n, n * 13, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BENEBOU_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::BENEBOU_BUBBLE_RED, { i * n, n * 13, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BENEBOU_BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
@@ -187,11 +209,19 @@ AppStatus Entity::InitializeAnimations()
         Anima->AddKeyFrame((int)Animations::HIDEGONS_DEATH, { i * n, n * 21, n, n });
 
     Anima->SetAnimationDelay((int)Animations::HIDEGONS_BUBBLE_GREEN, ANIM_DELAY);
-    for (i = 0; i < 4; ++i)
+    for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::HIDEGONS_BUBBLE_GREEN, { i * n, n * 22, n, n });
 
+    Anima->SetAnimationDelay((int)Animations::HIDEGONS_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::HIDEGONS_BUBBLE_YELLOW, { i * n, n * 22, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::HIDEGONS_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::HIDEGONS_BUBBLE_RED, { i * n, n * 22, n, n });
+
     Anima->SetAnimationDelay((int)Animations::HIDEGONS_BUBBLE_BLUE, ANIM_DELAY);
-    for (i = 0; i < 4; ++i)
+    for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::HIDEGONS_BUBBLE_BLUE, { i * n, n * 23, n, n });
 
     // Drunk animnations
@@ -240,6 +270,14 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::DRUNK_BUBBLE_GREEN, { i * n, n * 30, n, n });
 
+    Anima->SetAnimationDelay((int)Animations::DRUNK_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::DRUNK_BUBBLE_YELLOW, { i * n, n * 30, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::DRUNK_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::DRUNK_BUBBLE_RED, { i * n, n * 30, n, n });
+
     Anima->SetAnimationDelay((int)Animations::DRUNK_BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::DRUNK_BUBBLE_BLUE, { i * n, n * 31, n, n });
@@ -261,6 +299,14 @@ AppStatus Entity::InitializeAnimations()
     Anima->SetAnimationDelay((int)Animations::SKEL_MONSTA_BUBBLE_GREEN, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::SKEL_MONSTA_BUBBLE_GREEN, { i * n, n * 34, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SKEL_MONSTA_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::SKEL_MONSTA_BUBBLE_YELLOW, { i * n, n * 34, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SKEL_MONSTA_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::SKEL_MONSTA_BUBBLE_RED, { i * n, n * 34, n, n });
 
     Anima->SetAnimationDelay((int)Animations::SKEL_MONSTA_BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
@@ -296,21 +342,21 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 4; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_ATACK_L, { i * n, n * 38, n, n });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_JUMP_R, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_JUMP_R, { i * n, n * 39, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BOB_JUMP_L, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_JUMP_L, { i * n, n * 39, n, n });
-
     Anima->SetAnimationDelay((int)Animations::BOB_FALL_R, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_FALL_R, { i * n, n * 40, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_FALL_R, { i * n, n * 39, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_FALL_L, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_FALL_L, { i * n, n * 40, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_FALL_L, { i * n, n * 39, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BOB_JUMP_R, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BOB_JUMP_R, { i * n, n * 40, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BOB_JUMP_L, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BOB_JUMP_L, { i * n, n * 40, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_SQUISH_R, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
@@ -370,21 +416,21 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 4; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_ATACK_L, { i * n, n * 51, n, n });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_R, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_JUMP_R, { i * n, n * 52, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_L, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_JUMP_L, { i * n, n * 52, n, n });
-
     Anima->SetAnimationDelay((int)Animations::BUB_FALL_R, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FALL_R, { i * n, n * 53, -n, n });
+        Anima->AddKeyFrame((int)Animations::BUB_FALL_R, { i * n, n * 52, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BUB_FALL_L, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FALL_L, { i * n, n * 53, n, n });
+        Anima->AddKeyFrame((int)Animations::BUB_FALL_L, { i * n, n * 52, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_R, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_JUMP_R, { i * n, n * 53, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_L, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_JUMP_L, { i * n, n * 53, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BUB_SQUISH_R, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
@@ -408,19 +454,79 @@ AppStatus Entity::InitializeAnimations()
 
     Anima->SetAnimationDelay((int)Animations::BUB_PUSH_BUTTON, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_PUSH_BUTTON, { i * n * 2, n * 58, n * 2, n * 2 });
+        Anima->AddKeyFrame((int)Animations::BUB_PUSH_BUTTON, { i * n * 2, n * 59, n * 2, n * 2 });
 
     Anima->SetAnimationDelay((int)Animations::BUB_FIRE_DEATH, ANIM_DELAY);
     for (i = 0; i < 16; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 60, n * 2, n });
+        Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 58, n * 2, n });
 
     Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION, ANIM_DELAY);
     for (i = 0; i < 10; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION, { i * n * 2, n * 61, n * 2, n * 2 });
 
+    //BUBBLES
+
     Anima->SetAnimationDelay((int)Animations::BUBBLE, ANIM_DELAY);
-    for (i = 0; i < 10; ++i)
-        Anima->AddKeyFrame((int)Animations::BUBBLE, { i * n * 2, n * 63, n * 2, n * 2 });
+    for (i = 0; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::BUBBLE, { i * n , n * 63, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::THUNDER_BUBBLE_GREEN, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::THUNDER_BUBBLE_GREEN, { i * n, n * 64, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::THUNDER_BUBBLE_YELLOW, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::THUNDER_BUBBLE_YELLOW, { i * n, n * 64, n, n});
+
+    Anima->SetAnimationDelay((int)Animations::THUNDER_BUBBLE_RED, ANIM_DELAY);
+    for (i = 6; i < 9; ++i)
+        Anima->AddKeyFrame((int)Animations::THUNDER_BUBBLE_RED, { i * n, n * 64, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::THUNDER_BUBBLE_BLUE, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::THUNDER_BUBBLE_BLUE, { i * n, n * 65, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUBBLE_GREEN, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUBBLE_GREEN, { i * n, n * 66, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUBBLE_BLUE, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUBBLE_BLUE, { i * n, n * 67, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SPAWN_BUBBLE_GREEN_R, ANIM_DELAY);
+    for (i = 0; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::SPAWN_BUBBLE_GREEN_R, { i * n, n * 68, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SPAWN_BUBBLE_GREEN_L, ANIM_DELAY);
+    for (i = 0; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::SPAWN_BUBBLE_GREEN_L, { i * n, n * 68, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SPAWN_BUBBLE_BLUE_R, ANIM_DELAY);
+    for (i = 0; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::SPAWN_BUBBLE_BLUE_R, { i * n, n * 69, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::SPAWN_BUBBLE_BLUE_L, ANIM_DELAY);
+    for (i = 0; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::SPAWN_BUBBLE_BLUE_L, { i * n, n * 69, n, n });
+
+    //SUPER DRUNK
+
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_WALK, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_WALK, { i * n*4, n * 70, n*4, n*4 });
+
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_DEATH, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_DEATH, { i * n * 4, n * 74, n * 4, n * 4 });
+
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_ANGRY, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_ANGRY, { i * n * 4, n * 78, n * 4, n * 4 });
+
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_BUBBLE, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_BUBBLE, { i * n * 4, n * 82, n * 4, n * 4 });
 
     return AppStatus::OK;
 }

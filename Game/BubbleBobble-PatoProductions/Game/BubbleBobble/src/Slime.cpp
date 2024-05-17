@@ -15,42 +15,11 @@ Slime::~Slime()
 }
 AppStatus Slime::Initialise(Look look, const AABB& area)
 {
-	int i;
-	const int n = SLIME_FRAME_SIZE;
-
-	ResourceManager& data = ResourceManager::Instance();
-	render = new Sprite(data.GetTexture(Resource::IMG_ENEMIES));
-	if (render == nullptr)
-	{
-		LOG("Failed to allocate memory for slime sprite");
-		return AppStatus::ERROR;
-	}
-
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations((int)SlimeAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)SlimeAnim::IDLE_RIGHT, SLIME_ANIM_DELAY);
-	sprite->AddKeyFrame((int)SlimeAnim::IDLE_RIGHT, { 0, 4 * n, -n, n });
-	sprite->SetAnimationDelay((int)SlimeAnim::IDLE_LEFT, SLIME_ANIM_DELAY);
-	sprite->AddKeyFrame((int)SlimeAnim::IDLE_LEFT, { 0, 4 * n, n, n });
-
-	sprite->SetAnimationDelay((int)SlimeAnim::WALKING_RIGHT, SLIME_ANIM_DELAY);
-	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)SlimeAnim::WALKING_RIGHT, { (float)i * n, 4 * n, -n, n });
-	sprite->SetAnimationDelay((int)SlimeAnim::WALKING_LEFT, SLIME_ANIM_DELAY);
-	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)SlimeAnim::WALKING_LEFT, { (float)i * n, 4 * n, n, n });
-
-	sprite->SetAnimationDelay((int)SlimeAnim::ATTACK_RIGHT, SLIME_ANIM_DELAY);
-	sprite->AddKeyFrame((int)SlimeAnim::ATTACK_RIGHT, { 0, 6 * n, n, n });
-	sprite->AddKeyFrame((int)SlimeAnim::ATTACK_RIGHT, { n, 6 * n, n, n });
-	sprite->SetAnimationDelay((int)SlimeAnim::ATTACK_LEFT, SLIME_ANIM_DELAY);
-	sprite->AddKeyFrame((int)SlimeAnim::ATTACK_LEFT, { 0, 6 * n, -n, n });
-	sprite->AddKeyFrame((int)SlimeAnim::ATTACK_LEFT, { n, 6 * n, -n, n });
+	InitializeAnimations();
 
 	this->look = look;
-	if (look == Look::LEFT)        sprite->SetAnimation((int)SlimeAnim::WALKING_LEFT);
-	else if (look == Look::RIGHT) sprite->SetAnimation((int)SlimeAnim::WALKING_RIGHT);
+	if (look == Look::LEFT)        SetAnimation((int)Animations::ZENCHAN_WALK_L);
+	else if (look == Look::RIGHT) SetAnimation((int)Animations::ZENCHAN_WALK_R);
 
 	visibility_area = area;
 
@@ -107,12 +76,12 @@ void Slime::MoveX()
 		{
 			pos.x = prev_x;
 			look = Look::LEFT;
-			SetAnimation((int)SlimeAnim::WALKING_LEFT);
+			SetAnimation((int)Animations::ZENCHAN_WALK_L);
 		}
 		else if (map->TestCollisionHalfWallLeft(box)) {
 			pos.x = prev_x;
 			look = Look::LEFT;
-			SetAnimation((int)SlimeAnim::WALKING_LEFT);
+			SetAnimation((int)Animations::ZENCHAN_WALK_R);
 
 
 		}
@@ -125,12 +94,12 @@ void Slime::MoveX()
 		{
 			pos.x = prev_x;
 			look = Look::RIGHT;
-			SetAnimation((int)SlimeAnim::WALKING_RIGHT);
+			SetAnimation((int)Animations::ZENCHAN_WALK_R);
 		}
 		else if (map->TestCollisionHalfWallRight(box)) {
 			pos.x = prev_x;
 			look = Look::RIGHT;
-			SetAnimation((int)SlimeAnim::WALKING_RIGHT);
+			SetAnimation((int)Animations::ZENCHAN_WALK_R);
 
 		}
 	}
@@ -180,10 +149,10 @@ void Slime::MoveY()
 
 void Slime::UpdateLook(int anim_id)
 {
-	SlimeAnim anim = (SlimeAnim)anim_id;
-	look = (anim == SlimeAnim::IDLE_LEFT ||
-		anim == SlimeAnim::WALKING_LEFT ||
-		anim == SlimeAnim::ATTACK_LEFT) ? Look::LEFT : Look::RIGHT;
+	Animations anim = (Animations)anim_id;
+	look = (anim == Animations::ZENCHAN_WALK_L ||
+		anim == Animations::ZENCHAN_WALK_L ||
+		anim == Animations::ZENCHAN_WALK_L) ? Look::LEFT : Look::RIGHT;
 }
 void Slime::GetShootingPosDir(Point* p, Point* d) const
 {

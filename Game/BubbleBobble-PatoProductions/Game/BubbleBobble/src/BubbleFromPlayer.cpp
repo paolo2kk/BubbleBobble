@@ -32,50 +32,9 @@ void BubbleFromPlayer::SetAnimation(int id)
 }
 AppStatus BubbleFromPlayer::Initialise()
 {
-	Rectangle rc;
-	const int n = TILE_SIZE;
-	const int p = PADDINGG_X;
-	const int y = 16;
+	InitializeAnimations();
 
-	ResourceManager& data = ResourceManager::Instance();
-	data.LoadTexture(Resource::IMG_BUBBLES, "images/Bubbles.png");
-
-	render = new Sprite(data.GetTexture(Resource::IMG_BUBBLES));
-	if (render == nullptr)
-	{
-		LOG("Failed to allocate memory for player sprite");
-		return AppStatus::ERROR;
-	}
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	
-	sprite->SetNumberAnimations((int)BubbleAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)BubbleAnim::IDLE, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + p), y, n, n });
-    sprite->AddKeyFrame((int)BubbleAnim::IDLE, { (n + p), y, n, n });
-
-	sprite->SetAnimationDelay((int)BubbleAnim::INSHOOT, ANIM_DELAY + 6);
-	for(int i = 0; i < 6; ++i)
-		sprite->AddKeyFrame((int)BubbleAnim::INSHOOT, { (float)i * n, 0, n, n });
-
-	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANG, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { 0, 2*y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { n, 2*	y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANG, { 2*n, 2 * y, n, n });
-
-	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANY, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 6*n, 2 * y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 7*n, 2 * y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANY, { 8 * n, 2 * y, n, n });
-
-	sprite->SetAnimationDelay((int)BubbleAnim::ZENCHANR, ANIM_DELAY);
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 9 * n, 2 * y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 10 * n, 2 * y, n, n });
-	sprite->AddKeyFrame((int)BubbleAnim::ZENCHANR, { 11 * n, 2 * y, n, n });
-
-
-
-	sprite->SetAnimation((int)BubbleAnim::INSHOOT);
+	SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_L);
 	return AppStatus::OK;
 
 }
@@ -161,7 +120,7 @@ void BubbleFromPlayer::EnemyCatch()
 	switch (bubbleStages)
 	{
 	case (int)BubbleStages::GREENSTAGE:
-		SetAnimation((int)BubbleAnim::ZENCHANG);
+		SetAnimation((int)Animations::ZENCHAN_BUBBLE_GREEN);
 		bubbleStages++;
 		break;
 	case (int)BubbleStages::GREENSTAGE_:
@@ -170,7 +129,7 @@ void BubbleFromPlayer::EnemyCatch()
 		break;
 	case (int)BubbleStages::YELLOWSTAGE:
 		eTimeCatch = 0;
-		SetAnimation((int)BubbleAnim::ZENCHANY);
+		SetAnimation((int)Animations::ZENCHAN_BUBBLE_YELLOW);
 		bubbleStages++;
 		break;
 	case (int)BubbleStages::YELLOWSTAGE_:
@@ -179,7 +138,7 @@ void BubbleFromPlayer::EnemyCatch()
 		break;
 	case (int)BubbleStages::REDSTAGE:
 		eTimeCatch = 0;
-		SetAnimation((int)BubbleAnim::ZENCHANR);
+		SetAnimation((int)Animations::ZENCHAN_BUBBLE_RED);
 		bubbleStages++;
 		break;
 	case (int)BubbleStages::REDSTAGE_:
@@ -201,7 +160,7 @@ void BubbleFromPlayer::Movement(Directions d)
 		if (d == Directions::LEFT)
 		{
 			switch (stages) {
-				SetAnimation((int)BubbleAnim::INSHOOT);
+				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_L);
 			case 1:
 				if (pos.x < 20)
 				{
@@ -216,7 +175,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				}
 				break;
 			case 2:
-				if(!inCatch) SetAnimation((int)BubbleAnim::IDLE);
+				if(!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
 				canCollide = false;
 
 				inShoot = false;
@@ -230,7 +189,7 @@ void BubbleFromPlayer::Movement(Directions d)
 		{
 
 			switch (stages) {
-				SetAnimation((int)BubbleAnim::INSHOOT);
+				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_R);
 			case 1:
 				if (pos.x > 226)
 				{
@@ -245,7 +204,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				}
 				break;
 			case 2:
-				if (!inCatch) SetAnimation((int)BubbleAnim::IDLE);
+				if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
 				canCollide = false;
 
 				inShoot = false;
