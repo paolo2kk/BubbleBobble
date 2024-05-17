@@ -40,7 +40,8 @@ public:
 	bool canCollide;
 	Point GetPos() const;
 	bool issAlive;
-	bool CollisionX(const Point& p, int distance) const;
+	bool inShoot;
+
 private:
 	void HandleCollisionLogic();
 
@@ -49,7 +50,6 @@ private:
 	void SetAnimation(int id);
 	int bubbleStages = (int)BubbleStages::GREENSTAGE;
 
-	bool inShoot;
 	int logPosXL;
 	int logPosXR;
 	float spawnTime;

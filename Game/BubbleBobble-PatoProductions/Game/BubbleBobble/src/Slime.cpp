@@ -109,11 +109,14 @@ void Slime::MoveX()
 			look = Look::LEFT;
 			SetAnimation((int)SlimeAnim::WALKING_LEFT);
 		}
-		else if (map->TestCollisionHalfWallRight(box)) {
+		else if (map->TestCollisionHalfWallLeft(box)) {
 			pos.x = prev_x;
 			look = Look::LEFT;
+			SetAnimation((int)SlimeAnim::WALKING_LEFT);
+
 
 		}
+		
 	}
 	else if (look == Look::LEFT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
@@ -124,10 +127,10 @@ void Slime::MoveX()
 			look = Look::RIGHT;
 			SetAnimation((int)SlimeAnim::WALKING_RIGHT);
 		}
-		else if (map->TestCollisionHalfWallLeft(box)) {
+		else if (map->TestCollisionHalfWallRight(box)) {
 			pos.x = prev_x;
 			look = Look::RIGHT;
-
+			SetAnimation((int)SlimeAnim::WALKING_RIGHT);
 
 		}
 	}

@@ -424,7 +424,7 @@ void Scene::CheckCollisions()
 			}
 
 		}
-		if (bubble_box.TestAABB(player_box) && bubble->inCatch)
+		if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
 		{
 			bubble->issAlive = false;
 
