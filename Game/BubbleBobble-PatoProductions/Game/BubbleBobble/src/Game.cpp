@@ -409,6 +409,7 @@ AppStatus Game::Update()
         case GameState::INTRO:
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+
             if (pastTime(5))
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;

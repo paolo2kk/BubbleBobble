@@ -422,7 +422,14 @@ void Scene::CheckCollisions()
 				
 				break;
 			}
-			
+
+		}
+		if (bubble_box.TestAABB(player_box) && bubble->inCatch)
+		{
+			bubble->issAlive = false;
+
+
+			break;
 		}
 		if (bubble->hasEndedFromCatch) {
 			Point pos = bubble->GetPos();
@@ -430,9 +437,9 @@ void Scene::CheckCollisions()
 			AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 			AABB area = level->GetSweptAreaX(hitbox);
 			enemies->Add(pos, EnemyType::SLIME, area);
-			bubble->inCatch = true;
-			bubble->hasEndedFromCatch = false;
+			bubble->issAlive = false;
 		}
+
 	}
 
 	auto it = objects.begin();
@@ -482,7 +489,7 @@ void Scene::BubbleDespawn()
 	int o = 0;
 	while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
 	{
-		if (bubblesPlayer[o]->isAlive() == false)
+		if (bubblesPlayer[o]->isAlive() == false || !bubblesPlayer[o]->issAlive)
 		{
 			//Delete the object
 			delete* iterate;

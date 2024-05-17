@@ -39,8 +39,12 @@ public:
 	bool hasEndedFromCatch = false;
 	bool canCollide;
 	Point GetPos() const;
-
+	bool issAlive;
+	bool CollisionX(const Point& p, int distance) const;
 private:
+	void HandleCollisionLogic();
+
+
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);
 	int bubbleStages = (int)BubbleStages::GREENSTAGE;

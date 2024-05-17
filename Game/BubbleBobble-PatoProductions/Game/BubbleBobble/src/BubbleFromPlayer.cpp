@@ -19,6 +19,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	inShoot = true;
 	eTimePogo = 0;
 	canCollide = true;
+	issAlive = true;
 	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
@@ -187,7 +188,6 @@ void BubbleFromPlayer::EnemyCatch()
 		break;
 	case(int)BubbleStages::ENDED:
 		hasEndedFromCatch = true;
-		
 		break;
 	}
 }
@@ -259,6 +259,12 @@ void BubbleFromPlayer::Movement(Directions d)
 	}
 	
 }
+void BubbleFromPlayer::HandleCollisionLogic()
+{
+	AABB box, player_hitbox;
+
+}
+
 void BubbleFromPlayer::DrawDebug(const Color & col) const
 {
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
