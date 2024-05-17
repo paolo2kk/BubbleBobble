@@ -13,7 +13,6 @@ Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), h
 	isAlive = true;
     render_ = nullptr;
     img_animations = nullptr;
-    Initialize();
 }
 Entity::Entity(const Point& p, int w, int h, int frame_w, int frame_h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
 {
@@ -28,7 +27,7 @@ Entity::~Entity()
 		render = nullptr;
 	}
 }
-AppStatus Entity::Initialize()
+AppStatus Entity::InitializeAnimations()
 {
     float i;
     const float n = ANIM_SIZE;
@@ -41,8 +40,8 @@ AppStatus Entity::Initialize()
     }
     img_animations = data.GetTexture(Resource::IMG_ANIMATIONS);
 
-    render_ = new Sprite(data.GetTexture(Resource::IMG_ANIMATIONS));
-    if (render_ == nullptr)
+    render = new Sprite(data.GetTexture(Resource::IMG_ANIMATIONS));
+    if (render == nullptr)
     {
         LOG("Failed to allocate memory for player sprite");
         return AppStatus::ERROR;
@@ -50,7 +49,7 @@ AppStatus Entity::Initialize()
 
     // Zen Chan Animations
 
-    Sprite* Anima = dynamic_cast<Sprite*>(render_);
+    Sprite* Anima = dynamic_cast<Sprite*>(render);
     Anima->SetNumberAnimations((int)Animations::NUM_ANIMATIONS);
 
     Anima->SetAnimationDelay((int)Animations::ZENCHAN_WALK_R, ANIM_DELAY);
@@ -271,137 +270,153 @@ AppStatus Entity::Initialize()
     for (i = 0; i < 4; ++i)
         Anima->AddKeyFrame((int)Animations::SKEL_MONSTA_DEATH, { i * n, n * 36, n, n });
 
-    //BUB animations
+    //BOB animations
 
-    Anima->SetAnimationDelay((int)Animations::BUB_WALK_R, ANIM_DELAY);
-    for (i = 0; i < 7; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_WALK_R, { i * n, n * 37, -n, n });
+    Anima->SetAnimationDelay((int)Animations::BOB_IDLE_R, 30);
+        Anima->AddKeyFrame((int)Animations::BOB_IDLE_R, { 0 * n, n * 37, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_IDLE_R, { 2 * n, n * 37, -n, n });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_WALK_L, ANIM_DELAY);
-    for (i = 0; i < 7; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_WALK_L, { i * n, n * 37, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_ATACK_R, ANIM_DELAY);
-    for (i = 0; i < 4; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_ATACK_R, { i * n, n * 38, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_ATACK_L, ANIM_DELAY);
-    for (i = 0; i < 4; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_ATACK_L, { i * n, n * 38, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_R, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_JUMP_R, { i * n, n * 39, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_L, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_JUMP_L, { i * n, n * 39, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_FALL_R, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FALL_R, { i * n, n * 40, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_FALL_L, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FALL_L, { i * n, n * 40, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_SQUISH_R, ANIM_DELAY);
-    for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_SQUISH_R, { i * n, n * 41, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_SQUISH_L, ANIM_DELAY);
-    for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_SQUISH_L, { i * n, n * 41, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_SQUASH_R, ANIM_DELAY);
-    for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_SQUASH_R, { i * n, n * 42, -n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_SQUASH_L, ANIM_DELAY);
-    for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_SQUASH_L, { i * n, n * 42, n, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_DEATH, ANIM_DELAY);
-    for (i = 0; i < 13; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_DEATH, { i * n, n * 43, n, n * 2 });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_PUSH_BUTTON, ANIM_DELAY);
-    for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_PUSH_BUTTON, { i * n * 2, n * 45, n * 2, n * 2 });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_FIRE_DEATH, ANIM_DELAY);
-    for (i = 0; i < 16; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 47, n * 2, n });
-
-    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION, ANIM_DELAY);
-    for (i = 0; i < 10; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION, { i * n * 2, n * 48, n * 2, n * 2 });
-
-    // Bob Animations
+    Anima->SetAnimationDelay((int)Animations::BOB_IDLE_L, 30);
+        Anima->AddKeyFrame((int)Animations::BOB_IDLE_L, { 0 * n, n * 37, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_IDLE_L, { 2 * n, n * 37, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_WALK_R, ANIM_DELAY);
     for (i = 0; i < 7; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_WALK_R, { i * n, n * 50, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_WALK_R, { i * n, n * 37, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_WALK_L, ANIM_DELAY);
     for (i = 0; i < 7; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_WALK_L, { i * n, n * 50, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_WALK_L, { i * n, n * 37, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_ATACK_R, ANIM_DELAY);
     for (i = 0; i < 4; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_ATACK_R, { i * n, n * 51, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_ATACK_R, { i * n, n * 38, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_ATACK_L, ANIM_DELAY);
     for (i = 0; i < 4; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_ATACK_L, { i * n, n * 51, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_ATACK_L, { i * n, n * 38, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_JUMP_R, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_JUMP_R, { i * n, n * 52, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_JUMP_R, { i * n, n * 39, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_JUMP_L, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_JUMP_L, { i * n, n * 52, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_JUMP_L, { i * n, n * 39, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_FALL_R, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_FALL_R, { i * n, n * 53, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_FALL_R, { i * n, n * 40, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_FALL_L, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_FALL_L, { i * n, n * 53, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_FALL_L, { i * n, n * 40, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_SQUISH_R, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_SQUISH_R, { i * n, n * 54, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_SQUISH_R, { i * n, n * 41, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_SQUISH_L, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_SQUISH_L, { i * n, n * 54, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_SQUISH_L, { i * n, n * 41, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_SQUASH_R, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_SQUASH_R, { i * n, n * 55, -n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_SQUASH_R, { i * n, n * 42, -n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_SQUASH_L, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_SQUASH_L, { i * n, n * 55, n, n });
+        Anima->AddKeyFrame((int)Animations::BOB_SQUASH_L, { i * n, n * 42, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_DEATH, ANIM_DELAY);
     for (i = 0; i < 13; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_DEATH, { i * n, n * 56, n, n * 2 });
+        Anima->AddKeyFrame((int)Animations::BOB_DEATH, { i * n, n * 43, n, n * 2 });
 
     Anima->SetAnimationDelay((int)Animations::BOB_PUSH_BUTTON, ANIM_DELAY);
     for (i = 0; i < 2; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_PUSH_BUTTON, { i * n * 2, n * 58, n * 2, n * 2 });
+        Anima->AddKeyFrame((int)Animations::BOB_PUSH_BUTTON, { i * n * 2, n * 45, n * 2, n * 2 });
 
     Anima->SetAnimationDelay((int)Animations::BOB_FIRE_DEATH, ANIM_DELAY);
     for (i = 0; i < 16; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_FIRE_DEATH, { i * n * 2, n * 60, n * 2, n });
+        Anima->AddKeyFrame((int)Animations::BOB_FIRE_DEATH, { i * n * 2, n * 47, n * 2, n });
 
     Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION, ANIM_DELAY);
     for (i = 0; i < 10; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION, { i * n * 2, n * 61, n * 2, n * 2 });
+        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION, { i * n * 2, n * 48, n * 2, n * 2 });
+
+    // Bub Animations
+
+    Anima->SetAnimationDelay((int)Animations::BUB_IDLE_R, 30);
+    Anima->AddKeyFrame((int)Animations::BUB_IDLE_R, { 0 * n, n * 50, -n, n });
+    Anima->AddKeyFrame((int)Animations::BUB_IDLE_R, { 2 * n, n * 50, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_IDLE_L, 30);
+    Anima->AddKeyFrame((int)Animations::BUB_IDLE_L, { 0 * n, n * 50, n, n });
+    Anima->AddKeyFrame((int)Animations::BUB_IDLE_L, { 2 * n, n * 50, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_WALK_R, ANIM_DELAY);
+    for (i = 0; i < 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_WALK_R, { i * n, n * 50, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_WALK_L, ANIM_DELAY);
+    for (i = 0; i < 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_WALK_L, { i * n, n * 50, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_ATACK_R, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_ATACK_R, { i * n, n * 51, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_ATACK_L, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_ATACK_L, { i * n, n * 51, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_R, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_JUMP_R, { i * n, n * 52, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_JUMP_L, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_JUMP_L, { i * n, n * 52, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_FALL_R, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_FALL_R, { i * n, n * 53, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_FALL_L, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_FALL_L, { i * n, n * 53, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_SQUISH_R, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_SQUISH_R, { i * n, n * 54, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_SQUISH_L, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_SQUISH_L, { i * n, n * 54, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_SQUASH_R, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_SQUASH_R, { i * n, n * 55, -n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_SQUASH_L, ANIM_DELAY);
+    for (i = 0; i < 3; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_SQUASH_L, { i * n, n * 55, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_DEATH, ANIM_DELAY);
+    for (i = 0; i < 13; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_DEATH, { i * n, n * 56, n, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_PUSH_BUTTON, ANIM_DELAY);
+    for (i = 0; i < 2; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_PUSH_BUTTON, { i * n * 2, n * 58, n * 2, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_FIRE_DEATH, ANIM_DELAY);
+    for (i = 0; i < 16; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 60, n * 2, n });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION, ANIM_DELAY);
+    for (i = 0; i < 10; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION, { i * n * 2, n * 61, n * 2, n * 2 });
 
     Anima->SetAnimationDelay((int)Animations::BUBBLE, ANIM_DELAY);
     for (i = 0; i < 10; ++i)

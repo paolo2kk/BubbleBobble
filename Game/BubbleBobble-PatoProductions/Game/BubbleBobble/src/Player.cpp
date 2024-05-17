@@ -20,64 +20,9 @@ Player::~Player()
 }
 AppStatus Player::Initialise()
 {
-	int i;
-	const int n = PLAYER_FRAME_SIZE;
-	const int p = PADDING_X;
-	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_PLAYER, "images/Bub.png") != AppStatus::OK)
-	{
-		return AppStatus::ERROR;
-	}
-	
-	render = new Sprite(data.GetTexture(Resource::IMG_PLAYER));
-	if (render == nullptr)
-	{
-		LOG("Failed to allocate memory for player sprite");
-		return AppStatus::ERROR;
-	}
-
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations((int)PlayerAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT, 30);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 0, 0, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT, { 2 * (n + PADDING_X), 0, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, 30);
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 2 * (n + PADDING_X), 0, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT, ANIM_DELAY);
-	for (i = 0; i < 5; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::WALKING_RIGHT, { (float)i * (n + PADDING_X), (float)0, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_LEFT, ANIM_DELAY);
-	for (i = 0; i < 5; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i * (n + PADDING_X), (float)0, n, n });
-
-	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 8 * (n + PADDING_X), PADDING_Y + n, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { 9 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 8 * (n + PADDING_X),  PADDING_Y + n, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 9 * (n + PADDING_X), PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 10 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 10 * (n + PADDING_X),  PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 11 * (n + PADDING_X),  PADDING_Y + n, -n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 11 * (n + PADDING_X), PADDING_Y + n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE_L, ANIM_DELAY);
-	for (i = 7; i < 10; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE_L, { (float)i * (n + PADDING_X) - 1, 0, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::SHOOT_BUBBLE_R, ANIM_DELAY);
-	for (i = 7; i < 10; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::SHOOT_BUBBLE_R, { (float)i * (n + PADDING_X)  - 1, 0, -n, n });
-
-	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-
-
-	return AppStatus::OK;
+	return InitializeAnimations();
+	IsLookingRight();
+	SetAnimation((int)Animations::BUB_IDLE_R);
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -126,8 +71,8 @@ void Player::Stop()
 	dir = { 0,0 };
 	state = State::IDLE;
 	isStill = true;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
+	if (IsLookingRight())	SetAnimation((int)Animations::BUB_IDLE_R);
+	else					SetAnimation((int)Animations::BUB_IDLE_L);
 }
 void Player::IncLiv()
 {
@@ -149,21 +94,21 @@ void Player::StartWalkingLeft()
 {
 	state = State::WALKING;
 	look = Look::LEFT;
-	SetAnimation((int)PlayerAnim::WALKING_LEFT);
+	SetAnimation((int)Animations::BUB_WALK_L);
 }
 void Player::StartWalkingRight()
 {
 	state = State::WALKING;
 	look = Look::RIGHT;
-	SetAnimation((int)PlayerAnim::WALKING_RIGHT);
+	SetAnimation((int)Animations::BUB_WALK_R);
 }
 void Player::StartJumping()
 {
 	dir.y = -PLAYER_JUMP_LIMIT;
 	state = State::JUMPING;
 	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_JUMP);
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+	if (IsLookingRight())	SetAnimation((int)Animations::BUB_JUMP_R);
+	else					SetAnimation((int)Animations::BUB_JUMP_L);
 	jump_delay = PLAYER_JUMP_DELAY;
 }
 void Player::ChangeAnimRight()
@@ -171,10 +116,10 @@ void Player::ChangeAnimRight()
 	look = Look::RIGHT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_RIGHT);    break; 
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_RIGHT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_RIGHT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_RIGHT); break;
+		case State::IDLE:	 SetAnimation((int)Animations::BUB_IDLE_R);    break;
+		case State::WALKING: SetAnimation((int)Animations::BUB_WALK_R); break;
+		case State::JUMPING: SetAnimation((int)Animations::BUB_JUMP_R); break;
+		case State::FALLING: SetAnimation((int)Animations::BUB_FALL_R); break;
 	}
 }
 void Player::ChangeAnimLeft()
@@ -182,10 +127,10 @@ void Player::ChangeAnimLeft()
 	look = Look::LEFT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_LEFT);    break;
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_LEFT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_LEFT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT); break;
+		case State::IDLE:	 SetAnimation((int)Animations::BUB_IDLE_L);    break;
+		case State::WALKING: SetAnimation((int)Animations::BUB_WALK_L); break;
+		case State::JUMPING: SetAnimation((int)Animations::BUB_JUMP_L); break;
+		case State::FALLING: SetAnimation((int)Animations::BUB_FALL_L); break;
 	}
 }
 void Player::Update()
@@ -211,10 +156,12 @@ void Player::Update()
 	}
 	if (IsLookingRight() && IsKeyPressed(KEY_S))
 	{
-		sprite->SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_R);
+
+		sprite->SetAnimation((int)Animations::BUB_ATACK_R);
+
 	} else if (IsLookingLeft() && IsKeyPressed(KEY_S))
 	{
-		sprite->SetAnimation((int)PlayerAnim::SHOOT_BUBBLE_L);
+		sprite->SetAnimation((int)Animations::BUB_ATACK_L);
 	}
 
 	Warp();
@@ -421,21 +368,21 @@ void Player::MoveY()
 				//Jumping is represented with 3 different states
 				if (IsAscending())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)Animations::BUB_JUMP_R);
+					else					SetAnimation((int)Animations::BUB_JUMP_L);
 					canJump = false;
 					
 				}
 				else if (IsLevitating())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)Animations::BUB_IDLE_R);
+					else					SetAnimation((int)Animations::BUB_IDLE_L);
 					canJump = true;
 				}
 				else if (IsDescending())
 				{
-					if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-					else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+					if (IsLookingRight())	SetAnimation((int)Animations::BUB_FALL_R);
+					else					SetAnimation((int)Animations::BUB_FALL_L);
 				}
 			}
 			//We check ground collision when jumping down
@@ -520,7 +467,7 @@ void Player::SetDir(Point p)
 void Player::LaserProcedures() 
 {
 	cFrame++;
-	SetAnimation((int)PlayerAnim::SHOCK_LEFT);
+	SetAnimation((int)Animations::BUBBLE);
 
 	while (cFrame < 1) 
 	{

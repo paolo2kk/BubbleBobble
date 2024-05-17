@@ -67,6 +67,8 @@ enum class Animations
 	SKEL_MONSTA_BUBBLE_BLUE,
 	SKEL_MONSTA_BUBBLE_GREEN,
 
+	BUB_IDLE_R,
+	BUB_IDLE_L,
 	BUB_WALK_R,
 	BUB_WALK_L,
 	BUB_ATACK_R,
@@ -84,6 +86,8 @@ enum class Animations
 	BUB_FIRE_DEATH,
 	BUB_LEVEL_TRANSITION,
 
+	BOB_IDLE_R,
+	BOB_IDLE_L,
 	BOB_WALK_R,
 	BOB_WALK_L,
 	BOB_ATACK_R,
@@ -115,7 +119,7 @@ public:
 	Entity(const Point& p, int width, int height, int frame_width, int frame_height);
 	virtual ~Entity();
 	
-	AppStatus Initialize();
+	AppStatus InitializeAnimations();
 
 	void Set(const Point& p, const Point& d, int w, int h, int framew, int frameh);
 	void SetPos(const Point& p);
