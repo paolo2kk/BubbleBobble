@@ -1,6 +1,6 @@
 #include "Sprite.h"
 
-Sprite::Sprite(const Texture2D * texture)
+Sprite::Sprite(const Texture2D* texture)
 {
     img = texture;
     current_anim = -1;
@@ -8,6 +8,7 @@ Sprite::Sprite(const Texture2D * texture)
     current_delay = 0;
     mode = AnimMode::AUTOMATIC;
     animation_complete = false; 
+
 }
 Sprite::~Sprite()
 {
@@ -78,6 +79,7 @@ void Sprite::Update()
            
             }
         }
+
     
 }
 void Sprite::NextFrame()

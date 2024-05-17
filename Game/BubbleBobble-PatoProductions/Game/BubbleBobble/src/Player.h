@@ -94,5 +94,6 @@ private:
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
+
 };
 

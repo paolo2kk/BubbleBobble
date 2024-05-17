@@ -40,7 +40,7 @@ private:
     int current_anim;
     int current_frame;
     int current_delay;
-    
+
     const Texture2D *img;
     std::vector<Animation> animations;
 
