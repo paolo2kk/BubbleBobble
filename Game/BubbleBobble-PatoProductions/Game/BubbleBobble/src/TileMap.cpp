@@ -222,7 +222,7 @@ bool TileMap::IsTileFloor(Tile tile) const
 }
 bool TileMap::IsTileFloorNCeiling(Tile tile) const
 {
-	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
+	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2 || tile == Tile::PLATFORMBASIC || tile == Tile::PLATFORMLVL2);
 }
 bool TileMap::IsTileLadderTop(Tile tile) const
 {
