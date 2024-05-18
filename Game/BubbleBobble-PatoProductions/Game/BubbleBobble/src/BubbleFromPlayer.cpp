@@ -168,17 +168,20 @@ void BubbleFromPlayer::Movement(Directions d)
 				if (pos.x < 20)
 				{
 					pos.x++;
+					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+
 					stages++;
 				}
 				inShoot = true;
 
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
+					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+
 					stages++;
 				}
 				break;
 			case 2:
-				if(!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
 				canCollide = false;
 
 				inShoot = false;
@@ -198,17 +201,20 @@ void BubbleFromPlayer::Movement(Directions d)
 				if (pos.x > 226)
 				{
 					pos.x--;
+					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+
 					stages++;
 				}
 				inShoot = true;
 
 				dir = { 2, 0 };
 				if (pos.x >= logPosXR) {
+					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+
 					stages++;
 				}
 				break;
 			case 2:
-				if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
 				canCollide = false;
 
 				inShoot = false;

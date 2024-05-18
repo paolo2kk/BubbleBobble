@@ -1,24 +1,6 @@
-Project executed on 18-05-2024 at 17:37:37.
+Project executed on 18-05-2024 at 17:57:59.
 main.cpp(13): Application start
 Object.cpp(188): Internal error: object creation of invalid type
-Object.cpp(188): Internal error: object creation of invalid type
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
