@@ -39,7 +39,6 @@ public:
 	//Update the enemy according to its logic, return true if the enemy must shoot
 	bool Update(const AABB& box) override;
 
-	void CollideWithBubble();
 
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;

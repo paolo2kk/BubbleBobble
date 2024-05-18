@@ -211,7 +211,16 @@ bool TileMap::IsTileHalfWallRight(Tile tile) const
 	return (tile == Tile::HALFWALLRIGHTLVL2);
 
 }
+bool TileMap::IsTileAir(Tile tile) const
+{
+	return (tile == Tile::AIR);
+
+}
 bool TileMap::IsTileFloor(Tile tile) const
+{
+	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
+}
+bool TileMap::IsTileFloorNCeiling(Tile tile) const
 {
 	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
 }
@@ -234,6 +243,10 @@ bool TileMap::TestCollisionHalfWallLeft(const AABB& box) const
 bool TileMap::TestCollisionHalfWallRight(const AABB& box) const
 {
 	return CollisionXHalfRight(box.pos + Point(box.width - 8, 0), box.height);
+}
+bool TileMap::TestCollisionAir (const AABB& box) const
+{
+	return CollisionAir(box.pos + Point(box.width - 8, 0), box.height);
 }
 bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {
@@ -292,7 +305,6 @@ bool TileMap::TestFalling(const AABB& box) const
 {
 	return !CollisionY(box.pos + Point(0, box.height), box.width);
 }
-
 bool TileMap::CollisionX(const Point& p, int distance) const
 {
 	int x, y, y0, y1;
@@ -343,6 +355,24 @@ bool TileMap::CollisionXHalfRight(const Point& p, int distance) const
 	{
 		//One solid tile is sufficient
 		if (IsTileHalfWallRight(GetTileIndex(x, y)))
+			return true;
+	}
+	return false;
+}
+bool TileMap::CollisionAir(const Point& p, int distance) const
+{
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = p.x / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		//One solid tile is sufficient
+		if (IsTileAir(GetTileIndex(x, y)) || IsTileFloorNCeiling(GetTileIndex(x,y)))
 			return true;
 	}
 	return false;

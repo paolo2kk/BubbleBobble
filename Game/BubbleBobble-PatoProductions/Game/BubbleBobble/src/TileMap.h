@@ -77,6 +77,8 @@ public:
 
 	bool TestCollisionHalfWallRight(const AABB& box) const;
 
+	bool TestCollisionAir(const AABB& box) const;
+
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.
@@ -104,11 +106,14 @@ private:
 	bool IsTileHalfCubeLeftDEBUG(Tile tile) const;
 	bool IsTileHalfWallLeft(Tile tile) const;
 	bool IsTileHalfWallRight(Tile tile) const;
+	bool IsTileAir(Tile tile) const;
 	bool IsTileFloor(Tile tile) const;
+	bool IsTileFloorNCeiling(Tile tile) const;
 	bool IsTileLadderTop(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionXHalfLeft(const Point& p, int distance) const;
 	bool CollisionXHalfRight(const Point& p, int distance) const;
+	bool CollisionAir(const Point& p, int distance) const;
 	bool CollisionXFLOOR(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 

@@ -44,7 +44,7 @@ void BubbleFromPlayer::Update()
 	Movement(dire);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
-
+	HandleCollisionLogic();
 	if (inCatch) EnemyCatch();
 }
 bool BubbleFromPlayer::isAlive()
@@ -150,7 +150,10 @@ void BubbleFromPlayer::EnemyCatch()
 		break;
 	}
 }
-
+void BubbleFromPlayer::SetTileMap(TileMap* m) 
+{
+	map = m;
+}
 void BubbleFromPlayer::Movement(Directions d)
 {
 	ClampPos();
@@ -180,6 +183,7 @@ void BubbleFromPlayer::Movement(Directions d)
 
 				inShoot = false;
 				dir = { 0, -1 };
+
 				break;
 
 
@@ -218,10 +222,29 @@ void BubbleFromPlayer::Movement(Directions d)
 	}
 	
 }
+void BubbleFromPlayer::MoveBubbleRightPlayer()
+{
+	AABB box;
+	direction = Directions::RIGHT;
+	pos += {1, 0};
+	box = GetHitbox();
+	if (!map->TestCollisionAir(box)) {
+		issAlive = false;
+	}
+}
+void BubbleFromPlayer::MoveBubbleLeftPlayer()
+{
+	AABB box;
+	direction = Directions::LEFT;
+	pos += {-1, 0};
+	box = GetHitbox();
+	if (!map->TestCollisionAir(box)) {
+		issAlive = false;
+	}
+}
 void BubbleFromPlayer::HandleCollisionLogic()
 {
-	AABB box, player_hitbox;
-
+	
 }
 
 void BubbleFromPlayer::DrawDebug(const Color & col) const

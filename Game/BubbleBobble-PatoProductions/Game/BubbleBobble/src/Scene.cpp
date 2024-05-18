@@ -319,6 +319,7 @@ void Scene::PlayerBubbleSpawn()
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 			buble->Initialise();
+			buble->SetTileMap(level);
 			bubblesPlayer.push_back(buble);
 
 		}
@@ -326,6 +327,7 @@ void Scene::PlayerBubbleSpawn()
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::RIGHT);
 			buble->Initialise();
+			buble->SetTileMap(level);
 			bubblesPlayer.push_back(buble);
 		}
 		eBubblingTime = 0;
@@ -371,6 +373,7 @@ void Scene::Update()
 	for (BubbleFromPlayer* buble : bubblesPlayer)
 	{
 		buble->SetPlayer(player);
+
 	}
 	CheckCollisions();
 }
@@ -411,6 +414,16 @@ void Scene::CheckCollisions()
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();
+		if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
+		{
+			bubble->MoveBubbleRightPlayer();
+			
+		}
+		if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
+		{
+			bubble->MoveBubbleLeftPlayer();
+			
+		}
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB enemy_box = enemy->GetHitbox();

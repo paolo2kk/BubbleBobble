@@ -25,6 +25,8 @@ public:
 	void Update();
 
 	void Movement(Directions d);
+	void MoveBubbleRightPlayer();
+	void MoveBubbleLeftPlayer();
 	void ClampPos();
 	AppStatus Initialise();
 	bool isAlive();
@@ -34,6 +36,7 @@ public:
 	void DrawDebug(const Color& col) const;
 	void Stomp();
 	void EnemyCatch();
+	void SetTileMap(TileMap* m);
 	void SetPlayer(Player* p);
 	bool inCatch = false;
 	bool hasEndedFromCatch = false;
@@ -41,9 +44,11 @@ public:
 	Point GetPos() const;
 	bool issAlive;
 	bool inShoot;
+	bool CollisionWall(const Point& p, int distance) const;
 
 private:
 	void HandleCollisionLogic();
+
 
 
 	//void DrawDebug(const Color& col) const;
@@ -62,4 +67,6 @@ private:
 	float lifeTime;
 	float speed;
 	Player* player;
+	TileMap* map;
+	Directions direction;
 };
