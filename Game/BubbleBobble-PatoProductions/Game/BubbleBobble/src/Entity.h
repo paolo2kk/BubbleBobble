@@ -155,6 +155,7 @@ public:
 	bool IsAlive() const;
 	void Update();
 	AABB GetHitbox() const;
+	void DeleteHitbox();
 
 	//Draw representation model
 	void Draw() const;
@@ -173,6 +174,7 @@ protected:
 
 	//Logical/physical model
 	Point pos, dir;
+	bool NoHitbox;
 	int width, height;				
 	float eFrame = 0;
 	float maxSeconds = 1;

@@ -46,7 +46,8 @@ public:
 
 	void DrawDebug(const Color& col) const;
 	int Points() const;
-
+	bool point;
 private:
 	ObjectType type;
+
 };
