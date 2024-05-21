@@ -414,16 +414,32 @@ void Scene::CheckCollisions()
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();
-		if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
+		for (BubbleFromPlayer* bubble2 : bubblesPlayer)
 		{
-			bubble->MoveBubbleRightPlayer();
-			
+			if (bubble == bubble2) continue;
+			AABB bubble_box2 = bubble2->GetHitbox();
+
+			if (bubble_box.TestAABB(bubble_box2))
+			{
+				bubble->MoveBubbleToRandomNear();
+				bubble2->MoveBubbleToRandomNear();
+
+				break;
+			}
 		}
-		if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
-		{
-			bubble->MoveBubbleLeftPlayer();
-			
+		if (player->IsMoving()) {
+			if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
+			{
+				bubble->MoveBubbleRightPlayer();
+
+			}
+			if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
+			{
+				bubble->MoveBubbleLeftPlayer();
+
+			}
 		}
+		
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB enemy_box = enemy->GetHitbox();

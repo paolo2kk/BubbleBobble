@@ -83,6 +83,7 @@ void BubbleFromPlayer::ClampPos()
 		}
 		else if (pos.x > GetRandomValue(WINDOW_WIDTH / 2, 140))
 		{
+
 			dir = { -1, 0 };
 		}
 	}
@@ -218,6 +219,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				canCollide = false;
 
 				inShoot = false;
+				
 				dir = { 0, -1 };
 
 				break;
@@ -238,6 +240,7 @@ void BubbleFromPlayer::MoveBubbleRightPlayer()
 		issAlive = false;
 	}
 }
+
 void BubbleFromPlayer::MoveBubbleLeftPlayer()
 {
 	AABB box;
@@ -252,7 +255,14 @@ void BubbleFromPlayer::HandleCollisionLogic()
 {
 	
 }
+void BubbleFromPlayer::MoveBubbleToRandomNear()
+{
+	float ranIndexX = GetRandomValue(0, 1);
+	float ranIndexY = GetRandomValue(0, 1);
 
+	pos.x -= ranIndexX;
+	pos.y -= ranIndexY;
+}
 void BubbleFromPlayer::DrawDebug(const Color & col) const
 {
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);

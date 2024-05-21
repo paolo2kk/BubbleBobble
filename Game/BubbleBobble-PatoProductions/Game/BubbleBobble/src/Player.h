@@ -61,6 +61,7 @@ public:
 	bool isGod = false;
 	bool IsGod();
 	void SetAnimation(int id);
+	bool IsMoving() const;
 
 private:
 	

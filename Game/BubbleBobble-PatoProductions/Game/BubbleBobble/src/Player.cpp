@@ -67,6 +67,17 @@ void Player::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
+bool Player::IsMoving() const
+{
+	if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+	
+}
 void Player::Stop()
 {
 	dir = { 0,0 };
@@ -287,29 +298,29 @@ void Player::MoveY()
 			if (look == Look::RIGHT) {
 				if (map->TestCollisionWallRight(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 				if (map->TestCollisionHalfWallRight(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 				if (map->TestCollisionHalfWallLeft(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 			}
 			else if (look == Look::LEFT) {
 				if (map->TestCollisionWallLeft(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 				if (map->TestCollisionHalfWallLeft(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 				if (map->TestCollisionHalfWallRight(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 			}
 		}

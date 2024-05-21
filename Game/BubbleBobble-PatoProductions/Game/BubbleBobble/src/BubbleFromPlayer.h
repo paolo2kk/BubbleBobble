@@ -27,6 +27,8 @@ public:
 	void Movement(Directions d);
 	void MoveBubbleRightPlayer();
 	void MoveBubbleLeftPlayer();
+	void MoveBubbleRightPlayerRandom();
+	void MoveBubbleLeftPlayerRandom();
 	void ClampPos();
 	AppStatus Initialise();
 	bool isAlive();
@@ -43,11 +45,14 @@ public:
 	bool canCollide;
 	Point GetPos() const;
 	bool issAlive;
+	void MoveBubbleToRandomNear();
+
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
 
 private:
 	void HandleCollisionLogic();
+
 
 
 
