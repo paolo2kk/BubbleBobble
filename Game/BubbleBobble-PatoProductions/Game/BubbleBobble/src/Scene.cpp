@@ -20,7 +20,6 @@ Scene::Scene()
 	debug = DebugMode::OFF;
 	AllObjects = 0;
 
-
 }
 Scene::~Scene()
 {
@@ -480,13 +479,10 @@ void Scene::CheckCollisions()
 			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 
 			player->IncrScore((*it)->Points());
-			(*it)->DrawPoints();
-			AllObjects--;
+			(*it)->DeleteHitbox();
+			(*it)->point = true;
 
-			//Delete the object
-			delete* it;
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it);
+
 		}
 		else
 		{
@@ -568,10 +564,43 @@ void Scene::UpdateBubbles()
 }
 void Scene::RenderObjects()
 {
-	for (Object* obj : objects)
+	auto at = objects.begin();
+	while (at != objects.end())
 	{
-		obj->Draw();
+		
+		if ((*at)->point==true)
+		{
+			if ((*at)->pastTime(1) == false)
+			{
+				(*at)->Draw();
+				(*at)->DrawPoints();
+				if ((int)(*at)->framecounter % 3 ==0)
+				{
+					(*at)->PointsAnimation();
+				}
+			}
+			else
+			{
+				//Delete the object
+				delete* at;
+				//Erase the object from the vector and get the iterator to the next valid element
+				at= objects.erase(at);
+				AllObjects--;
+				
+			}
+			
+		}
+		else
+		{
+			(*at)->Draw();
+		}
+		if (AllObjects != 0)
+		{
+			++at;
+		}
+
 	}
+
 	for (Bubble* bubl : bubbles)
 	{
 		bubl->Draw();

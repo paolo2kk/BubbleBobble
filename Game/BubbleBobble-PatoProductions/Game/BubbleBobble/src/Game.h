@@ -18,7 +18,7 @@ public:
 
     void RenderUI();
     void RenderLives();
-    bool pastTime(int time);
+    bool pastTime(float time);
     const int GetCredit();
     void incCredit();
     void decCredit();
@@ -35,7 +35,7 @@ private:
     int TittleOffset;
     int stageCounter;
     int credit;
-    int frameCounter;
+    float frameCounter;
     float alpha;
     bool fadeCondition;
     int transCounter;

@@ -43,6 +43,8 @@ private:
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
 
+
+
     TileMap *level;
     Enemy* enemy;
     Camera2D camera;

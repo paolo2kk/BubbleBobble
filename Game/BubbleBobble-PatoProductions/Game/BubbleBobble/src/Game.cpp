@@ -237,7 +237,7 @@ void Game::decCredit()
 {
     credit--;
 }
-bool Game::pastTime(int time)
+bool Game::pastTime(float time)
 {
     frameCounter++;
     if (frameCounter / 60 == time)
@@ -497,7 +497,7 @@ void Game::Render()
             }
 
             DrawTexture(*img_menu, TittleOffset, 0, WHITE);
-            if (frameCounter % 3 == 0)
+            if ((int)frameCounter % 3 == 0)
             {
                 if (TittleOffset == -WINDOW_WIDTH * 3)
                 {

@@ -5,42 +5,41 @@
 
 Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
-	
+	framecounter = 0;
 	Rectangle rc;
 	const int n = TILE_SIZE;
-	
+
 	switch (DrawRandObject())
 	{
-		case ObjectType::BLUE_CANDY: rc = {0, 0, n, n}; break;
-		case ObjectType::CAKE: rc = {n, 0, n, n}; break;
-		case ObjectType::DONUT: rc = { 2* n, 0, n, n }; break;
-		case ObjectType::HAMBURGUER: rc = { 3 * n, 0, n, n }; break;
-		case ObjectType::HOT_DOG: rc = { 4 * n, 0, n, n }; break;
-		case ObjectType::ICE_CREAM: rc = { 5 * n, 0, n, n }; break;
-		case ObjectType::PINK_CANDY: rc = { 6 * n, 0, n, n }; break;
-		case ObjectType::PIZZA: rc = { 7 * n, 0, n, n }; break;
-		case ObjectType::POPSICLE: rc = { 8 * n, 0, n, n }; break;
-		case ObjectType::SUSHI: rc = { 9 * n, 0, n, n }; break;
-		case ObjectType::YELLOW_CANDY: rc = { 10 * n, 0, n, n }; break;
-		case ObjectType::MIQUEL: rc = { 11 * n, 0, n, n }; break;
+	case ObjectType::BLUE_CANDY: rc = { 0, 0, n, n }; break;
+	case ObjectType::CAKE: rc = { n, 0, n, n }; break;
+	case ObjectType::DONUT: rc = { 2 * n, 0, n, n }; break;
+	case ObjectType::HAMBURGUER: rc = { 3 * n, 0, n, n }; break;
+	case ObjectType::HOT_DOG: rc = { 4 * n, 0, n, n }; break;
+	case ObjectType::ICE_CREAM: rc = { 5 * n, 0, n, n }; break;
+	case ObjectType::PINK_CANDY: rc = { 6 * n, 0, n, n }; break;
+	case ObjectType::PIZZA: rc = { 7 * n, 0, n, n }; break;
+	case ObjectType::POPSICLE: rc = { 8 * n, 0, n, n }; break;
+	case ObjectType::SUSHI: rc = { 9 * n, 0, n, n }; break;
+	case ObjectType::YELLOW_CANDY: rc = { 10 * n, 0, n, n }; break;
+	case ObjectType::MIQUEL: rc = { 11 * n, 0, n, n }; break;
 
-		case ObjectType::APPLE: rc = { 0, n, n, n }; break;
-		case ObjectType::BANANA: rc = { n, n, n, n }; break;
-		case ObjectType::CHERRY: rc = { 2 * n, n, n, n }; break;
-		case ObjectType::GRAPE: rc = { 3 * n, n, n, n }; break;
-		case ObjectType::LEMON: rc = { 4 * n, n, n, n }; break;
-		case ObjectType::ORANGE_OBJ: rc = { 5 * n, n, n, n }; break;
-		case ObjectType::PEAR: rc = { 6 * n, n, n, n }; break;
-		case ObjectType::WATERMELON: rc = { 7 * n, n, n, n }; break;
+	case ObjectType::APPLE: rc = { 0, n, n, n }; break;
+	case ObjectType::BANANA: rc = { n, n, n, n }; break;
+	case ObjectType::CHERRY: rc = { 2 * n, n, n, n }; break;
+	case ObjectType::GRAPE: rc = { 3 * n, n, n, n }; break;
+	case ObjectType::LEMON: rc = { 4 * n, n, n, n }; break;
+	case ObjectType::ORANGE_OBJ: rc = { 5 * n, n, n, n }; break;
+	case ObjectType::PEAR: rc = { 6 * n, n, n, n }; break;
+	case ObjectType::WATERMELON: rc = { 7 * n, n, n, n }; break;
 
-		default: LOG("Internal error: object creation of invalid type");
+	default: LOG("Internal error: object creation of invalid type");
 	}
 
-
+	point = false;
 
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
-
 }
 Object::~Object()
 {
@@ -173,23 +172,105 @@ void Object::DrawPoints()
 	Rectangle rc;
 	const int n = TILE_SIZE;
 
-	switch (Points())
-	{
-	case POINTS_BLUE_CANDY:
-		rc = { 0, n*2, n, n }; 
+	// IF BOB
+	/*switch (Points()) {
+	case POINTS_APPLE:
+		rc = { 21 * n,n * 3, n, n }; break;
 		break;
 	case POINTS_BANANA:
-		rc = { 17 * n,n * 2, n, n };
+		rc = { 17 * n,n * 3, n, n }; break;
 		break;
-	case POINTS_CHERRY:
-		rc = { 21 * n,n * 2, n, n };
+	case POINTS_GRAPE:
+		rc = { 31 * n,n * 3, n, n }; break;
 		break;
+	case POINTS_LEMON:
+		rc = { 14 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_ORANGE:
+		rc = { 13 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_PEAR:
+		rc = { 18 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_WATERMELON:
+		rc = { 19 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_BLUE_CANDY:
+		rc = { 9 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_CAKE:
+		rc = { 29 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_DONUT:
+		rc = { 27 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_POPSICLE:
+		rc = { 20 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_SUSHI:
+		rc = { 30 * n,n * 3, n, n }; break;
+		break;
+	}*/
 
-	default: LOG("Internal error: object creation of invalid type");
+	//IF BUB
+
+	switch (Points()) {
+	case POINTS_APPLE:
+		rc = { 21 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_BANANA:
+		rc = { 17 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_GRAPE:
+		rc = { 31 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_LEMON:
+		rc = { 14 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_ORANGE:
+		rc = { 13 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_PEAR:
+		rc = { 18 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_WATERMELON:
+		rc = { 19 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_BLUE_CANDY:
+		rc = { 9 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_CAKE:
+		rc = { 29 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_DONUT:
+		rc = { 27 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_POPSICLE:
+		rc = { 20 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_SUSHI:
+		rc = { 30 * n,n * 2, n, n }; break;
+		break;
 	}
 
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
 
 
+}
+bool Object::pastTime(float time)
+{
+	framecounter++;
+	if (framecounter / 60 == time)
+	{
+		framecounter = 0;
+		return true;
+	}
+	return false;
+}
+void Object::PointsAnimation()
+{
+	Point p = GetPos();
+	p.y -= 0.001;
+	SetPos(p);
 }

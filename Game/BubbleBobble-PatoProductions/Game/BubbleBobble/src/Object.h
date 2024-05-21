@@ -43,10 +43,15 @@ public:
 
 	ObjectType DrawRandObject();
 	void DrawPoints();
+	void PointsAnimation();
+	bool pastTime(float time);
 
 	void DrawDebug(const Color& col) const;
 	int Points() const;
+	bool point;
+	float framecounter;
 
 private:
 	ObjectType type;
+
 };
