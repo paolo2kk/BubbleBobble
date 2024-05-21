@@ -464,13 +464,9 @@ void Scene::CheckCollisions()
 
 			player->IncrScore((*it)->Points());
 			(*it)->DeleteHitbox();
-			AllObjects--;
 			(*it)->point = true;
 
-			////Delete the object
-			//delete* it;
-			////Erase the object from the vector and get the iterator to the next valid element
-			//it = objects.erase(it);
+
 		}
 		else
 		{
@@ -558,13 +554,35 @@ void Scene::RenderObjects()
 		
 		if ((*at)->point==true)
 		{
-			(*at)->DrawPoints();
+			if ((*at)->pastTime(1) == false)
+			{
+				(*at)->Draw();
+				(*at)->DrawPoints();
+				if ((int)(*at)->framecounter % 3 ==0)
+				{
+					(*at)->PointsAnimation();
+				}
+			}
+			else
+			{
+				//Delete the object
+				delete* at;
+				//Erase the object from the vector and get the iterator to the next valid element
+				at= objects.erase(at);
+				AllObjects--;
+				
+			}
+			
 		}
 		else
 		{
 			(*at)->Draw();
 		}
-		++at;
+		if (AllObjects != 0)
+		{
+			++at;
+		}
+
 	}
 
 	for (Bubble* bubl : bubbles)

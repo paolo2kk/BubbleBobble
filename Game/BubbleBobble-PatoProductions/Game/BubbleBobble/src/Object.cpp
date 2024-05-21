@@ -5,7 +5,7 @@
 
 Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
-
+	framecounter = 0;
 	Rectangle rc;
 	const int n = TILE_SIZE;
 
@@ -172,23 +172,105 @@ void Object::DrawPoints()
 	Rectangle rc;
 	const int n = TILE_SIZE;
 
-	switch (Points())
-	{
-	case POINTS_BLUE_CANDY:
-		rc = { 0, n*2, n, n }; 
+	// IF BOB
+	/*switch (Points()) {
+	case POINTS_APPLE:
+		rc = { 21 * n,n * 3, n, n }; break;
 		break;
 	case POINTS_BANANA:
-		rc = { 17 * n,n * 2, n, n };
+		rc = { 17 * n,n * 3, n, n }; break;
 		break;
-	case POINTS_CHERRY:
-		rc = { 21 * n,n * 2, n, n };
+	case POINTS_GRAPE:
+		rc = { 31 * n,n * 3, n, n }; break;
 		break;
+	case POINTS_LEMON:
+		rc = { 14 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_ORANGE:
+		rc = { 13 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_PEAR:
+		rc = { 18 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_WATERMELON:
+		rc = { 19 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_BLUE_CANDY:
+		rc = { 9 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_CAKE:
+		rc = { 29 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_DONUT:
+		rc = { 27 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_POPSICLE:
+		rc = { 20 * n,n * 3, n, n }; break;
+		break;
+	case POINTS_SUSHI:
+		rc = { 30 * n,n * 3, n, n }; break;
+		break;
+	}*/
 
-	default: LOG("Internal error: object creation of invalid type");
+	//IF BUB
+
+	switch (Points()) {
+	case POINTS_APPLE:
+		rc = { 21 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_BANANA:
+		rc = { 17 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_GRAPE:
+		rc = { 31 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_LEMON:
+		rc = { 14 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_ORANGE:
+		rc = { 13 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_PEAR:
+		rc = { 18 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_WATERMELON:
+		rc = { 19 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_BLUE_CANDY:
+		rc = { 9 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_CAKE:
+		rc = { 29 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_DONUT:
+		rc = { 27 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_POPSICLE:
+		rc = { 20 * n,n * 2, n, n }; break;
+		break;
+	case POINTS_SUSHI:
+		rc = { 30 * n,n * 2, n, n }; break;
+		break;
 	}
 
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
 
 
+}
+bool Object::pastTime(float time)
+{
+	framecounter++;
+	if (framecounter / 60 == time)
+	{
+		framecounter = 0;
+		return true;
+	}
+	return false;
+}
+void Object::PointsAnimation()
+{
+	Point p = GetPos();
+	p.y -= 0.001;
+	SetPos(p);
 }
