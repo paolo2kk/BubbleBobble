@@ -272,12 +272,20 @@ AppStatus Game::LoadResources()
     }
     img_stage2 = data.GetTexture(Resource::IMG_STAGE2);
 
+
+    if (data.LoadTexture(Resource::IMG_CINEMATIC_LETTERS, "images/Cinematic_Leters.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_cinematic_letters = data.GetTexture(Resource::IMG_CINEMATIC_LETTERS);
+
     text_->Initialise(Resource::IMG_TEXT, "images/NUMBERS.png", '0', 8);
 
     if (data.LoadTexture(Resource::IMG_ITEMS, "images/Objects.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
+
     InitBubBobIntro();
     return AppStatus::OK;
 }
@@ -488,6 +496,7 @@ AppStatus Game::Update()
 
             if (pastTime(8.4))//should be 8.4
             {
+
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
             }
@@ -608,6 +617,17 @@ void Game::Render()
         case GameState::INTRO:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INTRO));
             DrawTexture(*img_intro, 0, 0, WHITE);
+            if (((int)frameCounter / 60) % 2 == 0)
+            {
+                alpha += 0.01;
+                DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, alpha));
+            }
+            else
+            {
+                alpha -= 0.01;
+                DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, alpha));
+            }
+            DrawTexture(*img_cinematic_letters, 0, 0, WHITE);
             IntroBub->Spriteset();
             IntroBob->Spriteset();
 
@@ -618,12 +638,14 @@ void Game::Render()
             DrawTexture(*img_player_1, 0, 0, WHITE);
             RenderCredit();
             RenderUI();
+            alpha = 0;
             break;
 
         case GameState::PLAYER_2_AND_1:
             DrawTexture(*img_player_2, 0, 0, WHITE);
             RenderCredit();
             RenderUI();
+            alpha = 0;
             break;
 
         case GameState::GAME_OVER:

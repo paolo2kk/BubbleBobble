@@ -388,15 +388,15 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 16; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_FIRE_DEATH, { i * n * 2, n * 47, n * 2, n });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_1, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_1, 10);
     for (i = 0; i < 7; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_1, { i * n * 2, n * 48, n * 2, n * 2 });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_2, 30);
-    for (i = 6; i <= 7; ++i)
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_2, 20);
+    for (i = 5; i <= 7; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_2, { i * n * 2, n * 48, n * 2, n * 2 });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_3, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_3, 10);
     for (i = 8; i <= 9; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_3, { i * n * 2, n * 48, n * 2, n * 2 });
 
@@ -470,15 +470,15 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 16; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 58, n * 2, n });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_1, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_1, 10);
     for (i = 0; i < 7; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_1, { i * n * 2, n * 61, n * 2, n * 2 });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_2, 30);
-    for (i = 6; i <= 7; ++i)
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_2, 20);
+    for (i = 5; i <= 7; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_2, { i * n * 2, n * 61, n * 2, n * 2 });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_3, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_3, 10);
     for (i = 8; i <= 9; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_3, { i * n * 2, n * 61, n * 2, n * 2 });
 

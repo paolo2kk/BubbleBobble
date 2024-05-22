@@ -20,8 +20,7 @@ Player::~Player()
 }
 AppStatus Player::Initialise()
 {
-	IsLookingRight();
-	Stop();
+	SetAnimation((int)Animations::BUB_IDLE_R);
 	return InitializeAnimations();
 }
 void Player::SetTileMap(TileMap* tilemap)

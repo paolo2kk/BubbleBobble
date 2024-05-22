@@ -47,6 +47,7 @@ private:
     const Texture2D *img_player_1;
     const Texture2D* img_stage1;
     const Texture2D* img_stage2;
+    const Texture2D* img_cinematic_letters;
     const Texture2D* img_intro;
     const Texture2D* img_player_2;
     const Texture2D* img_game_over;
