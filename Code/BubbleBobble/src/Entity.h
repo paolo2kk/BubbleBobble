@@ -96,7 +96,9 @@ enum class Animations
 		BUB_DEATH,
 		BUB_PUSH_BUTTON,
 		BUB_FIRE_DEATH,
-		BUB_LEVEL_TRANSITION,
+		BUB_LEVEL_TRANSITION_FASE_1,
+		BUB_LEVEL_TRANSITION_FASE_2,
+		BUB_LEVEL_TRANSITION_FASE_3,
 
 		BOB_IDLE_R,
 		BOB_IDLE_L,
@@ -115,7 +117,9 @@ enum class Animations
 		BOB_DEATH,
 		BOB_PUSH_BUTTON,
 		BOB_FIRE_DEATH,
-		BOB_LEVEL_TRANSITION,
+		BOB_LEVEL_TRANSITION_FASE_1,
+		BOB_LEVEL_TRANSITION_FASE_2,
+		BOB_LEVEL_TRANSITION_FASE_3,
 
 		BUBBLE,
 		THUNDER_BUBBLE_GREEN,
@@ -166,6 +170,9 @@ public:
 	void DrawHitbox(const Color& col) const;
 	void DrawHitbox(int x, int y, int w, int h, const Color& col) const;
 	Point GetPos();
+	void SetAnimationE(int id);
+	void Spriteset();
+
 protected:
 	Point GetRenderingPosition() const;
 	bool isAlive;

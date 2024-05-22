@@ -24,6 +24,7 @@ public:
     void decCredit();
     void RenderCredit();
     void FadeTransition();
+    void InitBubBobIntro();
 
 private:
     AppStatus BeginPlay();
@@ -62,9 +63,14 @@ private:
     float timer = 0;
     float totalTime = 1.5f;
     float timeElapsed = 0.0f;
+    int playtime;
 
     //To work with original game units and then scale the result
     RenderTexture2D target;
     Rectangle src, dst;
     Text* text_;
+
+    Entity* IntroBub;
+    Entity* IntroBob;
+    
 };

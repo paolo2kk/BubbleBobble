@@ -20,10 +20,9 @@ Player::~Player()
 }
 AppStatus Player::Initialise()
 {
-	return InitializeAnimations();
 	IsLookingRight();
 	Stop();
-
+	return InitializeAnimations();
 }
 void Player::SetTileMap(TileMap* tilemap)
 {

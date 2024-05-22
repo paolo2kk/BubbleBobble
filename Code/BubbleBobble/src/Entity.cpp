@@ -8,15 +8,16 @@
 //	isAlive = false;
 //}
 Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(w), frame_height(h), render(nullptr)
-
 {
 	isAlive = true;
-    img_animations = nullptr;
+    NoHitbox = false;
+    InitializeAnimations();
 }
 Entity::Entity(const Point& p, int w, int h, int frame_w, int frame_h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(frame_w), frame_height(frame_h), render(nullptr)
 {
 	isAlive = true;
     NoHitbox = false;
+    InitializeAnimations();
 }
 Entity::~Entity()
 {
@@ -387,9 +388,17 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 16; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_FIRE_DEATH, { i * n * 2, n * 47, n * 2, n });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION, ANIM_DELAY);
-    for (i = 0; i < 10; ++i)
-        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION, { i * n * 2, n * 48, n * 2, n * 2 });
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_1, ANIM_DELAY);
+    for (i = 0; i < 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_1, { i * n * 2, n * 48, n * 2, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_2, 30);
+    for (i = 6; i <= 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_2, { i * n * 2, n * 48, n * 2, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BOB_LEVEL_TRANSITION_FASE_3, ANIM_DELAY);
+    for (i = 8; i <= 9; ++i)
+        Anima->AddKeyFrame((int)Animations::BOB_LEVEL_TRANSITION_FASE_3, { i * n * 2, n * 48, n * 2, n * 2 });
 
     // Bub Animations
 
@@ -461,9 +470,17 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 16; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_FIRE_DEATH, { i * n * 2, n * 58, n * 2, n });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION, ANIM_DELAY);
-    for (i = 0; i < 10; ++i)
-        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION, { i * n * 2, n * 61, n * 2, n * 2 });
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_1, ANIM_DELAY);
+    for (i = 0; i < 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_1, { i * n * 2, n * 61, n * 2, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_2, 30);
+    for (i = 6; i <= 7; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_2, { i * n * 2, n * 61, n * 2, n * 2 });
+
+    Anima->SetAnimationDelay((int)Animations::BUB_LEVEL_TRANSITION_FASE_3, ANIM_DELAY);
+    for (i = 8; i <= 9; ++i)
+        Anima->AddKeyFrame((int)Animations::BUB_LEVEL_TRANSITION_FASE_3, { i * n * 2, n * 61, n * 2, n * 2 });
 
     //BUBBLES
 
@@ -588,6 +605,17 @@ void Entity::Set(const Point& p, const Point& d, int w, int h, int framew, int f
 	frame_width = framew;
 	frame_height = frameh;
 	isAlive = true;
+}
+void Entity::SetAnimationE(int id)
+{
+    Sprite* sprite = dynamic_cast<Sprite*>(render);
+    sprite->SetAnimation(id);
+}
+void Entity::Spriteset()
+{
+    Sprite* sprite = dynamic_cast<Sprite*>(render);
+    sprite->Update();
+    Draw();
 }
 void Entity::Draw() const
 {

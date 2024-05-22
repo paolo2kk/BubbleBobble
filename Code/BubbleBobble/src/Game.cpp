@@ -32,7 +32,7 @@ Game::Game()
     transCounter = 0;
     frameCounter = 0;
     credit = 0;
-
+    playtime = 0;
     text_ = new Text();
 
     stageCounter = 1;
@@ -40,6 +40,9 @@ Game::Game()
     target = {};
     src = {};
     dst = {};
+
+    IntroBob = new Entity();
+    IntroBub = new Entity();
 }
 Game::~Game()
 {
@@ -63,30 +66,91 @@ AppStatus Game::Initialise(float scale)
     //Initialise window
     InitWindow((int)w, (int)h, "Bubble Bobble");
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
-    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/intro_plus_main_theme_Music.ogg") != AppStatus::OK) {
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_INTRO, "music/Music/Intro.ogg") != AppStatus::OK) {
         // Handle error, perhaps by logging or attempting a graceful shutdown.
         return AppStatus::ERROR;
     }
 
-    if (ResourceManager::Instance().LoadSoundEffect(Resource::MUSIC_INSERT_COIN, "music/Start.wav") != AppStatus::OK) {
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/Music/Main_Theme_Music.ogg") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
     }
 
-    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_JUMP, "music/Jump_SFX.wav") != AppStatus::OK) {
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::MUSIC_TITLE, "music/SFX/Intro_SFX.wav") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
     }
-    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_BUBBLE, "music/Bubble_SFX.wav") != AppStatus::OK) {
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_FALSE_ENDING, "music/Music/False_Ending.ogg") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
     }
-    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_PICKUP, "music/Eat_Fruit_SFX.wav") != AppStatus::OK) {
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_GAME_OVER, "music/Music/Game_Over_music.ogg") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
     }
-    
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_MAIN_THEME_HURRY, "music/Music/Main_Theme_Hurry_Music.ogg") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_REAL_ENDING, "music/Music/Real_ending_Music.ogg") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_SUPER_DRUNK, "music/Music/Super_Drunk_Music.ogg") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_JUMP, "music/SFX/Jump_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_PICKUP, "music/SFX/Eat_Fruit_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_BUBBLE, "music/SFX/Bubble_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_BOSS_ATTAK, "music/SFX/Boss atack.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_BUBBLE_POP, "music/SFX/Bubble_pop_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_DEATH, "music/SFX/Death_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_ELECTRIC_HIT, "music/SFX/Electric_Hit_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+    if (ResourceManager::Instance().LoadSoundEffect(Resource::SFX_INSERT_COIN, "music/SFX/Coin_Insert_SFX.wav") != AppStatus::OK) {
+        // Handle error
+        return AppStatus::ERROR;
+    }
+
+
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INTRO));
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
+
 
 
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -214,7 +278,7 @@ AppStatus Game::LoadResources()
     {
         return AppStatus::ERROR;
     }
-
+    InitBubBobIntro();
     return AppStatus::OK;
 }
 const int Game::GetCredit()
@@ -232,6 +296,7 @@ void Game::incCredit()
 {
     credit++;
     RenderCredit();
+    ResourceManager::Instance().PlaySoundEffect(Resource::SFX_INSERT_COIN);
 }
 void Game::decCredit()
 {
@@ -313,6 +378,19 @@ AppStatus Game::BeginPlay()
 //    delete scene;
 //    scene = nullptr;
 //}
+void Game::InitBubBobIntro()
+{
+    Point p(60, 150);
+    IntroBub->Set(p, p, 32, 32, 32, 32);
+    IntroBub->InitializeAnimations();
+    IntroBub->SetAnimationE((int)Animations::BUB_LEVEL_TRANSITION_FASE_2);
+
+    Point d(160, 150);
+    IntroBob->Set(d, d, 32, 32, 32, 32);
+    IntroBob->InitializeAnimations();
+    IntroBob->SetAnimationE((int)Animations::BOB_LEVEL_TRANSITION_FASE_2);
+
+}
 AppStatus Game::Update()
 {
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
@@ -408,7 +486,7 @@ AppStatus Game::Update()
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
 
-            if (pastTime(5))
+            if (pastTime(8.4))//should be 8.4
             {
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
@@ -492,7 +570,7 @@ void Game::Render()
         case GameState::MAIN_MENU:
             if (transCounter == 6)
             {
-                ResourceManager::Instance().PlaySoundEffect(Resource::MUSIC_INSERT_COIN);
+                ResourceManager::Instance().PlaySoundEffect(Resource::MUSIC_TITLE);
                 transCounter++;
             }
 
@@ -528,8 +606,11 @@ void Game::Render()
             break;
 
         case GameState::INTRO:
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INTRO));
             DrawTexture(*img_intro, 0, 0, WHITE);
+            IntroBub->Spriteset();
+            IntroBob->Spriteset();
+
             break;
 
         case GameState::PLAYER_1:
@@ -552,8 +633,16 @@ void Game::Render()
             break;
 
         case GameState::PLAYING:
-            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-
+            if ((playtime/60) <= 30)
+            {
+                UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+                playtime++;
+            }
+            else
+            {
+                UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
+                playtime++;
+            }
             RenderUI();
             scene->Render();
             RenderLives();
@@ -563,6 +652,7 @@ void Game::Render()
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
             float progress = timeElapsed / totalTime;
             float yPos_stage2 = 224.0f * -progress; 
+            playtime = 0;
             if (timeElapsed < totalTime) {
 
                 DrawTexture(*img_stage1, 0, yPos_stage2, WHITE);
@@ -636,7 +726,7 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_SCORE);
     
     data.UnloadMusic(Resource::MUSIC_BACKGROUND);
-    data.UnloadMusic(Resource::MUSIC_INSERT_COIN);
+    data.UnloadMusic(Resource::SFX_INSERT_COIN);
     data.UnloadMusic(Resource::SFX_JUMP);
     data.UnloadMusic(Resource::SFX_BUBBLE);
     data.UnloadMusic(Resource::SFX_PICKUP);
