@@ -594,7 +594,7 @@ void Scene::RenderObjects()
 		{
 			(*at)->Draw();
 		}
-		if (AllObjects != 0)
+		if (at != objects.end())
 		{
 			++at;
 		}
