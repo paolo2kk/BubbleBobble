@@ -295,19 +295,15 @@ void BubbleFromPlayer::Release()
 Directions BubbleFromPlayer::BublePop(Directions d)
 {
 
-	if (map->TestCollisionWallLeft(GetHitbox()) == true)
+	if (pos.x<=16)
 	{
 		d = Directions::RIGHT;
 
 	}
-	if (map->TestCollisionWallRight(GetHitbox()) == true)
+	if (pos.x+16>=240)
 	{
 		d = Directions::LEFT;
 
-	}
-	if (map->TestCollisionHead(GetHitbox(), &pos.y)==true)
-	{
-		framecounter = 60;
 	}
 
 
@@ -315,20 +311,22 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 		{
 			if ((framecounter / 60) <= 0.5)
 			{
-				pos.x--;
-				pos.y--;
+				pos.x = pos.x - 1;
+				pos.y = pos.y - 2 ;
+
 				framecounter++;
 			}
 			else if (0.5 < (framecounter / 60) && (framecounter / 60) <= 1)
 			{
-				pos.x--;
+				pos.x= pos.x-1;
+				pos.y=pos.y-1;
 				framecounter++;
 			}
 			else if (1 < (framecounter / 60))
 			{
-				pos.y++;
-				pos.y++;
-				pos.x--;
+				pos.y = pos.y + 3;
+				pos.x=pos.x-1;
+
 				framecounter++;
 				if (map->TestCollisionGround(GetHitbox(), &pos.y) == true)
 				{
@@ -342,20 +340,22 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 
 			if ((framecounter / 60) <= 0.5)
 			{
-				pos.x++;
-				pos.y--;
+				pos.x = pos.x + 2;
+				pos.y = pos.y - 3;
 				framecounter++;
 			}
 			else if (0.5 < (framecounter / 60) && (framecounter / 60 )<= 1)
 			{
-				pos.x++;
+				pos.x = pos.x + 2;
+				pos.y = pos.y - 2;
+
 				framecounter++;
 			}
 			else if (1 < (framecounter / 60))
 			{
-				pos.y++;
-				pos.y++;
-				pos.x++;
+				pos.y = pos.y + 4;
+				pos.x = pos.x + 2;
+
 				framecounter++;
 				if (map->TestCollisionGround(GetHitbox(),&pos.y) == true)
 				{

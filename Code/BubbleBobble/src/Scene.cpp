@@ -500,17 +500,25 @@ void Scene::CheckCollisions()
 		}
 		if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
 		{
-			bubble->issAlive = false;
 
+			bubble->poped = true;
+			bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
 			break;
 		}
-		if (bubble->hasEndedFromCatch) {
+		if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
 			Point pos = bubble->GetPos();
 			pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
 			AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 			AABB area = level->GetSweptAreaX(hitbox);
 			enemies->Add(pos, EnemyType::SLIME, area);
+			bubble->issAlive = false;
+		}
+		if (bubble->fruit == true)
+		{
+			Object* obj = new Object(bubble->GetPos());
+			objects.push_back(obj);
+			AllObjects++;
 			bubble->issAlive = false;
 		}
 
