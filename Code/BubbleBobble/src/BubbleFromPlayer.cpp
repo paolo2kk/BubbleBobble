@@ -3,6 +3,7 @@
 #include "TileMap.h"
 #include "Globals.h"
 #include <raymath.h>
+#include "Object.h"
 
 BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUBBLE_PHYSICAL_SIZE, BUBBLE_PHYSICAL_SIZE, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE)
 {
@@ -20,6 +21,9 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	eTimePogo = 0;
 	canCollide = true;
 	issAlive = true;
+	poped = false;
+	framecounter = 0;
+	fruit = false;
 	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE);
 }
 BubbleFromPlayer::~BubbleFromPlayer()
@@ -40,8 +44,16 @@ AppStatus BubbleFromPlayer::Initialise()
 }
 void BubbleFromPlayer::Update()
 {
-	pos += dir;
-	Movement(dire);
+;
+	if (poped == false)
+	{
+		Movement(dire);
+		pos += dir;
+	}
+	else
+	{
+		dire = BublePop(dire);
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 	HandleCollisionLogic();
@@ -118,6 +130,8 @@ Point BubbleFromPlayer::GetPos() const
 }
 void BubbleFromPlayer::EnemyCatch()
 {
+	if (poped == false)
+	{
 	switch (bubbleStages)
 	{
 	case (int)BubbleStages::GREENSTAGE:
@@ -150,6 +164,7 @@ void BubbleFromPlayer::EnemyCatch()
 		hasEndedFromCatch = true;
 		break;
 	}
+	}
 }
 void BubbleFromPlayer::SetTileMap(TileMap* m) 
 {
@@ -159,6 +174,11 @@ void BubbleFromPlayer::Movement(Directions d)
 {
 	ClampPos();
 	Stomp();
+	if (poped == true)
+	{
+		return;
+	}
+
 	if (pos.y > 32)
 	{
 		if (d == Directions::LEFT)
@@ -271,4 +291,78 @@ void BubbleFromPlayer::Release()
 {
 
 	render->Release();
+}
+Directions BubbleFromPlayer::BublePop(Directions d)
+{
+
+	if (map->TestCollisionWallLeft(GetHitbox()) == true)
+	{
+		d = Directions::RIGHT;
+
+	}
+	if (map->TestCollisionWallRight(GetHitbox()) == true)
+	{
+		d = Directions::LEFT;
+
+	}
+	if (map->TestCollisionHead(GetHitbox(), &pos.y)==true)
+	{
+		framecounter = 60;
+	}
+
+
+		if (d == Directions::LEFT)
+		{
+			if ((framecounter / 60) <= 0.5)
+			{
+				pos.x--;
+				pos.y--;
+				framecounter++;
+			}
+			else if (0.5 < (framecounter / 60) && (framecounter / 60) <= 1)
+			{
+				pos.x--;
+				framecounter++;
+			}
+			else if (1 < (framecounter / 60))
+			{
+				pos.y++;
+				pos.y++;
+				pos.x--;
+				framecounter++;
+				if (map->TestCollisionGround(GetHitbox(), &pos.y) == true)
+				{
+					fruit = true;
+				}
+			}
+			return Directions::LEFT;
+		}
+		else if (d == Directions::RIGHT)
+		{
+
+			if ((framecounter / 60) <= 0.5)
+			{
+				pos.x++;
+				pos.y--;
+				framecounter++;
+			}
+			else if (0.5 < (framecounter / 60) && (framecounter / 60 )<= 1)
+			{
+				pos.x++;
+				framecounter++;
+			}
+			else if (1 < (framecounter / 60))
+			{
+				pos.y++;
+				pos.y++;
+				pos.x++;
+				framecounter++;
+				if (map->TestCollisionGround(GetHitbox(),&pos.y) == true)
+				{
+					fruit = true;
+				}
+			}
+			return Directions::RIGHT;
+
+		}
 }

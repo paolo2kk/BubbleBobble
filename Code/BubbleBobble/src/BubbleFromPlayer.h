@@ -42,10 +42,15 @@ public:
 	void SetPlayer(Player* p);
 	bool inCatch = false;
 	bool hasEndedFromCatch = false;
+	bool poped = false;
+	bool fruit = false;
+	float framecounter;
 	bool canCollide;
 	Point GetPos() const;
 	bool issAlive;
 	void MoveBubbleToRandomNear();
+
+	Directions BublePop(Directions d);
 
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
