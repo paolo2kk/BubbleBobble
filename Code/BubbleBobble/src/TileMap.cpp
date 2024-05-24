@@ -106,11 +106,11 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::FLOOR30] = { 2* n, 41 * n, n, n };
 	dict_rect[(int)Tile::FLOOR30L] = { 4 * n, 41 * n, n, n };
 	dict_rect[(int)Tile::FLOOR30R] = { 6 * n, 41 * n, n, n };
-	dict_rect[(int)Tile::FLOOR30WSHADOWL] = { 4 * n, 39 * n, n, n };
-	dict_rect[(int)Tile::FLOOR30WSHADOWR] = { 6 * n, 39 * n, n, n };
-	dict_rect[(int)Tile::WALLNOSHADE30] = { 6 * n, 38 * n, n, n };
-	dict_rect[(int)Tile::WALLWSHADETOP30] = { 4 * n, 37 * n, n, n };
-	dict_rect[(int)Tile::WALLWSHADE30] = { 4 * n, 38 * n, n, n };
+	dict_rect[(int)Tile::FLOOR30WSHADOWL] = { n * 2, 33 * n, n, n };
+	dict_rect[(int)Tile::FLOOR30WSHADOWR] = { n * 4, 33 * n, n, n };
+	dict_rect[(int)Tile::WALLNOSHADE30] = { n * 4, 31 * n, n, n };
+	dict_rect[(int)Tile::WALLWSHADETOP30] = { n * 2, 31 * n, n, n };
+	dict_rect[(int)Tile::WALLWSHADE30] = { n * 2, 32 * n, n, n };
 
 	//lvl3 shades
 	dict_rect[(int)Tile::WALLSHADE_30] = { n, 30 * n, n, n };
@@ -120,6 +120,12 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::PLATSHADE30CORNER] = { 5 * n, 34 * n, n, n };
 	dict_rect[(int)Tile::PLAT2SHADE30FIRST] = { 6 * n, 34 * n, n, n };
 	dict_rect[(int)Tile::PLAT2SHADE30LAST] = { 9 * n, 34 * n, n, n };
+
+	//lvl3 debugs
+	dict_rect[(int)Tile::DEBUG_WARP_30] = { n, 29 * n, n, n };
+	dict_rect[(int)Tile::DEBUG_CEILINGLVL30] = { 2* n, 29 * n, n, n };
+	dict_rect[(int)Tile::DEBUG30L] = { 4 * n, 29 * n, n, n };
+	dict_rect[(int)Tile::DEBUG30R] = { 6 * n, 29 * n, n, n };
 
 }
 AppStatus TileMap::Initialise()
