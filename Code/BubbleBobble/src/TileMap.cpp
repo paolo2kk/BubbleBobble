@@ -212,7 +212,8 @@ Tile TileMap::GetTileIndex(int x, int y) const
 }
 bool TileMap::IsTileStatic(Tile tile) const
 {
-	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3);
+	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3 ||
+		tile == Tile::BLOCKWITH30 || tile == Tile::BLOCKWITHOUT30);
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
@@ -233,7 +234,7 @@ bool TileMap::IsTileHalfCubeRight(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLEFINISH || tile == Tile::FLOORLVL2LEFT);
+	return (tile == Tile::PLATFORMMIDDLEFINISH || tile == Tile::FLOORLVL2LEFT || tile == Tile::FLOOR30L);
 }
 bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 {
@@ -241,7 +242,7 @@ bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT) ;
+	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT || tile == Tile::FLOOR30R) ;
 }
 bool TileMap::IsTileHalfWallLeft(Tile tile) const
 {

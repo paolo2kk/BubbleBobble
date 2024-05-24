@@ -400,6 +400,11 @@ void Scene::Update()
 		stage = 3;
 		LoadLevel(3);
 	}
+	else if (IsKeyPressed(KEY_FOUR))
+	{
+		stage = 4;
+		LoadLevel(4);
+	}
 	level->Update();
 	player->Update();
 	hitbox = player->GetHitbox();
