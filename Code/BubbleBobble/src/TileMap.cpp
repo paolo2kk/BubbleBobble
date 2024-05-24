@@ -127,6 +127,19 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::DEBUG30L] = { 4 * n, 29 * n, n, n };
 	dict_rect[(int)Tile::DEBUG30R] = { 6 * n, 29 * n, n, n };
 
+	//l4 Tiles
+
+	dict_rect[(int)Tile::BLOCKWALL4] = { 0, 44 * n, n, n };
+	dict_rect[(int)Tile::BLOCKWALL4NUMBER] = { 0, 43 * n, n, n };
+	dict_rect[(int)Tile::CORNER_PLATAFORM4] = { n, 43 * n, n, n };
+	dict_rect[(int)Tile::PLATAFORM_SHADOW4] = { n * 2, 43 * n, n, n };
+	dict_rect[(int)Tile::WALL_SHADOW4] = { n, 44 * n, n, n };
+	dict_rect[(int)Tile::WALL_PLATAFORM4] = { n, 45 * n, n, n };
+	dict_rect[(int)Tile::PLATAFORM4] = { n * 2, 45 * n, n, n };
+	dict_rect[(int)Tile::CORNER_SHADOW4] = { n , 46 * n, n, n };
+	dict_rect[(int)Tile::BOTTOM_SHADW4] = { n * 2 , 46 * n, n, n };
+
+
 }
 AppStatus TileMap::Initialise()
 {
