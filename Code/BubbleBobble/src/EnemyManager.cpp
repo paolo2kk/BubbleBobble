@@ -61,6 +61,7 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 		LOG("Failed to create enemy");
 	}
 }
+
 AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
 {
 	int width, height;

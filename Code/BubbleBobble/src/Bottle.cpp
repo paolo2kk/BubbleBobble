@@ -41,7 +41,6 @@ bool Bottle::Update(const AABB& box)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	bool shoot = false;
 	int anim_id;
-	shadowban = true;
 	MoveX();
 	MoveY();
 	StartFalling();

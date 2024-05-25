@@ -251,7 +251,7 @@ AppStatus Scene::LoadLevel(int stage)
 				196, 204, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 196,
 				196, 201, 105,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 105,   0, 196,
 				196, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
-				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
+				196, 201, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196
 			};
 	}
@@ -431,6 +431,7 @@ void Scene::Update()
 		buble->SetPlayer(player);
 
 	}
+
 	CheckCollisions();
 }
 void Scene::Render()
@@ -469,13 +470,22 @@ void Scene::CheckCollisions()
 
 	for (Enemy* enemy : enemies->GetEnemies())
 	{
-		AABB enemy_box = enemy->GetHitArea();
-		if (player_box.TestAABB(enemy_box)) {
-			Point positionene;
-			positionene = enemy->GetPos();
-			AABB hitbox = enemies->GetEnemyHitBox(positionene, EnemyType::SLIME);
-			AABB area = level->GetSweptAreaX(hitbox);
-			enemies->Add(positionene, EnemyType::BOTTLE, area);
+		AABB player_boxx;
+		player_boxx = player->GetHitbox();
+
+		AABB enemy_box;
+		//enemy_box = { enemy->GetPos(), TILE_SIZE, TILE_SIZE };
+		enemy_box = enemy->GetHitArea();
+		if (player_boxx.TestAABB(enemy_box)) {
+			
+			enemy->isshooting = true;
+		}
+		if (enemy->isshooting && !enemy->noSpawnMore)
+		{
+
+			AABB fakeArea = { player->GetPos(), 0, 0 };
+			enemies->Add(enemy->GetPos(), EnemyType::BOTTLE, fakeArea);
+			enemy->noSpawnMore = true;
 		}
 	}
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
@@ -509,6 +519,7 @@ void Scene::CheckCollisions()
 		
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
+
 			AABB enemy_box = enemy->GetHitbox();
 			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
 			{
@@ -585,6 +596,15 @@ void Scene::CheckCollisions()
 			//Move to the next object
 			++it;
 		}
+	}
+
+	
+	if (IsKeyDown(KEY_O)) {
+		Point positionPlayer;
+		positionPlayer = player->GetPos();
+		AABB hitbox = player->GetHitbox();
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(positionPlayer, EnemyType::BOTTLE, area);
 	}
 }
 void Scene::BubbleDespawn()

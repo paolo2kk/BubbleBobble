@@ -3,7 +3,7 @@
 #include "TileMap.h"
 #include "BubbleFromPlayer.h"
 
-#define BOTTLE_SPEED			1
+#define BOTTLE_SPEED			4
 #define BOTTLE_ANIM_DELAY	(2 * ANIM_DELAY)
 
 #define BOTTLE_SHOT_OFFSET_X_LEFT	-14
