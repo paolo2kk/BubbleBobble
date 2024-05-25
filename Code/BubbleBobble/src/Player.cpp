@@ -190,7 +190,7 @@ void Player::MoveX()
 	int objectiveJumpX = pos.x;
 
 	
-	if (IsKeyDown(KEY_LEFT) && initiallyLookingL)
+	if (IsKeyDown(KEY_LEFT))
 	{
 		if (state != State::JUMPING) {
 			pos.x -= 1;
@@ -219,7 +219,7 @@ void Player::MoveX()
 		}
 		
 	}
-	else if (IsKeyDown(KEY_RIGHT) && initiallyLookingR)
+	else if (IsKeyDown(KEY_RIGHT))
 	{
 		
 		isStill = false;

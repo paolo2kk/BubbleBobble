@@ -144,6 +144,8 @@ AppStatus Scene::Init()
 		LOG("Failed to initialise Level");
 		return AppStatus::ERROR;
 	}
+	enemies->SetTileMap(level);
+
 	//Load level
 	if (LoadLevel(1) != AppStatus::OK)
 	{
@@ -154,7 +156,6 @@ AppStatus Scene::Init()
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
 	//Assign the tile map reference to the shot manager to check collisions when shots are shot
-	enemies->SetTileMap(level);
 	shots->SetTileMap(level);
 	//Assign the particle manager reference to the shot manager to add particles when shots collide
 	shots->SetParticleManager(particles);
@@ -186,12 +187,12 @@ AppStatus Scene::LoadLevel(int stage)
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
-				2,   5,   0,   0,   0,   0,   0,   0, 103,   0,   0,   0,   0,   0,   0,  2,
+				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
-				2,   5,   0,   0,  59,   0,   0, 104,   0,   0,   0,  59,   0,   0,   0,  2,
+				2,   5,   0,   0,  59,   0,   0,   0, 103,   0,   0,  59,   0,   0,   0,  2,
 				2,  43,  21,  17,  42,  42,  42,  42,  42,  42,  42,  42,  18,   0,  42,  2,
 				2,   9,   6,  10,  19,  19,  19,  19,  19,  19,  19,  19,  20,   0,   7,  2,
-				2,   5,   0,   0,  59,  0 , 103,   0,   0,   0,   0,  59,   0,   0,   0,  2,
+				2,   5,   0,   0,  59,  0 ,   0,   0, 103,   0,   0,  59,   0,   0,   0,  2,
 				2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
 				2,   5, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,  43,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  2
@@ -239,17 +240,17 @@ AppStatus Scene::LoadLevel(int stage)
 	else if (stage == 4)
 	{
 		map = new int[size] {
-				197, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
+				197, 199, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 196,
 				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196,
 				196, 204, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 196,
 				196, 201,	0,	 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
-				197, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
+				196, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
 				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196,
 				196, 204, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 196,
 				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
-				197, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
+				196, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
 				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196
 			};
@@ -488,7 +489,7 @@ void Scene::CheckCollisions()
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB enemy_box = enemy->GetHitbox();
-			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide)
+			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
 			{
 				enemies->DestroyEnemy(enemy);
 				bubble->SetAlive(false);

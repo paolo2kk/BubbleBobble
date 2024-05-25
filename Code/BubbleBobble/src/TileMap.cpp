@@ -133,6 +133,8 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::BLOCKWALL4NUMBER] = { 0, 43 * n, n, n };
 	dict_rect[(int)Tile::CORNER_PLATAFORM4] = { n, 43 * n, n, n };
 	dict_rect[(int)Tile::PLATAFORM_SHADOW4] = { n * 2, 43 * n, n, n };
+	dict_rect[(int)Tile::DEBUGLVL4] = { n * 2, 43 * n, n, n };
+
 	dict_rect[(int)Tile::WALL_SHADOW4] = { n, 44 * n, n, n };
 	dict_rect[(int)Tile::WALL_PLATAFORM4] = { n, 45 * n, n, n };
 	dict_rect[(int)Tile::PLATAFORM4] = { n * 2, 45 * n, n, n };
@@ -213,12 +215,12 @@ Tile TileMap::GetTileIndex(int x, int y) const
 bool TileMap::IsTileStatic(Tile tile) const
 {
 	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3 ||
-		tile == Tile::BLOCKWITH30 || tile == Tile::BLOCKWITHOUT30);
+		tile == Tile::BLOCKWITH30 || tile == Tile::BLOCKWITHOUT30 || tile == Tile::BLOCKWALL4 || tile == Tile::BLOCKWALL4NUMBER);
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMLVL2 ||
-		   tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS);
+		tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS || tile == Tile::CORNER_PLATAFORM4 || tile == Tile::PLATAFORM_SHADOW4);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -242,15 +244,15 @@ bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT || tile == Tile::FLOOR30R) ;
+	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT || tile == Tile::FLOOR30R);
 }
 bool TileMap::IsTileHalfWallLeft(Tile tile) const
 {
-	return (tile == Tile::HALWALLLEFTLVL2);
+	return (tile == Tile::HALWALLLEFTLVL2) ;
 }
 bool TileMap::IsTileHalfWallRight(Tile tile) const
 {
-	return (tile == Tile::HALFWALLRIGHTLVL2);
+	return (tile == Tile::HALFWALLRIGHTLVL2 || tile == Tile::WALLNOSHADE30 || tile == Tile::WALLWSHADE30 || tile == Tile::WALLWSHADETOP30);
 
 }
 bool TileMap::IsTileAir(Tile tile) const
@@ -260,15 +262,15 @@ bool TileMap::IsTileAir(Tile tile) const
 }
 bool TileMap::IsTileFloor(Tile tile) const
 {
-	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2);
+	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2 || tile == Tile::FLOOR30 || tile == Tile::CORNERFLOOR30
+		|| tile == Tile::FLOOR30WSHADOWL || tile == Tile::FLOOR30WSHADOWR || tile == Tile::PLATAFORM4 || tile == Tile::WALL_PLATAFORM4);
 }
 bool TileMap::IsTileFloorNCeiling(Tile tile) const
 {
 	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2 || tile == Tile::PLATFORMBASIC || tile == Tile::PLATFORMLVL2
-		|| tile == Tile::CORNER || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMCORNERLEFTLVL2 || tile == Tile::CORNERPLATFORMLVL2 
-		
-		);
-}
+		|| tile == Tile::CORNER || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMCORNERLEFTLVL2 || tile == Tile::CORNERPLATFORMLVL2
+		|| tile == Tile::FLOOR30 || tile == Tile::CORNERFLOOR30) || IsTileFloor(tile);
+}//remember: Add all shader tiles here
 bool TileMap::IsTileLadderTop(Tile tile) const
 {
 	return tile == Tile::LADDER_TOP_L || tile == Tile::LADDER_TOP_R;
@@ -289,7 +291,7 @@ bool TileMap::TestCollisionHalfWallRight(const AABB& box) const
 {
 	return CollisionXHalfRight(box.pos + Point(box.width - 8, 0), box.height);
 }
-bool TileMap::TestCollisionAir (const AABB& box) const
+bool TileMap::TestCollisionAir(const AABB& box) const
 {
 	return CollisionAir(box.pos + Point(box.width - 8, 0), box.height);
 }
