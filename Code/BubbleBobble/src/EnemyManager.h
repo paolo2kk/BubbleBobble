@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Turret.h"
 #include "Slime.h"
+#include "Drunk.h"
 #include "TileMap.h"
 #include "ShotManager.h"
 

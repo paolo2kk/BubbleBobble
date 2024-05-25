@@ -5,6 +5,7 @@
 #include <raymath.h>
 #include "Object.h"
 
+
 BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUBBLE_PHYSICAL_SIZE, BUBBLE_PHYSICAL_SIZE, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE)
 {
 	dire = d;
@@ -57,7 +58,17 @@ void BubbleFromPlayer::Update()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 	HandleCollisionLogic();
-	if (inCatch) EnemyCatch();
+	if (inCatch) {
+		switch (enemytype)
+		{
+		case 0:
+			EnemyCatchSlime();
+			break;
+		case 1:
+			EnemyCatchDrunk();
+			break;
+		}
+	}
 }
 bool BubbleFromPlayer::isAlive()
 {
@@ -128,7 +139,7 @@ Point BubbleFromPlayer::GetPos() const
 {
 	return pos;
 }
-void BubbleFromPlayer::EnemyCatch()
+void BubbleFromPlayer::EnemyCatchSlime()
 {
 	if (poped == false)
 	{
@@ -164,6 +175,44 @@ void BubbleFromPlayer::EnemyCatch()
 		hasEndedFromCatch = true;
 		break;
 	}
+	}
+}
+void BubbleFromPlayer::EnemyCatchDrunk()
+{
+	if (poped == false)
+	{
+		switch (bubbleStages)
+		{
+		case (int)BubbleStages::GREENSTAGE:
+			SetAnimation((int)Animations::DRUNK_BUBBLE_GREEN);
+			bubbleStages++;
+			break;
+		case (int)BubbleStages::GREENSTAGE_:
+			if (eTimeCatch > eTimeCatchGreen) bubbleStages++;
+			eTimeCatch += GetFrameTime();
+			break;
+		case (int)BubbleStages::YELLOWSTAGE:
+			eTimeCatch = 0;
+			SetAnimation((int)Animations::DRUNK_BUBBLE_YELLOW);
+			bubbleStages++;
+			break;
+		case (int)BubbleStages::YELLOWSTAGE_:
+			if (eTimeCatch > eTimeCatchYellow) bubbleStages++;
+			eTimeCatch += GetFrameTime();
+			break;
+		case (int)BubbleStages::REDSTAGE:
+			eTimeCatch = 0;
+			SetAnimation((int)Animations::DRUNK_BUBBLE_RED);
+			bubbleStages++;
+			break;
+		case (int)BubbleStages::REDSTAGE_:
+			if (eTimeCatch > eTimeCatchRed) bubbleStages++;
+			eTimeCatch += GetFrameTime();
+			break;
+		case(int)BubbleStages::ENDED:
+			hasEndedFromCatch = true;
+			break;
+		}
 	}
 }
 void BubbleFromPlayer::SetTileMap(TileMap* m) 

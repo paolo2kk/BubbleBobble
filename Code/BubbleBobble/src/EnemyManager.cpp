@@ -36,6 +36,10 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	{
 		enemy = new Turret(pos, TURRET_PHYSICAL_WIDTH, TURRET_PHYSICAL_HEIGHT, TURRET_FRAME_SIZE, TURRET_FRAME_SIZE);
 	}
+	else if (type == EnemyType::DRUNK)
+	{
+		enemy = new Drunk(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
+	}
 	else
 	{
 		LOG("Internal error: trying to add a new enemy with invalid type");

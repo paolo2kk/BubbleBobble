@@ -87,6 +87,10 @@ void Slime::MoveX()
 		}
 	}
 }
+EnemyType Slime::GetEnemyType() const
+{
+	return EnemyType::SLIME;
+}
 void Slime::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);

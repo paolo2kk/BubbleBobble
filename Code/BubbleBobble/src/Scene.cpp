@@ -241,15 +241,15 @@ AppStatus Scene::LoadLevel(int stage)
 	{
 		map = new int[size] {
 				197, 199, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 206, 196,
-				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
+				196, 201,   0,   0,   0,   0,   0,   0, 105,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196,
 				196, 204, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 196,
-				196, 201,	0,	 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
+				196, 201, 105,	 0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 105,   0, 196,
 				196, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
-				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
+				196, 201,   0, 105,   0,   0,   0,   0,   0,   0,   0,   0, 105,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196,
 				196, 204, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 196,
-				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
+				196, 201, 105,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 105,   0, 196,
 				196, 199, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 196,
 				196, 201,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 196,
 				196, 202, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 203, 196
@@ -283,10 +283,20 @@ AppStatus Scene::LoadLevel(int stage)
 			else if (tile == Tile::ZENCHAN)
 			{
 
-				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::SLIME, area);
+			}
+			else if (tile == Tile::DRUNK)
+			{
+
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;				
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				area = level->GetSweptAreaX(hitbox);
+				enemies->Add(pos, EnemyType::DRUNK, area);
 			}
 			else if (tile == Tile::BUBBLE)
 			{
@@ -491,6 +501,13 @@ void Scene::CheckCollisions()
 			AABB enemy_box = enemy->GetHitbox();
 			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
 			{
+				if (stage == 1 || stage == 2) {
+					bubble->enemytype = 0;
+				}
+				else if (stage == 4) {
+					bubble->enemytype = 1;
+
+				}
 				enemies->DestroyEnemy(enemy);
 				bubble->SetAlive(false);
 				bubble->inCatch = true;
@@ -512,8 +529,20 @@ void Scene::CheckCollisions()
 			pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
 			AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 			AABB area = level->GetSweptAreaX(hitbox);
-			enemies->Add(pos, EnemyType::SLIME, area);
-			bubble->issAlive = false;
+			switch (bubble->enemytype) {
+			case 0:
+				
+				enemies->Add(pos, EnemyType::SLIME, area);
+				bubble->issAlive = false;
+				break;
+			case 1:
+				
+				enemies->Add(pos, EnemyType::DRUNK, area);
+				bubble->issAlive = false;
+				break;
+			
+			}
+			
 		}
 		if (bubble->fruit == true)
 		{

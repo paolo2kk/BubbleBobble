@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "BubbleFromPlayer.h"
 
 #define BUBBLE_PHYSICAL_SIZE	14
@@ -37,7 +38,6 @@ public:
 	int stages;
 	void DrawDebug(const Color& col) const;
 	void Stomp();
-	void EnemyCatch();
 	void SetTileMap(TileMap* m);
 	void SetPlayer(Player* p);
 	bool inCatch = false;
@@ -47,6 +47,8 @@ public:
 	float framecounter;
 	bool canCollide;
 	Point GetPos() const;
+	void EnemyCatchSlime();
+	void EnemyCatchDrunk();
 	bool issAlive;
 	void MoveBubbleToRandomNear();
 
@@ -54,7 +56,7 @@ public:
 
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
-
+	int enemytype = 0;
 private:
 	void HandleCollisionLogic();
 

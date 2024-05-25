@@ -22,6 +22,7 @@
     <ClCompile Include="src\AABB.cpp" />
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\BubbleFromPlayer.cpp" />
+    <ClCompile Include="src\Drunk.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
     <ClCompile Include="src\Entity.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\BubbleFromPlayer.h" />
+    <ClInclude Include="src\Drunk.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\EnemyManager.h" />
     <ClInclude Include="src\Entity.h" />
