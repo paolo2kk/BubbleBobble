@@ -467,6 +467,17 @@ void Scene::CheckCollisions()
 	AABB player_box, obj_box, ene_box;
 	player_box = player->GetHitbox();
 
+	for (Enemy* enemy : enemies->GetEnemies())
+	{
+		AABB enemy_box = enemy->GetHitArea();
+		if (player_box.TestAABB(enemy_box)) {
+			Point positionene;
+			positionene = enemy->GetPos();
+			AABB hitbox = enemies->GetEnemyHitBox(positionene, EnemyType::SLIME);
+			AABB area = level->GetSweptAreaX(hitbox);
+			enemies->Add(positionene, EnemyType::BOTTLE, area);
+		}
+	}
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();
@@ -514,6 +525,7 @@ void Scene::CheckCollisions()
 				
 				break;
 			}
+			
 
 		}
 		if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)

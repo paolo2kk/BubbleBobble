@@ -14,7 +14,7 @@
 #define TURRET_PHYSICAL_WIDTH	16
 #define TURRET_PHYSICAL_HEIGHT	16
 
-enum class EnemyType { SLIME, TURRET, DRUNK };
+enum class EnemyType { SLIME, TURRET, DRUNK, BOTTLE };
 
 class Enemy : public Entity
 {
@@ -35,7 +35,7 @@ public:
 
 	//Retrieve the position and direction of the shot to be thrown
 	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;
-
+	bool shadowban = false;
 protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it
 	bool IsVisible(const AABB& hitbox);

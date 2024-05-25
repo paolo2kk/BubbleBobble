@@ -571,6 +571,7 @@ bool Entity::IsAlive() const
 void Entity::Update()
 {
 	pos += dir;
+    
 }
 AABB Entity::GetHitbox() const
 {
@@ -588,6 +589,14 @@ AABB Entity::GetHitbox() const
         return hitbox;
     }
 
+}
+AABB Entity::GetHitArea() const
+{
+
+    Point position(0, pos.y - (height - 1));
+    
+    AABB hitarea(position, WINDOW_WIDTH / 2, height);
+    return hitarea;
 }
 void Entity::DeleteHitbox() 
 {
@@ -648,6 +657,11 @@ void Entity::DrawHitbox(const Color& col) const
 
 	render->DrawBox(pos.x, pos.y-(height-1), width, height, c);
 	render->DrawCorners(pos.x, pos.y-(height-1), width, height);
+    
+        render->DrawBox(0, pos.y - (height - 1), WINDOW_WIDTH, height, c);
+
+   
+
 }
 void Entity::DrawHitbox(int x, int y, int w, int h, const Color& col) const
 {

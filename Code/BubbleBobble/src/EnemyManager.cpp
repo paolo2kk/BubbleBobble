@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 #include "Slime.h"
 #include "Turret.h"
+#include "Bottle.h"
 
 EnemyManager::EnemyManager()
 {
@@ -39,6 +40,10 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	else if (type == EnemyType::DRUNK)
 	{
 		enemy = new Drunk(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
+	}
+	else if (type == EnemyType::BOTTLE)
+	{
+		enemy = new Bottle(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
 	}
 	else
 	{
