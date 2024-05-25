@@ -96,8 +96,11 @@ void EnemyManager::Update(const AABB& player_hitbox)
 		{
 			enemy->GetShootingPosDir(&p, &d);
 			shots->Add(p, d);
+			LOG("Added shot at position: ", p.x, p.y);  
+
 		}
 	}
+	
 }
 void EnemyManager::Draw() const
 {

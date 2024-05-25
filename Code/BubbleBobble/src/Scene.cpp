@@ -468,26 +468,37 @@ void Scene::CheckCollisions()
 	AABB player_box, obj_box, ene_box;
 	player_box = player->GetHitbox();
 
-	for (Enemy* enemy : enemies->GetEnemies())
+	/*for (Enemy* enemy : enemies->GetEnemies())
 	{
 		AABB player_boxx;
 		player_boxx = player->GetHitbox();
 
 		AABB enemy_box;
-		//enemy_box = { enemy->GetPos(), TILE_SIZE, TILE_SIZE };
 		enemy_box = enemy->GetHitArea();
-		if (player_boxx.TestAABB(enemy_box)) {
-			
-			enemy->isshooting = true;
-		}
-		if (enemy->isshooting && !enemy->noSpawnMore)
+		if (!enemy->noSpawnMore)
 		{
+			
+			eTimeBottle += GetFrameTime();
 
-			AABB fakeArea = { player->GetPos(), 0, 0 };
-			enemies->Add(enemy->GetPos(), EnemyType::BOTTLE, fakeArea);
-			enemy->noSpawnMore = true;
+			if (eTimeBottle > 2) {
+				if (player_boxx.TestAABB(enemy_box)) {
+
+					enemy->isshooting = true;
+					eTimeBottle = 0;
+
+				}
+				if (enemy->isshooting && !enemy->noSpawnMore)
+				{
+
+					AABB fakeArea = { player->GetPos(), 0, 0 };
+					enemies->Add(enemy->GetPos(), EnemyType::BOTTLE, fakeArea);
+					enemy->noSpawnMore = true;
+				}
+			}
+			
 		}
-	}
+		
+	}*/
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();

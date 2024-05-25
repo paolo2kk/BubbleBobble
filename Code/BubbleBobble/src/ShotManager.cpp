@@ -31,6 +31,7 @@ void ShotManager::Add(const Point& pos, const Point& dir)
 		if (!shot.IsAlive())
 		{
 			shot.Init(pos, dir);
+			LOG("Shot initialized at position: ", pos.x, pos.y);
 			found = true;
 			break;
 		}

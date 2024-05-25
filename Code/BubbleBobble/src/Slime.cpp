@@ -22,6 +22,7 @@ AppStatus Slime::Initialise(Look look, const AABB& area)
 	else if (look == Look::RIGHT) SetAnimation((int)Animations::ZENCHAN_WALK_R);
 
 	visibility_area = area;
+	noSpawnMore = false;
 
 
 	return AppStatus::OK;
