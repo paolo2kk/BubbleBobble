@@ -508,6 +508,14 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::BUBBLE_GREEN, { i * n, n * 66, n, n });
 
+    Anima->SetAnimationDelay((int)Animations::BUBBLE_POP, ANIM_DELAY);
+    for (i = 3; i <= 4; ++i)
+        Anima->AddKeyFrame((int)Animations::BUBBLE_POP, { i * n, n * 66, n, n });
+
+    Anima->SetAnimationDelay((int)Animations::HURRY_UP, ANIM_DELAY);
+        Anima->AddKeyFrame((int)Animations::HURRY_UP, { 5 * n, n * 66, n*4, n });
+        Anima->AddKeyFrame((int)Animations::HURRY_UP, { 9 * n, n * 66, n * 4, n });
+
     Anima->SetAnimationDelay((int)Animations::BUBBLE_BLUE, ANIM_DELAY);
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::BUBBLE_BLUE, { i * n, n * 67, n, n });

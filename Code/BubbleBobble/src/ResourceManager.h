@@ -17,6 +17,8 @@ enum class Resource {
     IMG_PATO,
     IMG_UPC_CITM,
     IMG_EXPL,
+    IMG_GOOD_ENDING,
+    IMG_FALSE_ENDING,
     IMG_PLAYER_2,
     IMG_SCORE,
     IMG_MENU2,

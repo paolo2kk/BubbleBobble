@@ -518,7 +518,7 @@ void Scene::CheckCollisions()
 		}
 		if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
 		{
-
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
 			bubble->poped = true;
 			bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 

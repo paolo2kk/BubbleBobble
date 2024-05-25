@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Text.h"
 
-enum class GameState { MAIN_MENU, PLAYING, TRANSITIONING, INSERT_COIN, PLAYER_1, TUTORIAL, INTRO, PLAYER_2_AND_1, GAME_OVER, START};
+enum class GameState { MAIN_MENU, PLAYING, TRANSITIONING, INSERT_COIN, PLAYER_1, TUTORIAL, INTRO, PLAYER_2_AND_1, GAME_OVER, START,FALSE_ENDING,GOOD_ENDING};
 
 class Game
 {
@@ -58,6 +58,8 @@ private:
     const Texture2D* img_upc_citm;
     const Texture2D* img_pato_productions;
     const Texture2D* img_explanation;
+    const Texture2D* img_false_ending;
+    const Texture2D* img_good_ending;
     const Texture2D* img_life_bob;
     const Texture2D* img_life_bub;
     int timeValue = 0;

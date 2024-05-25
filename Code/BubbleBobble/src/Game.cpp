@@ -150,7 +150,9 @@ AppStatus Game::Initialise(float scale)
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INTRO));
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
-
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_FALSE_ENDING));
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_REAL_ENDING));
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_GAME_OVER));
 
 
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -241,6 +243,18 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_explanation = data.GetTexture(Resource::IMG_EXPL);
+
+    if (data.LoadTexture(Resource::IMG_GOOD_ENDING, "images/True ending.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_good_ending = data.GetTexture(Resource::IMG_GOOD_ENDING);
+
+    if (data.LoadTexture(Resource::IMG_FALSE_ENDING, "images/False ending.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_false_ending = data.GetTexture(Resource::IMG_FALSE_ENDING);
 
     if (data.LoadTexture(Resource::IMG_UPC_CITM, "images/UPC_CITM.png") != AppStatus::OK)
     {
@@ -411,6 +425,7 @@ AppStatus Game::Update()
             {
               
                 state = GameState::MAIN_MENU;
+
             }
             if (IsKeyPressed(KEY_ONE))
             {
@@ -466,7 +481,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-
+                frameCounter = 0;
                 state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
@@ -481,7 +496,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-
+                frameCounter = 0;
                 state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
@@ -499,10 +514,26 @@ AppStatus Game::Update()
 
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
+                frameCounter = 0;
             }
             break;
         case GameState::GAME_OVER:
-            if (pastTime(3))
+            if (pastTime(2))
+            {
+                state = GameState::MAIN_MENU;
+            }
+            break;
+
+
+        case GameState::FALSE_ENDING:
+            if ((pastTime(93))||(IsKeyPressed(KEY_ESCAPE)))
+            {
+                state = GameState::MAIN_MENU;
+            }
+            break;
+
+        case GameState::GOOD_ENDING:
+            if ((pastTime(32)) || (IsKeyPressed(KEY_ESCAPE)))
             {
                 state = GameState::MAIN_MENU;
             }
@@ -513,6 +544,16 @@ AppStatus Game::Update()
             {
                 //FinishPlay();
                 state = GameState::GAME_OVER;
+                decCredit();
+            }
+            else if (IsKeyPressed(KEY_T))
+            {
+                state = GameState::GOOD_ENDING;
+                decCredit();
+            }
+            else if (IsKeyPressed(KEY_F))
+            {
+                state = GameState::FALSE_ENDING;
                 decCredit();
             }
             else if (scene->passStage == true) {
@@ -649,9 +690,20 @@ void Game::Render()
             break;
 
         case GameState::GAME_OVER:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_GAME_OVER));
             DrawTexture(*img_game_over, 0, 0, WHITE);
             RenderCredit();
             RenderUI();
+            break;
+
+        case GameState::FALSE_ENDING:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_FALSE_ENDING));
+            DrawTexture(*img_false_ending, 0, 0, WHITE);
+            break;
+
+        case GameState::GOOD_ENDING:
+            UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_REAL_ENDING));
+            DrawTexture(*img_good_ending, 0, 0, WHITE);
             break;
 
         case GameState::PLAYING:
