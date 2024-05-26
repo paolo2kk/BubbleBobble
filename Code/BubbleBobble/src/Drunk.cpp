@@ -63,6 +63,7 @@ void Drunk::MoveX()
 		{
 			pos.x = prev_x;
 			look = Look::LEFT;
+			
 			SetAnimation((int)Animations::DRUNK_WALK_L);
 		}
 		else if (map->TestCollisionHalfWallLeft(box)) {
@@ -91,6 +92,8 @@ void Drunk::MoveX()
 		}
 	}
 }
+
+
 void Drunk::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -121,7 +124,7 @@ void Drunk::MoveY()
 		{
 			if (state == DrunkState::FALLING) Stop();
 			if (IsKeyPressed(KEY_X))
-				dir.y = -1;
+				dir.y = 01;
 		}
 		else
 		{

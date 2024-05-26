@@ -44,7 +44,8 @@ public:
 
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
-
+	void LerpUpwards();
+	bool lerping = false;
 private:
 	//Create the pattern behaviour
 	void MoveX();
@@ -60,6 +61,7 @@ private:
 	TileMap* map;
 	int current_step;	//current step of the pattern
 	int current_frames;	//number of frames in the current step
+	float eTimeLerp = 0;
 	std::vector<BubbleFromPlayer*> bubbles;
 };
 

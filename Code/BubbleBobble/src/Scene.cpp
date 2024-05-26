@@ -359,7 +359,7 @@ void Scene::PlayerBubbleSpawn()
 {
 	eBubblingTime += GetFrameTime();
 	
-	if (IsKeyPressed(KEY_S) && eBubblingTime >= .3)
+	if (IsKeyPressed(KEY_S) && eBubblingTime >= .3 && !player->STOP)
 	{
 		
 		if (player->IsLookingLeft())
@@ -486,13 +486,13 @@ void Scene::CheckCollisions()
 
 				if (player_boxx.TestAABB(enemy_box)) {
 
+
 					enemy->isshooting = true;
 
 				}
 				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && stage == 4)
 				{
 					enemy->isshooting = false;
-
 					Projectile* proj = new Projectile(enemy->GetPos(), enemy->GetDir());
 					projectiles.push_back(proj);
 					eTimeBottle = 0;

@@ -198,7 +198,7 @@ void Player::Update()
 			isGod = false;
 		}
 	}
-	if (IsLookingRight() && IsKeyPressed(KEY_S))
+	if (IsLookingRight() && IsKeyPressed(KEY_S) && !STOP)
 	{
 
 		sprite->SetAnimation((int)Animations::BUB_ATACK_R);
