@@ -38,14 +38,19 @@ void Player::IncrScore(int n)
 }
 void Player::HitProcedure()
 {
-	Stop();
+	STOP = true;
 	isGod = true;
+	Ikilleable = false;
+
 	eTimeHitted += GetFrameTime();
 	if (eTimeHitted >= immuneThreshold) {
-		SetPos({38, 192});
+		SetPos({32, 192});
 		isGod = false;
 		wasHit = false;
 		eTimeHitted = 0;
+		STOP = false;
+
+		Ikilleable = true;
 	}
 }
 int Player::GetScore()
@@ -88,6 +93,10 @@ bool Player::IsMoving() const
 	}
 	
 }
+void Player::toogleWasHit()
+{
+	wasHit = true;
+}
 void Player::Stop()
 {
 	dir = { 0,0 };
@@ -102,8 +111,11 @@ void Player::IncLiv()
 }
 void Player::DecLiv()
 {
+
 	if (isGod == false) {
+
 		lives--;
+		HitProcedure();
 
 	}
 }
@@ -126,6 +138,10 @@ void Player::StartWalkingRight()
 	state = State::WALKING;
 	look = Look::RIGHT;
 	SetAnimation((int)Animations::BUB_WALK_R);
+}
+void Player::SetDeathAnim()
+{
+	SetAnimation((int)Animations::BUB_DEATH);
 }
 void Player::StartJumping()
 {
@@ -162,8 +178,11 @@ void Player::Update()
 {
 	//Player doesn't use the "Entity::Update() { pos += dir; }" default behaviour.
 	//Instead, uses an independent behaviour for each axis.
-	MoveX();
-	MoveY();
+	if (STOP != true) {
+		MoveX();
+		MoveY();
+	}
+	
 	LaserTag();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -198,6 +217,7 @@ void Player::Update()
 	{
 		HitProcedure();
 	}
+
 	Warp();
 }
 

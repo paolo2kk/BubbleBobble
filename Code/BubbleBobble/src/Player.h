@@ -64,7 +64,11 @@ public:
 	void SetAnimation(int id);
 	bool IsMoving() const;
 	bool wasHit = false;
-	
+	void toogleWasHit();
+	bool STOP = false;
+	void SetDeathAnim();
+	bool Ikilleable = true;
+
 private:
 	
 	//Player mechanics
@@ -90,8 +94,7 @@ private:
 	bool isStill = true;
 	bool initiallyLookingR = true;
 	bool initiallyLookingL = true;
-	int immuneThreshold = 4;
-
+	int immuneThreshold = 2;
 	State state;
 	Look look;
 	int jump_delay;

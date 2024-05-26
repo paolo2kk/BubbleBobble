@@ -376,7 +376,7 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_SQUASH_L, { i * n, n * 42, n, n });
 
-    Anima->SetAnimationDelay((int)Animations::BOB_DEATH, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::BOB_DEATH, ANIM_DELAY + 5);
     for (i = 0; i < 13; ++i)
         Anima->AddKeyFrame((int)Animations::BOB_DEATH, { i * n, n * 43, n, n * 2 });
 
@@ -458,8 +458,8 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 3; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_SQUASH_L, { i * n, n * 55, n, n });
 
-    Anima->SetAnimationDelay((int)Animations::BUB_DEATH, ANIM_DELAY);
-    for (i = 0; i < 13; ++i)
+    Anima->SetAnimationDelay((int)Animations::BUB_DEATH, ANIM_DELAY + 5);
+    for (i = 0; i < 12; ++i)
         Anima->AddKeyFrame((int)Animations::BUB_DEATH, { i * n, n * 56, n, n * 2 });
 
     Anima->SetAnimationDelay((int)Animations::BUB_PUSH_BUTTON, ANIM_DELAY);

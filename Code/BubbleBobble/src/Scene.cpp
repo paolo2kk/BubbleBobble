@@ -618,9 +618,15 @@ void Scene::CheckCollisions()
 		AABB projectile_box = proj->GetHitbox();
 		if (player_box.TestAABB(projectile_box))
 		{
-			player->wasHit == true;
-			player->DecLiv();
+			if (player->Ikilleable) {
+				Point posplayer = player->GetPos();
+				posplayer.y -= 16;
+				player->SetPos(posplayer);
+				player->SetDeathAnim();
+				player->toogleWasHit();
+				player->DecLiv();
 
+			}
 		}
 	}
 	
