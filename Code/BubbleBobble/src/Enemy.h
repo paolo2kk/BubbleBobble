@@ -32,6 +32,7 @@ public:
 
 	//Update the enemy according to its logic, return true if the enemy must shoot
 	virtual bool Update(const AABB& box) = 0;
+	bool lerping = false;
 
 	//Retrieve the position and direction of the shot to be thrown
 	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;

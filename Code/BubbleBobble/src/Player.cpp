@@ -204,7 +204,7 @@ void Player::Update()
 		sprite->SetAnimation((int)Animations::BUB_ATACK_R);
 
 	}
-	else if (IsLookingLeft() && IsKeyPressed(KEY_S))
+	else if (IsLookingLeft() && IsKeyPressed(KEY_S) && !STOP)
 	{
 		sprite->SetAnimation((int)Animations::BUB_ATACK_L);
 	}

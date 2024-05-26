@@ -59,6 +59,8 @@ void Drunk::MoveX()
 	if (look == Look::RIGHT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
 		pos.x += DRUNK_SPEED;
+
+		
 		if (map->TestCollisionWallRight(box))
 		{
 			pos.x = prev_x;
@@ -75,9 +77,30 @@ void Drunk::MoveX()
 		}
 		
 	}
+	if (lerping)
+	{
+		eTimeLerp += GetFrameTime();
+		if (eTimeLerp <= 1.5f)
+		{
+			state = DrunkState::ROAMING;
+		}
+		else if (eTimeLerp > 1.5f && eTimeLerp < 3.0f)
+		{
+			state = DrunkState::JUMPING;
+		}
+		else if (eTimeLerp > 3.0f)
+		{
+			eTimeLerp = 0;
+			lerping = false;
+		}
+
+
+	}
+	
 	else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
 		pos.x += -DRUNK_SPEED;
+
 		if (map->TestCollisionWallLeft(box))
 		{
 			pos.x = prev_x;
@@ -123,15 +146,18 @@ void Drunk::MoveY()
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (state == DrunkState::FALLING) Stop();
-			if (IsKeyPressed(KEY_X))
-				dir.y = 01;
+			/*if (IsKeyDown(KEY_X))
+				dir.y = -1;*/
 		}
 		else
 		{
 			if (state != DrunkState::FALLING) StartFalling();
 		}
 		
-		
+	}
+	else if (state == DrunkState::JUMPING)
+	{
+		pos.y -= 1;
 	}
 	
 	

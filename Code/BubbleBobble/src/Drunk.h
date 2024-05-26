@@ -45,7 +45,6 @@ public:
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
 	void LerpUpwards();
-	bool lerping = false;
 private:
 	//Create the pattern behaviour
 	void MoveX();
