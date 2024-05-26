@@ -105,9 +105,12 @@ void EnemyManager::Draw() const
 }
 void EnemyManager::DrawDebug() const
 {
+	Color c;
+	c.a = 0;
+
 	for (const Enemy* enemy : enemies)
 	{
-		enemy->DrawVisibilityArea(DARKGRAY);
+		enemy->DrawVisibilityArea(c);
 		enemy->DrawHitbox(RED);
 	}
 }

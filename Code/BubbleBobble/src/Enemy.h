@@ -36,6 +36,8 @@ public:
 	//Retrieve the position and direction of the shot to be thrown
 	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;
 	bool isshooting = false;
+	Look GetDir();
+
 	bool noSpawnMore = false;
 protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it

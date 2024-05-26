@@ -420,7 +420,10 @@ void Scene::Update()
 	level->Update();
 	player->Update();
 	hitbox = player->GetHitbox();
-
+	for (Projectile* proj : projectiles)
+	{
+		proj->Update();
+	}
 	enemies->Update(hitbox);
 	shots->Update(hitbox);
 	particles->Update();
@@ -481,20 +484,22 @@ void Scene::CheckCollisions()
 			
 			eTimeBottle += GetFrameTime();
 
-			if (eTimeBottle > 2) {
 				if (player_boxx.TestAABB(enemy_box)) {
 
 					enemy->isshooting = true;
-					eTimeBottle = 0;
 
 				}
-				if (enemy->isshooting && !enemy->noSpawnMore)
+				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && stage == 4)
 				{
-					
-					Projectile* proj = new Projectile(enemy->GetPos());
+					enemy->isshooting = false;
+
+					Projectile* proj = new Projectile(enemy->GetPos(), enemy->GetDir());
 					projectiles.push_back(proj);
+					eTimeBottle = 0;
+
+
 				}
-			}
+			
 			
 		}
 		
@@ -608,7 +613,14 @@ void Scene::CheckCollisions()
 			++it;
 		}
 	}
-
+	for (Projectile* proj : projectiles)
+	{
+		AABB projectile_box = proj->GetHitbox();
+		if (player_box.TestAABB(projectile_box))
+		{
+			player->SetPos({80, 80}); //just a flag till we have lives loop
+		}
+	}
 	
 	if (IsKeyDown(KEY_O)) {
 		Point positionPlayer;

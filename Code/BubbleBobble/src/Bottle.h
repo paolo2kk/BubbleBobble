@@ -9,11 +9,15 @@ enum class ProjectileType {
 class Projectile : public Entity
 {
 public:
-	Projectile(const Point& p);
+	Projectile(const Point& p, Look view);
 	void SetAnimation(int id);
 	~Projectile();
 
 	void Release();
+
+	void Update();
+
+	void MoveX();
 
 	bool pastTime(float time);
 
@@ -21,6 +25,7 @@ public:
 	float framecounter;
 
 private:
+	Look direction;
 	ProjectileType type;
 
 };

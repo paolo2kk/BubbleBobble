@@ -3,9 +3,10 @@
 #include <cstdlib>
 #include "iostream"
 
-Projectile::Projectile(const Point& p) : Entity(p, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE)
+Projectile::Projectile(const Point& p, Look view) : Entity(p, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE)
 {
 	framecounter = 0;
+	direction = view;
 	Rectangle rc;
 	const int n = TILE_SIZE;
 	rc = { n, n + 6, n, n }; 
@@ -24,6 +25,25 @@ void Projectile::Release()
 {
 
 	render->Release();
+}
+void Projectile::Update()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->Update();
+	pos += dir;
+	MoveX();
+}
+void Projectile::MoveX()
+{
+	
+	if (direction == Look::LEFT) 
+	{
+		dir = { -3, 0 };
+	}
+	else if (direction == Look::RIGHT)
+	{
+		dir = { 3, 0 };
+	}
 }
 void Projectile::DrawDebug(const Color& col) const
 {
