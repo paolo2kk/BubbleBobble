@@ -69,6 +69,7 @@ Scene::~Scene()
 		delete particles;
 		particles = nullptr;
 	}
+	projectiles.clear();
 	objects.clear();
 	bubbles.clear();
 	bubblesPlayer.clear();
@@ -468,7 +469,7 @@ void Scene::CheckCollisions()
 	AABB player_box, obj_box, ene_box;
 	player_box = player->GetHitbox();
 
-	/*for (Enemy* enemy : enemies->GetEnemies())
+	for (Enemy* enemy : enemies->GetEnemies())
 	{
 		AABB player_boxx;
 		player_boxx = player->GetHitbox();
@@ -489,16 +490,15 @@ void Scene::CheckCollisions()
 				}
 				if (enemy->isshooting && !enemy->noSpawnMore)
 				{
-
-					AABB fakeArea = { player->GetPos(), 0, 0 };
-					enemies->Add(enemy->GetPos(), EnemyType::BOTTLE, fakeArea);
-					enemy->noSpawnMore = true;
+					
+					Projectile* proj = new Projectile(enemy->GetPos());
+					projectiles.push_back(proj);
 				}
 			}
 			
 		}
 		
-	}*/
+	}
 	for (BubbleFromPlayer* bubble : bubblesPlayer)
 	{
 		AABB bubble_box = bubble->GetHitbox();
@@ -664,6 +664,11 @@ void Scene::ClearLevel()
 		delete obj;
 	}
 	objects.clear();
+	for (Projectile* proj : projectiles)
+	{
+		delete proj;
+	}
+	projectiles.clear();
 	for (Bubble* bubl : bubbles)
 	{
 		delete bubl;
@@ -728,6 +733,10 @@ void Scene::RenderObjects()
 
 	}
 
+	for (Projectile* proje : projectiles)
+	{
+		proje->Draw();
+	}
 	for (Bubble* bubl : bubbles)
 	{
 		bubl->Draw();
@@ -746,6 +755,10 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	for (Object* obj : objects)
 	{
 		obj->DrawDebug(col);
+	}
+	for (Projectile* proj : projectiles)
+	{
+		proj->DrawDebug(col);
 	}
 	for (Bubble* bubl : bubbles)
 	{

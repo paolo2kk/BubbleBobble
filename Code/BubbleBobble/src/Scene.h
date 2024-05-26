@@ -54,6 +54,8 @@ private:
     float eTimeSpawnY;
     float eTimeBottle = 0;
     std::vector<Object*> objects;
+    std::vector<Projectile*> projectiles;
+
     std::vector<Bubble*> bubbles;
     EnemyManager* enemies;
     ShotManager* shots;
