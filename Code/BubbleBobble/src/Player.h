@@ -42,6 +42,7 @@ public:
 	void SetTileMap(TileMap* tilemap);
 	void InitScore();
 	void IncrScore(int n);
+	void HitProcedure();
 	int GetScore();
 	void Update();
 	void DrawDebug(const Color& col) const;
@@ -62,7 +63,8 @@ public:
 	bool IsGod();
 	void SetAnimation(int id);
 	bool IsMoving() const;
-
+	bool wasHit = false;
+	
 private:
 	
 	//Player mechanics
@@ -70,7 +72,7 @@ private:
 	void MoveY();
 	void LaserTag();
 	void LaserProcedures();
-
+	float eTimeHitted = 0;
 	//Animation management
 	void Stop();
 	void StartWalkingLeft();
@@ -88,6 +90,7 @@ private:
 	bool isStill = true;
 	bool initiallyLookingR = true;
 	bool initiallyLookingL = true;
+	int immuneThreshold = 4;
 
 	State state;
 	Look look;

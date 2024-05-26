@@ -1,4 +1,4 @@
-Project executed on 26-05-2024 at 12:24:08.
+Project executed on 26-05-2024 at 13:09:44.
 main.cpp(13): Application start
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
@@ -89,12 +89,5 @@ Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
 Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
-Text.cpp(67): Internal error, character index invalid when drawing text: (-3,0)
+main.cpp(34): Application finish
+main.cpp(37): Bye :)

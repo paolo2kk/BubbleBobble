@@ -36,6 +36,18 @@ void Player::IncrScore(int n)
 {
 	score += n;
 }
+void Player::HitProcedure()
+{
+	Stop();
+	isGod = true;
+	eTimeHitted += GetFrameTime();
+	if (eTimeHitted >= immuneThreshold) {
+		SetPos({38, 192});
+		isGod = false;
+		wasHit = false;
+		eTimeHitted = 0;
+	}
+}
 int Player::GetScore()
 {
 	return score;
@@ -90,7 +102,10 @@ void Player::IncLiv()
 }
 void Player::DecLiv()
 {
-	lives--;
+	if (isGod == false) {
+		lives--;
+
+	}
 }
 int Player::GetLives() const
 {
@@ -179,7 +194,10 @@ void Player::Update()
 	{
 		Stop();
 	}
-
+	if (wasHit == true)
+	{
+		HitProcedure();
+	}
 	Warp();
 }
 

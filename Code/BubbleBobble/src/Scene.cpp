@@ -618,7 +618,9 @@ void Scene::CheckCollisions()
 		AABB projectile_box = proj->GetHitbox();
 		if (player_box.TestAABB(projectile_box))
 		{
-			player->SetPos({80, 80}); //just a flag till we have lives loop
+			player->wasHit == true;
+			player->DecLiv();
+
 		}
 	}
 	
