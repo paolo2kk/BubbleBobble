@@ -84,7 +84,7 @@ void Drunk::MoveX()
 		{
 			state = DrunkState::ROAMING;
 		}
-		else if (eTimeLerp > 1.5f && eTimeLerp < 3.0f)
+		else if (eTimeLerp > 1.5f && eTimeLerp < 2.5f)
 		{
 			state = DrunkState::JUMPING;
 		}
