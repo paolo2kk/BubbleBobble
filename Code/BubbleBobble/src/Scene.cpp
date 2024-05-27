@@ -490,17 +490,19 @@ void Scene::CheckCollisions()
 					enemy->isshooting = true;
 
 				}
-			
 				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && stage == 4)
 				{
 					enemy->isshooting = false;
+					if (player->GetPos().y > 16) {
+						enemy->lerping = true;
+
+					}
 					Projectile* proj = new Projectile(enemy->GetPos(), enemy->GetDir());
 					projectiles.push_back(proj);
 					eTimeBottle = 0;
 
 
 				}
-			
 			
 			
 		}

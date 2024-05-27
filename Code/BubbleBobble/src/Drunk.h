@@ -45,6 +45,7 @@ public:
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
 	void LerpUpwards();
+	bool defuseHitbox = false;
 private:
 	//Create the pattern behaviour
 	void MoveX();
@@ -54,7 +55,7 @@ private:
 	void Stop();
 	//Update looking direction according to the current step of the pattern
 	void UpdateLook(int anim_id);
-	float eTimeJump = 0;
+
 	int attack_delay;	//delay between attacks
 	DrunkState state;
 	TileMap* map;
