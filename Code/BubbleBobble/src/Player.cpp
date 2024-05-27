@@ -28,7 +28,12 @@ void Player::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
-
+void Player::NoP1()
+{
+	Point p(35, 184);
+	SetPos(p);
+	SetAnimation((int)Animations::BUB_PUSH_BUTTON);
+}
 void Player::InitScore()
 {
 	score = 0;

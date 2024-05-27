@@ -353,7 +353,7 @@ void Game::RenderLives()
 {
     if (scene != nullptr)
 {
-
+    //PLAYER 1
     if (scene->player->lives == 3)
     {
         DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT - 8, WHITE);
@@ -363,13 +363,37 @@ void Game::RenderLives()
     else if (scene->player->lives == 2)
     {
         DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT - 8, WHITE);
-        DrawTexture(*img_life_bub, 16, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bub, 8, WINDOW_HEIGHT - 8, WHITE);
     }
     else if (scene->player->lives == 1)
     {
         DrawTexture(*img_life_bub, 0, WINDOW_HEIGHT-8, WHITE);
     }
+    else if (scene->player->lives == 0)
+    {
+        scene->P1in = false;
+    }
 
+    //PLAYER 2
+    if (scene->player2->lives == 3)
+    {
+        DrawTexture(*img_life_bob, 248, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bob, 240, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bob, 232, WINDOW_HEIGHT - 8, WHITE);
+    }
+    else if (scene->player2->lives == 2)
+    {
+        DrawTexture(*img_life_bob, 248, WINDOW_HEIGHT - 8, WHITE);
+        DrawTexture(*img_life_bob, 240, WINDOW_HEIGHT - 8, WHITE);
+    }
+    else if (scene->player2->lives == 1)
+    {
+        DrawTexture(*img_life_bob, 248, WINDOW_HEIGHT - 8, WHITE);
+    }
+    else if (scene->player2->lives == 0)
+    {
+        scene->P2in=false;
+    }
 }
 }
 AppStatus Game::BeginPlay()
@@ -542,23 +566,47 @@ AppStatus Game::Update()
             break;
 
         case GameState::PLAYING:  
+
             if (scene->P2in == false)
             {
-                Point p(210, 184);
-                scene->player2->SetPos(p);
                 scene->player2->NoP2();
+                scene->player2->lives = 0;
             }
-            if (IsKeyPressed(KEY_W) && credit>1)
+            if (IsKeyPressed(KEY_W) && credit>=1)
             {
                 if (scene->P2in == false)
                 {
-                    scene->player2->SetState(State2::IDLE);
                     Point p(210, 205);
                     scene->player2->SetPos(p);
-                    credit--;
+                    scene->player2->lives = 3;
+                    decCredit();
                 }
                 scene->P2in =true;
             }
+
+            if (scene->P1in == false)
+            {
+                scene->player->NoP1();
+                scene->player->lives = 0;
+            }
+            if (IsKeyPressed(KEY_UP) && credit >= 1)
+            {
+                if (scene->P1in == false)
+                {
+                    Point p(35, 205);
+                    scene->player->SetPos(p);
+                    scene->player->lives = 3;
+                    decCredit();
+                }
+                scene->P1in = true;
+            }
+
+            if (scene->P1in == false && scene->P2in == false)
+            {
+                state = GameState::GAME_OVER;
+                decCredit();
+            }
+
             if (IsKeyPressed(KEY_ESCAPE))
             {
                 //FinishPlay();

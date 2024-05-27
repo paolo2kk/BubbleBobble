@@ -25,6 +25,8 @@ AppStatus Player2::Initialise()
 }
 void Player2::NoP2() 
 {
+	Point p(210, 184);
+	SetPos(p);
 	SetAnimation((int)Animations::BOB_PUSH_BUTTON);
 }
 void Player2::SetTileMap(TileMap* tilemap)
