@@ -77,25 +77,7 @@ void Drunk::MoveX()
 		}
 		
 	}
-	if (lerping)
-	{
-		eTimeLerp += GetFrameTime();
-		if (eTimeLerp <= 1.5f)
-		{
-			state = DrunkState::ROAMING;
-		}
-		else if (eTimeLerp > 1.5f && eTimeLerp < 2.5f)
-		{
-			state = DrunkState::JUMPING;
-		}
-		else if (eTimeLerp > 3.0f)
-		{
-			eTimeLerp = 0;
-			lerping = false;
-		}
-
-
-	}
+	
 	
 	else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
@@ -137,6 +119,17 @@ void Drunk::MoveY()
 	int prev_x = pos.x;
 	int prev_y = pos.y;
 
+	if (eTimeJump >= 5 && eTimeJump < 8)
+	{
+		pos = { (float)pos.x, (float)pos.y - 1 };
+		state = DrunkState::JUMPING;
+	}
+	else if (eTimeJump >= 8)
+	{
+		eTimeJump = 0;
+	}
+
+	eTimeJump += GetFrameTime();
 
 	if (state != DrunkState::JUMPING)
 	{
@@ -155,7 +148,7 @@ void Drunk::MoveY()
 		}
 		
 	}
-	else if (state == DrunkState::JUMPING)
+	else if (state == DrunkState::JUMPING && pos.y > 52)
 	{
 		pos.y -= 1;
 	}

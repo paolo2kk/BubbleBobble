@@ -54,7 +54,7 @@ private:
 	void Stop();
 	//Update looking direction according to the current step of the pattern
 	void UpdateLook(int anim_id);
-
+	float eTimeJump = 0;
 	int attack_delay;	//delay between attacks
 	DrunkState state;
 	TileMap* map;
