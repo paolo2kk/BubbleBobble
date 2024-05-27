@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Player2.h"
 #include "Enemy.h"
 #include "BubbleFromPlayer.h"
 
@@ -40,6 +41,7 @@ public:
 	void Stomp();
 	void SetTileMap(TileMap* m);
 	void SetPlayer(Player* p);
+	void SetPlayer2(Player2* p);
 	bool inCatch = false;
 	bool hasEndedFromCatch = false;
 	bool poped = false;
@@ -79,6 +81,7 @@ private:
 	float lifeTime;
 	float speed;
 	Player* player;
+	Player2* player2;
 	TileMap* map;
 	Directions direction;
 };

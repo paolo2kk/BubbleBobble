@@ -34,6 +34,10 @@
     <ClCompile Include="src\Particle.cpp" />
     <ClCompile Include="src\ParticleManager.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Player2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="src\RenderComponent.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scene.cpp" />
@@ -67,6 +71,10 @@
     <ClInclude Include="src\Particle.h" />
     <ClInclude Include="src\ParticleManager.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Player2.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\RenderComponent.h" />
     <ClInclude Include="src\ResourceManager.h" />

@@ -116,6 +116,10 @@ void BubbleFromPlayer::SetPlayer(Player* p)
 {
 	player = p;
 }
+void BubbleFromPlayer::SetPlayer2(Player2* p)
+{
+	player2 = p;
+}
 void BubbleFromPlayer::Stomp()
 {
 	if (!inShoot)

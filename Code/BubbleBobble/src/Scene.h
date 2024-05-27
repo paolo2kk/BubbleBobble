@@ -1,6 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include "Player.h"
+#include "Player2.h"
 #include "TileMap.h"
 #include "Object.h"
 #include "BubbleFromPlayer.h"
@@ -29,11 +30,14 @@ public:
     int AllObjects;
     void PlayerBubbleSpawn();
     int Score() const;
+    int Score2() const;
     void ResetScore() const;
     bool returnMenu = false;
     bool passStage = false;
 
     Player* player;
+    Player2* player2;
+    bool P2in;
 
 private:
     void BubbleSpawner();
@@ -62,6 +66,7 @@ private:
     ParticleManager* particles;
 
     std::vector<BubbleFromPlayer*> bubblesPlayer;
+    std::vector<BubbleFromPlayer*> bubblesPlayer2;
 
     DebugMode debug;
 };

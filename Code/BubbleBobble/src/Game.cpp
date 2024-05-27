@@ -338,12 +338,14 @@ void Game::RenderUI()
 {
     DrawTexture(*img_ScoreHeader, 0, -1, WHITE);
     text_->Draw(35, 8, TextFormat("%d", scene->Score()), WHITE);
+    text_->Draw(180, 8, TextFormat("%d", scene->Score2()), WHITE);
 
-    if (scene->Score() >= HighScore)
+    if (scene->Score()+scene->Score2() >= HighScore)
     {
         HighScore = scene->Score();
     }
     text_->Draw(122, 8, TextFormat("%d", HighScore), WHITE);
+
 
 
 }
@@ -540,6 +542,23 @@ AppStatus Game::Update()
             break;
 
         case GameState::PLAYING:  
+            if (scene->P2in == false)
+            {
+                Point p(210, 184);
+                scene->player2->SetPos(p);
+                scene->player2->NoP2();
+            }
+            if (IsKeyPressed(KEY_W))
+            {
+                if (scene->P2in == false)
+                {
+                    scene->player2->SetState(State2::IDLE);
+                    Point p(210, 205);
+                    scene->player2->SetPos(p);
+                    credit--;
+                }
+                scene->P2in =true;
+            }
             if (IsKeyPressed(KEY_ESCAPE))
             {
                 //FinishPlay();
@@ -707,6 +726,10 @@ void Game::Render()
             break;
 
         case GameState::PLAYING:
+            if (playtime == 0)
+            {
+                scene->player->SetState(State::WALKING);
+            }
             if ((playtime/60) <= 30)
             {
                 UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
