@@ -548,7 +548,7 @@ AppStatus Game::Update()
                 scene->player2->SetPos(p);
                 scene->player2->NoP2();
             }
-            if (IsKeyPressed(KEY_W))
+            if (IsKeyPressed(KEY_W) && credit>1)
             {
                 if (scene->P2in == false)
                 {
