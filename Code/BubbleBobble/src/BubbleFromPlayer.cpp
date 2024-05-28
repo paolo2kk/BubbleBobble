@@ -125,7 +125,7 @@ void BubbleFromPlayer::Stomp()
 	if (!inShoot)
 	{
 		AABB box = GetHitbox();
-		if (player != nullptr && IsKeyDown(KEY_X))
+		if (player != nullptr && IsKeyDown(KEY_PERIOD))
 		{
 			if (eTimePogo > 1)
 			{
@@ -326,6 +326,11 @@ void BubbleFromPlayer::MoveBubbleLeftPlayer()
 }
 void BubbleFromPlayer::HandleCollisionLogic()
 {
+	
+}
+void BubbleFromPlayer::StayBehind(BubbleFromPlayer* bub)
+{
+	pos.x = bub->pos.x - 16;
 	
 }
 void BubbleFromPlayer::MoveBubbleToRandomNear()

@@ -147,6 +147,12 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::WALLSHADEDRUNK] = { n , 58 * n, n, n };
 	dict_rect[(int)Tile::NOYESNOYES] = { n * 2 , 58 * n, n, n };
 	dict_rect[(int)Tile::NOYESNONO] = { n * 2 , 59 * n, n, n };
+	dict_rect[(int)Tile::ThatOne] = { n * 3 , 58 * n, n, n };
+	dict_rect[(int)Tile::NOYESYESYES] = { n * 3 , 59 * n, n, n };
+	dict_rect[(int)Tile::YESNOYESNO] = { n * 5 , 58 * n, n, n };
+	dict_rect[(int)Tile::YESYESNOYES] = { n * 5 , 57 * n, n, n };
+	dict_rect[(int)Tile::YESNONOYES2] = { 10 * n , 58 * n, n, n };
+	dict_rect[(int)Tile::FINALY] = { 13 * n , 57 * n, n, n };
 
 
 }

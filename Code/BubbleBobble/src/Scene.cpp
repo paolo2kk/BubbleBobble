@@ -244,18 +244,18 @@ AppStatus Scene::LoadLevel(int stage)
 	else if (stage == 3)
 	{
 		map = new int[size] {
-			174, 207, 193, 193, 194,   0, 195, 193, 193, 194,   0, 195, 193, 193, 193, 175,
+			174, 207, 193, 175, 192, 215, 207, 215, 215, 192, 193, 207, 215, 217, 192, 175,
+			175, 208, 210, 214, 185, 212, 208, 210, 210, 185, 216, 208, 209, 211, 185, 175,
+			175, 208, 209, 211, 185, 208, 208, 209, 210, 185, 208, 208, 210, 214, 192, 175,
+			175, 192, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 175,
+			175, 185, 105,   0,   0, 107, 107,   0, 107, 105,   0, 105,   0,   0, 105, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
+			175, 185, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 176, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 175
 		};
 	}
@@ -323,6 +323,15 @@ AppStatus Scene::LoadLevel(int stage)
 
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;				
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				area = level->GetSweptAreaX(hitbox);
+				enemies->Add(pos, EnemyType::DRUNK, area);
+			}
+			else if (tile == Tile::DRUNKR)
+			{
+
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
@@ -594,7 +603,7 @@ void Scene::CheckCollisions()
 
 					enemy->isshooting = true;
 				}
-				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && stage == 4)
+				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && (stage == 4 || stage == 3))
 				{
 					enemy->isshooting = false;
 					if (player->GetPos().y > 16) {
@@ -650,7 +659,7 @@ void Scene::CheckCollisions()
 					if (stage == 1 || stage == 2) {
 						bubble->enemytype = 0;
 					}
-					else if (stage == 4) {
+					else if (stage == 4 || stage == 3) {
 						bubble->enemytype = 1;
 
 					}
@@ -712,13 +721,17 @@ void Scene::CheckCollisions()
 				if (bubble == bubble2) continue;
 				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble_box.TestAABB(bubble_box2))
+				if (bubble->dire == Directions::LEFT && bubble2->dire == Directions::LEFT)
+				{
+					bubble2->StayBehind(bubble);
+				}
+				/*if (bubble_box.TestAABB(bubble_box2))
 				{
 					bubble->MoveBubbleToRandomNear();
 					bubble2->MoveBubbleToRandomNear();
 
 					break;
-				}
+				}*/
 			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))

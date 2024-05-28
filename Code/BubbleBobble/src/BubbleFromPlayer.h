@@ -55,12 +55,15 @@ public:
 	void MoveBubbleToRandomNear();
 
 	Directions BublePop(Directions d);
+	void StayBehind(BubbleFromPlayer* bub);
 
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
 	int enemytype = 0;
 private:
 	void HandleCollisionLogic();
+
+
 
 
 
