@@ -328,6 +328,11 @@ void BubbleFromPlayer::HandleCollisionLogic()
 {
 	
 }
+void BubbleFromPlayer::StayBehind(BubbleFromPlayer* bub)
+{
+	pos.x = bub->pos.x - 16;
+	
+}
 void BubbleFromPlayer::MoveBubbleToRandomNear()
 {
 	float ranIndexX = GetRandomValue(0, 1);

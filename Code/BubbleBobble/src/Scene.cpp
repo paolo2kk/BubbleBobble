@@ -721,13 +721,17 @@ void Scene::CheckCollisions()
 				if (bubble == bubble2) continue;
 				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble_box.TestAABB(bubble_box2))
+				if (bubble->dire == Directions::LEFT && bubble2->dire == Directions::LEFT)
+				{
+					bubble2->StayBehind(bubble);
+				}
+				/*if (bubble_box.TestAABB(bubble_box2))
 				{
 					bubble->MoveBubbleToRandomNear();
 					bubble2->MoveBubbleToRandomNear();
 
 					break;
-				}
+				}*/
 			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))
