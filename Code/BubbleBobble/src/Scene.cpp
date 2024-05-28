@@ -318,6 +318,7 @@ AppStatus Scene::LoadLevel(int stage)
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::SLIME, area);
+				numEnemies++;
 			}
 			else if (tile == Tile::DRUNK)
 			{
@@ -327,6 +328,8 @@ AppStatus Scene::LoadLevel(int stage)
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
+				numEnemies++;
+
 			}
 			else if (tile == Tile::DRUNKR)
 			{
@@ -336,6 +339,8 @@ AppStatus Scene::LoadLevel(int stage)
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
+				numEnemies++;
+
 			}
 			else if (tile == Tile::BUBBLE)
 			{
@@ -456,6 +461,13 @@ void Scene::Update()
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
 	//Debug levels instantly
+	if (numEnemies == 0)
+	{
+		nextSceneTrigger = true;
+	}
+	else {
+		nextSceneTrigger = false;
+	}
 	if (IsKeyPressed(KEY_ONE))
 	{
 		stage = 1;
@@ -683,6 +695,7 @@ void Scene::CheckCollisions()
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos,bubble->dire);
 					part->Initialise();
 					part->popedParticles = true;
+					numEnemies--;
 					bubblesPlayer.push_back(part);
 					
 				}

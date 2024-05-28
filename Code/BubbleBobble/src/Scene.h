@@ -13,7 +13,6 @@
 #include "ParticleManager.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
-
 class Scene
 {
 public:
@@ -26,7 +25,6 @@ public:
     void Release();
     AppStatus LoadLevel(int stage);
     void RandomItemSpawn();
-    int stage = 1;
     int AllObjects;
     void PlayerBubbleSpawn();
     int Score() const;
@@ -34,12 +32,13 @@ public:
     void ResetScore() const;
     bool returnMenu = false;
     bool passStage = false;
+    int stage = 1;
 
     Player* player;
     Player2* player2;
     bool P2in;
     bool P1in;
-
+    bool nextSceneTrigger = false;
 private:
     void BubbleSpawner();
     void CheckCollisions();
@@ -49,7 +48,7 @@ private:
     void RenderObjects();
     void RenderObjectsDebug(const Color& col) const;
 
-
+    int numEnemies = 0;
 
     TileMap *level;
     Enemy* enemy;

@@ -274,13 +274,13 @@ AppStatus Game::LoadResources()
     }
     img_game_over = data.GetTexture(Resource::IMG_GAME_OVER);
 
-    if (data.LoadTexture(Resource::IMG_STAGE1, "images/uno.png") != AppStatus::OK)
+    if (data.LoadTexture(Resource::IMG_STAGE1, "images/Transitions.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
     img_stage1 = data.GetTexture(Resource::IMG_STAGE1);
     
-    if (data.LoadTexture(Resource::IMG_STAGE2, "images/dos.png") != AppStatus::OK)
+    if (data.LoadTexture(Resource::IMG_STAGE2, "images/Transitions.png") != AppStatus::OK)
     {
         return AppStatus::ERROR;
     }
@@ -636,6 +636,9 @@ AppStatus Game::Update()
                 state = GameState::TRANSITIONING;
                 scene->passStage = false;
             }
+            if (IsKeyPressed(KEY_Q) || scene->nextSceneTrigger == true) {
+                state = GameState::TRANSITIONING;
+            }
             else
             {
                 //Game logic
@@ -796,26 +799,29 @@ void Game::Render()
         case GameState::TRANSITIONING:
             UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
             float progress = timeElapsed / totalTime;
-            float yPos_stage2 = 224.0f * -progress; 
-            playtime = 0;
-            if (timeElapsed < totalTime) {
+            float yOffset = 224.0f * progress;  
 
-                DrawTexture(*img_stage1, 0, yPos_stage2, WHITE);
-                DrawTexture(*img_stage2, 0, yPos_stage2 + 224, WHITE);
+            playtime = 0;
+
+            if (timeElapsed < totalTime) {
+                DrawTexture(*img_stage1, 0, -224.0f * (scene->stage - 1) - yOffset, WHITE);
+
                 RenderUI();
                 RenderLives();
                 timeElapsed += GetFrameTime();
-
             }
             else {
                 RenderUI();
-                timeElapsed = 0;
-                state = GameState::PLAYING;
-                scene->LoadLevel(2);
                 RenderLives();
+                timeElapsed = 0;
+                scene->nextSceneTrigger = false;
+                scene->stage++; 
+                scene->LoadLevel(scene->stage); 
+                state = GameState::PLAYING;
             }
-          
+
             break;
+
     }
     
     EndTextureMode();
