@@ -56,7 +56,7 @@ void Drunk::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
-	if (look == Look::RIGHT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y))
+	if (look == Look::RIGHT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
 	{
 		pos.x += DRUNK_SPEED;
 
@@ -93,6 +93,7 @@ void Drunk::MoveX()
 		else if (eTimeLerp > 1)
 		{
 			eTimeLerp = 0;
+			pos.y -= 10;
 			lerping = false;
 			defuseHitbox = false;
 		}
@@ -100,7 +101,7 @@ void Drunk::MoveX()
 
 	}
 	
-	else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y))
+	else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
 	{
 		pos.x += -DRUNK_SPEED;
 
@@ -162,11 +163,12 @@ void Drunk::MoveY()
 		}
 		
 	}
-	else if (state == DrunkState::JUMPING && !defuseHitbox)
+	else if (state == DrunkState::JUMPING && defuseHitbox)
 	{
 		pos.y -= 1;
 	}
 	
+
 	
 }
 

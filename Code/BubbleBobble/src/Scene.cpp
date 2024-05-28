@@ -607,7 +607,8 @@ void Scene::CheckCollisions()
 				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && (stage == 4 || stage == 3))
 				{
 					enemy->isshooting = false;
-					if (player->GetPos().y > 16) {
+					if (player->GetPos().y > 32 && stage == 4) {
+
 						enemy->lerping = true;
 
 					}
