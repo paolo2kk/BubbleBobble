@@ -5,6 +5,7 @@
 
 Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
+	P1 = true;
 	framecounter = 0;
 	Rectangle rc;
 	const int n = TILE_SIZE;
@@ -172,87 +173,92 @@ void Object::DrawPoints()
 	Rectangle rc;
 	const int n = TILE_SIZE;
 
-	// IF BOB
-	/*switch (Points()) {
-	case POINTS_APPLE:
-		rc = { 21 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_BANANA:
-		rc = { 17 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_GRAPE:
-		rc = { 31 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_LEMON:
-		rc = { 14 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_ORANGE:
-		rc = { 13 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_PEAR:
-		rc = { 18 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_WATERMELON:
-		rc = { 19 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_BLUE_CANDY:
-		rc = { 9 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_CAKE:
-		rc = { 29 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_DONUT:
-		rc = { 27 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_POPSICLE:
-		rc = { 20 * n,n * 3, n, n }; break;
-		break;
-	case POINTS_SUSHI:
-		rc = { 30 * n,n * 3, n, n }; break;
-		break;
-	}*/
+	if (P1 == false)
+	{
+		switch (Points()) {
+		case POINTS_APPLE:
+			rc = { 21 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_BANANA:
+			rc = { 17 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_GRAPE:
+			rc = { 31 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_LEMON:
+			rc = { 14 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_ORANGE:
+			rc = { 13 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_PEAR:
+			rc = { 18 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_WATERMELON:
+			rc = { 19 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_BLUE_CANDY:
+			rc = { 9 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_CAKE:
+			rc = { 29 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_DONUT:
+			rc = { 27 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_POPSICLE:
+			rc = { 20 * n,n * 3, n, n }; break;
+			break;
+		case POINTS_SUSHI:
+			rc = { 30 * n,n * 3, n, n }; break;
+			break;
 
-	//IF BUB
-
-	switch (Points()) {
-	case POINTS_APPLE:
-		rc = { 21 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_BANANA:
-		rc = { 17 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_GRAPE:
-		rc = { 31 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_LEMON:
-		rc = { 14 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_ORANGE:
-		rc = { 13 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_PEAR:
-		rc = { 18 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_WATERMELON:
-		rc = { 19 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_BLUE_CANDY:
-		rc = { 9 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_CAKE:
-		rc = { 29 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_DONUT:
-		rc = { 27 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_POPSICLE:
-		rc = { 20 * n,n * 2, n, n }; break;
-		break;
-	case POINTS_SUSHI:
-		rc = { 30 * n,n * 2, n, n }; break;
-		break;
+		}
 	}
 
+
+	//IF BUB
+	if (P1 == true)
+	{
+		switch (Points()) {
+		case POINTS_APPLE:
+			rc = { 21 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_BANANA:
+			rc = { 17 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_GRAPE:
+			rc = { 31 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_LEMON:
+			rc = { 14 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_ORANGE:
+			rc = { 13 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_PEAR:
+			rc = { 18 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_WATERMELON:
+			rc = { 19 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_BLUE_CANDY:
+			rc = { 9 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_CAKE:
+			rc = { 29 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_DONUT:
+			rc = { 27 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_POPSICLE:
+			rc = { 20 * n,n * 2, n, n }; break;
+			break;
+		case POINTS_SUSHI:
+			rc = { 30 * n,n * 2, n, n }; break;
+			break;
+		}
+	}
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
 

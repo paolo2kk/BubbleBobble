@@ -6,15 +6,14 @@ Particle::Particle()
 	const int n = TILE_SIZE;
 
 	ResourceManager& data = ResourceManager::Instance();
-	render = new Sprite(data.GetTexture(Resource::IMG_ENEMIES));
+	render = new Sprite(data.GetTexture(Resource::IMG_ANIMATIONS));
 	
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetNumberAnimations(1);
-	
-	sprite->SetAnimationDelay(0, PARTICLE_ANIM_DELAY);
-	sprite->AddKeyFrame(0, { 2*n,   n, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	sprite->AddKeyFrame(0, { 2*n, 2*n, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
-	sprite->AddKeyFrame(0, { 2*n, 3*n, PARTICLE_FRAME_SIZE, PARTICLE_FRAME_SIZE });
+	sprite->SetAnimationDelay((int)Animations::BUBBLE_POP, PARTICLE_ANIM_DELAY);
+		sprite->AddKeyFrame((int)Animations::BUBBLE_POP, { n * 3, n * 66, n, n });
+		sprite->AddKeyFrame((int)Animations::BUBBLE_POP, { n * 4, n * 66, n, n });
+
 	
 	sprite->SetAnimation(0);
 

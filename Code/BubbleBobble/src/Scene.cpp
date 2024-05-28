@@ -23,6 +23,7 @@ Scene::Scene()
 	debug = DebugMode::OFF;
 	AllObjects = 0;
 	enemy = nullptr;
+
 }
 Scene::~Scene()
 {
@@ -666,6 +667,15 @@ void Scene::CheckCollisions()
 			if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos,bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+					
+				}
 				bubble->poped = true;
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
@@ -679,13 +689,13 @@ void Scene::CheckCollisions()
 				switch (bubble->enemytype) {
 				case 0:
 
+					bubble->hasEndedFromCatch = false;
 					enemies->Add(pos, EnemyType::SLIME, area);
-					bubble->issAlive = false;
 					break;
 				case 1:
 
+					bubble->hasEndedFromCatch = false;
 					enemies->Add(pos, EnemyType::DRUNK, area);
-					bubble->issAlive = false;
 					break;
 
 				}
@@ -815,7 +825,7 @@ void Scene::CheckCollisions()
 			player2->IncrScore((*it)->Points());
 			(*it)->DeleteHitbox();
 			(*it)->point = true;
-
+			(*it)->P1 = false;
 
 		}
 		else
@@ -995,6 +1005,7 @@ void Scene::UpdateBubbles()
 			buble->Update();
 		}
 	}
+
 }
 void Scene::RenderObjects()
 {
@@ -1064,7 +1075,7 @@ void Scene::RenderObjects()
 			++it;
 		}
 	}
-	
+
 }
 void Scene::RenderObjectsDebug(const Color& col) const
 {
