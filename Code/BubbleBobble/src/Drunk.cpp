@@ -79,12 +79,26 @@ void Drunk::MoveX()
 	}
 	if (lerping)
 	{
-		eTimeLerp += GetFrameTime();
-		if (eTimeLerp <= .5f)
-		{
-			state = DrunkState::ROAMING;
+		int prev_x = pos.x;
+		if (eTimeLerp < .3) {
+			SetAnimation((int)Animations::DRUNK_DRINK_L);
+
 		}
-		else if (eTimeLerp > .5f && eTimeLerp < 1)
+
+		eTimeLerp += GetFrameTime();
+		if (eTimeLerp <= .5)
+		{
+			pos.x = prev_x;
+			state = DrunkState::ROAMING;
+			
+		}
+		else if (eTimeLerp > .5 && eTimeLerp < .6)
+		{
+			if (look == Look::RIGHT)SetAnimation((int)Animations::DRUNK_DRINK_R);
+			else if (look == Look::LEFT)SetAnimation((int)Animations::DRUNK_DRINK_L);
+
+		}
+		else if (eTimeLerp > .6 && eTimeLerp < 1)
 		{
 			state = DrunkState::JUMPING;
 

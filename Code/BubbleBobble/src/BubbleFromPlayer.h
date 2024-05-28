@@ -62,7 +62,7 @@ public:
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
 	int enemytype = 0;
-
+	bool diffWindMap = false;
 	bool popedParticles;
 
 private:

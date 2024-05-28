@@ -49,7 +49,7 @@ private:
     void RenderObjectsDebug(const Color& col) const;
 
     int numEnemies = 0;
-
+    float eTimeTrans = 0;
     TileMap *level;
     Enemy* enemy;
     Camera2D camera;

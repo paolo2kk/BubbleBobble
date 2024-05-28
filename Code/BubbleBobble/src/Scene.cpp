@@ -410,6 +410,9 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::LEFT);
 			buble->Initialise();
 			buble->SetTileMap(level);
+			if (stage == 3) {
+				buble->diffWindMap = true;
+			}
 			bubblesPlayer.push_back(buble);
 
 		}
@@ -418,6 +421,9 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player->GetPos(), Directions::RIGHT);
 			buble->Initialise();
 			buble->SetTileMap(level);
+			if (stage == 3) {
+				buble->diffWindMap = true;
+			}
 			bubblesPlayer.push_back(buble);
 		}
 		eBubblingTime = 0;
@@ -431,6 +437,9 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::LEFT);
 			buble->Initialise();
 			buble->SetTileMap(level);
+			if (stage == 3) {
+				buble->diffWindMap = true;
+			}
 			bubblesPlayer2.push_back(buble);
 
 		}
@@ -439,6 +448,9 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::RIGHT);
 			buble->Initialise();
 			buble->SetTileMap(level);
+			if (stage == 3) {
+				buble->diffWindMap = true;
+			}
 			bubblesPlayer2.push_back(buble);
 		}
 		eBubblingTime = 0;
@@ -463,9 +475,15 @@ void Scene::Update()
 	//Debug levels instantly
 	if (numEnemies == 0)
 	{
-		nextSceneTrigger = true;
+		eTimeTrans += GetFrameTime();
+		if (eTimeTrans > 3) {
+			nextSceneTrigger = true;
+			
+		}
+		
 	}
 	else {
+		eTimeTrans = 0;
 		nextSceneTrigger = false;
 	}
 	if (IsKeyPressed(KEY_ONE))
@@ -619,10 +637,10 @@ void Scene::CheckCollisions()
 				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && (stage == 4 || stage == 3))
 				{
 					enemy->isshooting = false;
-					if (player->GetPos().y > 32 && stage == 4) {
+					if (player->GetPos().y > 32 && (stage == 4)) {
 
 						enemy->lerping = true;
-
+						
 					}
 					Projectile* proj = new Projectile(enemy->GetPos(), enemy->GetDir());
 					projectiles.push_back(proj);

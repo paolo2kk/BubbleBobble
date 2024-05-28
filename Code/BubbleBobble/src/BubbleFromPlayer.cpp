@@ -147,29 +147,50 @@ bool BubbleFromPlayer::isAlive()
 }
 void BubbleFromPlayer::ClampPos()
 {
-	
-	if (pos.y < 32)
-	{
-		if (pos.x <= WINDOW_WIDTH / 2)
+	if (diffWindMap == false) {
+		if (pos.y < 32)
 		{
-			dir = {1, 1};
+			if (pos.x <= WINDOW_WIDTH / 2)
+			{
+				dir = { 1, 1 };
+			}
+			else {
+				dir = { -1, 1 };
+			}
 		}
-		else {
-			dir = { -1, 1 };
-		}
-	}
-	if (pos.y == 32)
-	{
-		if (pos.x <= GetRandomValue(110, WINDOW_WIDTH / 2))
+		if (pos.y == 32)
 		{
-			dir = {1, 0};
-		}
-		else if (pos.x > GetRandomValue(WINDOW_WIDTH / 2, 140))
-		{
+			if (pos.x <= GetRandomValue(110, WINDOW_WIDTH / 2))
+			{
+				dir = { 1, 0 };
+			}
+			else if (pos.x > GetRandomValue(WINDOW_WIDTH / 2, 140))
+			{
 
-			dir = { -1, 0 };
+				dir = { -1, 0 };
+			}
 		}
 	}
+	else {
+		int prev_y = pos.y;
+		if (pos.y < WINDOW_HEIGHT / 2 + 32)
+		{
+			pos.y = prev_y + 2;
+		}
+		if (pos.y == WINDOW_HEIGHT / 2 + 32)
+		{
+			if (pos.x <= GetRandomValue(110, WINDOW_WIDTH / 2))
+			{
+				dir = { 1, 0 };
+			}
+			else if (pos.x > GetRandomValue(WINDOW_WIDTH / 2, 140))
+			{
+
+				dir = { -1, 0 };
+			}
+		}
+	}
+	
 	
 }
 void BubbleFromPlayer::SetPlayer(Player* p)

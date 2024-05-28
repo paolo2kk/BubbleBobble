@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include "iostream"
 
-Projectile::Projectile(const Point& p, Look view) : Entity(p, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE)
+Projectile::Projectile(const Point& p, Look view) : Entity(p, 2, 2, TILE_SIZE, TILE_SIZE)
 {
 	framecounter = 0;
 	direction = view;
@@ -38,11 +38,11 @@ void Projectile::MoveX()
 	
 	if (direction == Look::LEFT) 
 	{
-		dir = { -3, 0 };
+		dir = { -2, 0 };
 	}
 	else if (direction == Look::RIGHT)
 	{
-		dir = { 3, 0 };
+		dir = { 2, 0 };
 	}
 }
 void Projectile::DrawDebug(const Color& col) const

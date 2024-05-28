@@ -46,6 +46,8 @@ public:
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
 	void LerpUpwards();
 	bool defuseHitbox = false;
+	float poriroCooldown = 0;
+
 private:
 	//Create the pattern behaviour
 	void MoveX();
