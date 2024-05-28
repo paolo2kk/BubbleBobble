@@ -45,8 +45,10 @@ public:
 	bool inCatch = false;
 	bool hasEndedFromCatch = false;
 	bool poped = false;
+	bool particles = false;
 	bool fruit = false;
 	float framecounter;
+	float framecounter2;
 	bool canCollide;
 	Point GetPos() const;
 	void EnemyCatchSlime();
@@ -60,6 +62,9 @@ public:
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
 	int enemytype = 0;
+
+	bool popedParticles;
+
 private:
 	void HandleCollisionLogic();
 

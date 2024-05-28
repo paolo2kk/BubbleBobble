@@ -50,6 +50,7 @@ public:
 	int Points() const;
 	bool point;
 	float framecounter;
+	bool P1;
 
 private:
 	ObjectType type;

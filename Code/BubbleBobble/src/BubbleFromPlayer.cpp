@@ -8,6 +8,7 @@
 
 BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUBBLE_PHYSICAL_SIZE, BUBBLE_PHYSICAL_SIZE, BUBBLE_FRAME_SIZE, BUBBLE_FRAME_SIZE)
 {
+	particles = false;
 	dire = d;
 	speed = .3;
 	stages = 1;
@@ -16,7 +17,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	eTime = 0;
 	spawnTime = 0;
 	player = nullptr;
-	lifeTime = GetRandomValue(3, 5);
+	lifeTime = GetRandomValue(4, 6);
 	Rectangle rc;
 	inShoot = true;
 	eTimePogo = 0;
@@ -24,8 +25,10 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	issAlive = true;
 	poped = false;
 	framecounter = 0;
+	framecounter2 = 0;
 	fruit = false;
 	ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE);
+	popedParticles = false;
 }
 BubbleFromPlayer::~BubbleFromPlayer()
 {
@@ -45,7 +48,13 @@ AppStatus BubbleFromPlayer::Initialise()
 }
 void BubbleFromPlayer::Update()
 {
-;
+	if (particles == true)
+	{
+		Draw();
+		Sprite* sprite = dynamic_cast<Sprite*>(render);
+		sprite->Update();
+		return;
+	}
 	if (poped == false)
 	{
 		Movement(dire);
@@ -72,17 +81,68 @@ void BubbleFromPlayer::Update()
 }
 bool BubbleFromPlayer::isAlive()
 {
-	if (!inCatch)
+	if (popedParticles == true)
+	{
+		if (framecounter2 / 60 > 0.5)
+		{
+			return false;
+		}
+		else
+		{
+			if (particles == false)
+			{
+				hasEndedFromCatch = true;
+				SetAnimation((int)Animations::BUBBLE_POP);
+			}
+			framecounter2++;
+			particles = true;
+			return true;
+		}
+	}
+	else if (!inCatch)
 	{
 		eTime += GetFrameTime();
 		if (eTime >= lifeTime)
 		{
 			return false;
 		}
-		else {
+		else if(eTime >= lifeTime - 0.5)
+		{
+			if (particles == false)
+			{
+				SetAnimation((int)Animations::BUBBLE_POP);
+			}
+			particles = true;
+			return true;
+		}
+		else 
+		{
 			return true;
 		}
 	}
+	else
+	{
+		if (framecounter2 / 60 > 0.5)
+		{
+			return false;
+		}
+		else if (bubbleStages == (int)BubbleStages::ENDED)
+		{
+			if (particles == false)
+			{
+				hasEndedFromCatch = true;
+				SetAnimation((int)Animations::BUBBLE_POP);
+			}
+			framecounter2++;
+			particles = true;
+			return true;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
 	
 }
 void BubbleFromPlayer::ClampPos()
@@ -176,7 +236,6 @@ void BubbleFromPlayer::EnemyCatchSlime()
 		eTimeCatch += GetFrameTime();
 		break;
 	case(int)BubbleStages::ENDED:
-		hasEndedFromCatch = true;
 		break;
 	}
 	}
@@ -214,7 +273,6 @@ void BubbleFromPlayer::EnemyCatchDrunk()
 			eTimeCatch += GetFrameTime();
 			break;
 		case(int)BubbleStages::ENDED:
-			hasEndedFromCatch = true;
 			break;
 		}
 	}
@@ -348,7 +406,6 @@ void BubbleFromPlayer::DrawDebug(const Color & col) const
 void BubbleFromPlayer::Release()
 {
 
-	render->Release();
 }
 Directions BubbleFromPlayer::BublePop(Directions d)
 {
