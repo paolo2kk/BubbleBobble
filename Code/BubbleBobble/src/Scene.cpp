@@ -11,6 +11,7 @@ Scene::Scene()
 	shots = nullptr;
 	particles = nullptr;
 	P2in = false;
+	P1in = true;
 
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { 0, MARGIN_GUI_Y };	//Offset from the target (center of the screen)
@@ -466,12 +467,15 @@ void Scene::Update()
 		LoadLevel(4);
 	}
 	level->Update();
-	player->Update();
 	hitbox = player->GetHitbox();
 	hitbox = player2->GetHitbox();
 	if (P2in == true)
 	{
 		player2->Update();
+	}
+	if (P1in == true)
+	{
+		player->Update();
 	}
 	for (Projectile* proj : projectiles)
 	{
@@ -484,11 +488,15 @@ void Scene::Update()
 	BubbleSpawner();
 	BubbleDespawn();
 
-	for (BubbleFromPlayer* buble : bubblesPlayer)
+	if (P1in==true)
 	{
-		buble->SetPlayer(player);
+		for (BubbleFromPlayer* buble : bubblesPlayer)
+		{
+			buble->SetPlayer(player);
 
+		}
 	}
+
 
 	if (P2in == true)
 	{
@@ -517,7 +525,10 @@ void Scene::Render()
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
 		RenderObjectsDebug(YELLOW);
 		enemies->DrawDebug();
-		player->DrawDebug(GREEN);
+		if (P1in == true)
+		{
+			player->DrawDebug(GREEN);
+		}
 		if (P2in == true)
 		{
 			player->DrawDebug(GREEN);
@@ -541,31 +552,38 @@ void Scene::Release()
 void Scene::CheckCollisions()
 {
 	AABB player_box, obj_box, ene_box,player2_box;
-	player_box = player->GetHitbox();
-
+	if (P1in == true)
+	{
+		player_box = player->GetHitbox();
+	}
 	if (P2in == true)
 	{
 		player2_box = player2->GetHitbox();
 	}
 
-	for (Enemy* enemy : enemies->GetEnemies())
+	if (P1in == true)
 	{
-		AABB player_boxx;
-		AABB player2_boxx;
-		player_boxx = player->GetHitbox();
-		if (P2in == true)
+		for (Enemy* enemy : enemies->GetEnemies())
 		{
-			player2_boxx = player2->GetHitbox();
-		}
+			AABB player_boxx;
+			AABB player2_boxx;
+			if (P1in == true)
+			{
+				player_boxx = player->GetHitbox();
+			}
+			if (P2in == true)
+			{
+				player2_boxx = player2->GetHitbox();
+			}
 
-		AABB enemy_box;
-		enemy_box = enemy->GetHitArea();
-		if (!enemy->noSpawnMore)
-		{
-			
-			eTimeBottle += GetFrameTime();
+			AABB enemy_box;
+			enemy_box = enemy->GetHitArea();
+			if (!enemy->noSpawnMore)
+			{
 
-				if (player_boxx.TestAABB(enemy_box)) {
+				eTimeBottle += GetFrameTime();
+
+				if (player_boxx.TestAABB(enemy_box) && (P1in == true)) {
 
 
 					enemy->isshooting = true;
@@ -589,100 +607,101 @@ void Scene::CheckCollisions()
 
 
 				}
-			
-			
+
+
+			}
+
 		}
-		
-	}
-	for (BubbleFromPlayer* bubble : bubblesPlayer)
-	{
-		AABB bubble_box = bubble->GetHitbox();
-		for (BubbleFromPlayer* bubble2 : bubblesPlayer)
+		for (BubbleFromPlayer* bubble : bubblesPlayer)
 		{
-			if (bubble == bubble2) continue;
-			AABB bubble_box2 = bubble2->GetHitbox();
-
-			if (bubble_box.TestAABB(bubble_box2))
+			AABB bubble_box = bubble->GetHitbox();
+			for (BubbleFromPlayer* bubble2 : bubblesPlayer)
 			{
-				bubble->MoveBubbleToRandomNear();
-				bubble2->MoveBubbleToRandomNear();
+				if (bubble == bubble2) continue;
+				AABB bubble_box2 = bubble2->GetHitbox();
 
-				break;
-			}
-		}
-		if (player->IsMoving()) {
-			if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
-			{
-				bubble->MoveBubbleRightPlayer();
+				if (bubble_box.TestAABB(bubble_box2))
+				{
+					bubble->MoveBubbleToRandomNear();
+					bubble2->MoveBubbleToRandomNear();
 
-			}
-			if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
-			{
-				bubble->MoveBubbleLeftPlayer();
-
-			}
-		}
-		
-		for (Enemy* enemy : enemies->GetEnemies())
-		{
-
-			AABB enemy_box = enemy->GetHitbox();
-			if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
-			{
-				if (stage == 1 || stage == 2) {
-					bubble->enemytype = 0;
+					break;
 				}
-				else if (stage == 4) {
-					bubble->enemytype = 1;
+			}
+			if (player->IsMoving()) {
+				if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
+				{
+					bubble->MoveBubbleRightPlayer();
 
 				}
-				enemies->DestroyEnemy(enemy);
-				bubble->SetAlive(false);
-				bubble->inCatch = true;
-				
+				if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
+				{
+					bubble->MoveBubbleLeftPlayer();
+
+				}
+			}
+
+			for (Enemy* enemy : enemies->GetEnemies())
+			{
+
+				AABB enemy_box = enemy->GetHitbox();
+				if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
+				{
+					if (stage == 1 || stage == 2) {
+						bubble->enemytype = 0;
+					}
+					else if (stage == 4) {
+						bubble->enemytype = 1;
+
+					}
+					enemies->DestroyEnemy(enemy);
+					bubble->SetAlive(false);
+					bubble->inCatch = true;
+
+					break;
+				}
+
+
+			}
+			if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
+			{
+				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				bubble->poped = true;
+				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+
 				break;
 			}
-			
+			if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
+				Point pos = bubble->GetPos();
+				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
+				AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				AABB area = level->GetSweptAreaX(hitbox);
+				switch (bubble->enemytype) {
+				case 0:
 
-		}
-		if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
-		{
-			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
-			bubble->poped = true;
-			bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+					enemies->Add(pos, EnemyType::SLIME, area);
+					bubble->issAlive = false;
+					break;
+				case 1:
 
-			break;
-		}
-		if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
-			Point pos = bubble->GetPos();
-			pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
-			AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
-			AABB area = level->GetSweptAreaX(hitbox);
-			switch (bubble->enemytype) {
-			case 0:
-				
-				enemies->Add(pos, EnemyType::SLIME, area);
-				bubble->issAlive = false;
-				break;
-			case 1:
-				
-				enemies->Add(pos, EnemyType::DRUNK, area);
-				bubble->issAlive = false;
-				break;
-			
+					enemies->Add(pos, EnemyType::DRUNK, area);
+					bubble->issAlive = false;
+					break;
+
+				}
+
 			}
-			
-		}
-		if (bubble->fruit == true)
-		{
-			Object* obj = new Object(bubble->GetPos());
-			objects.push_back(obj);
-			AllObjects++;
-			bubble->issAlive = false;
+			if (bubble->fruit == true)
+			{
+				Object* obj = new Object(bubble->GetPos());
+				objects.push_back(obj);
+				AllObjects++;
+				bubble->issAlive = false;
+			}
+
 		}
 
 	}
-
 	if (P2in == true)
 	{
 		for (BubbleFromPlayer* bubble : bubblesPlayer2)
@@ -779,7 +798,7 @@ void Scene::CheckCollisions()
 	while (it != objects.end())
 	{
 		obj_box = (*it)->GetHitbox();
-		if (player_box.TestAABB(obj_box))
+		if (player_box.TestAABB(obj_box) && P1in == true)
 		{
 			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
 
@@ -808,7 +827,7 @@ void Scene::CheckCollisions()
 	for (Projectile* proj : projectiles)
 	{
 		AABB projectile_box = proj->GetHitbox();
-		if (player_box.TestAABB(projectile_box))
+		if (player_box.TestAABB(projectile_box) && P1in == true)
 		{
 			if (player->Ikilleable) {
 				Point posplayer = player->GetPos();
@@ -835,11 +854,15 @@ void Scene::CheckCollisions()
 	}
 	
 	if (IsKeyDown(KEY_O)) {
-		Point positionPlayer;
-		positionPlayer = player->GetPos();
-		AABB hitbox = player->GetHitbox();
-		AABB area = level->GetSweptAreaX(hitbox);
-		enemies->Add(positionPlayer, EnemyType::BOTTLE, area);
+
+		if (P1in == true)
+		{
+			Point positionPlayer;
+			positionPlayer = player->GetPos();
+			AABB hitbox = player->GetHitbox();
+			AABB area = level->GetSweptAreaX(hitbox);
+			enemies->Add(positionPlayer, EnemyType::BOTTLE, area);
+		}
 
 		if (P2in == true)
 		{
@@ -871,24 +894,28 @@ void Scene::BubbleDespawn()
 			++i;
 		}
 	}
-	auto iterate = bubblesPlayer.begin();
-	int o = 0;
-	while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
+	if (P1in == true)
 	{
-		if (bubblesPlayer[o]->isAlive() == false || !bubblesPlayer[o]->issAlive)
+		auto iterate = bubblesPlayer.begin();
+		int o = 0;
+		while (iterate != bubblesPlayer.end() && o < bubblesPlayer.size())
 		{
-			//Delete the object
-			delete* iterate;
-			//Erase the object from the vector and get the iterate to the next valid element
-			iterate = bubblesPlayer.erase(iterate);
-		}
-		else
-		{
-			//Move to the next object
-			++iterate;
-			++o;
+			if (bubblesPlayer[o]->isAlive() == false || !bubblesPlayer[o]->issAlive)
+			{
+				//Delete the object
+				delete* iterate;
+				//Erase the object from the vector and get the iterate to the next valid element
+				iterate = bubblesPlayer.erase(iterate);
+			}
+			else
+			{
+				//Move to the next object
+				++iterate;
+				++o;
+			}
 		}
 	}
+
 	if (P2in == true)
 	{
 		auto iterate = bubblesPlayer2.begin();
@@ -928,9 +955,13 @@ void Scene::ClearLevel()
 		delete bubl;
 	}
 	bubbles.clear();
-	for (BubbleFromPlayer* buble : bubblesPlayer)
+	if (P1in == true)
 	{
-		delete buble;
+		for (BubbleFromPlayer* buble : bubblesPlayer)
+		{
+			delete buble;
+		}
+		bubblesPlayer.clear();
 	}
 	if (P2in == true)
 	{
@@ -940,7 +971,6 @@ void Scene::ClearLevel()
 		}
 		bubblesPlayer2.clear();
 	}
-	bubblesPlayer.clear();
 	enemies->Release();
 	shots->Clear();
 	particles->Clear();
@@ -951,9 +981,12 @@ void Scene::UpdateBubbles()
 	{
 		bubl->Update();
 	}
-	for (BubbleFromPlayer* buble : bubblesPlayer)
+	if (P1in == true)
 	{
-		buble->Update();
+		for (BubbleFromPlayer* buble : bubblesPlayer)
+		{
+			buble->Update();
+		}
 	}
 	if(P2in==true)
 	{
@@ -1010,12 +1043,15 @@ void Scene::RenderObjects()
 	{
 		bubl->Draw();
 	}
-	auto it = bubblesPlayer.begin();
-	while (it != bubblesPlayer.end())
+	if (P1in == true)
 	{
+		auto it = bubblesPlayer.begin();
+		while (it != bubblesPlayer.end())
+		{
 
-		(*it)->Draw();	
-		++it;
+			(*it)->Draw();
+			++it;
+		}
 	}
 
 	if (P2in == true)
@@ -1044,9 +1080,12 @@ void Scene::RenderObjectsDebug(const Color& col) const
 	{
 		bubl->DrawDebug(BLUE);
 	}
-	for (BubbleFromPlayer* buble : bubblesPlayer)
+	if (P1in == true)
 	{
-		buble->DrawDebug(BLUE);
+		for (BubbleFromPlayer* buble : bubblesPlayer)
+		{
+			buble->DrawDebug(BLUE);
+		}
 	}
 	if (P2in == true)
 	{

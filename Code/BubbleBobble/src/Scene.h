@@ -38,6 +38,7 @@ public:
     Player* player;
     Player2* player2;
     bool P2in;
+    bool P1in;
 
 private:
     void BubbleSpawner();
