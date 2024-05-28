@@ -248,14 +248,14 @@ AppStatus Scene::LoadLevel(int stage)
 			175, 208, 210, 214, 185, 212, 208, 210, 210, 185, 216, 208, 209, 211, 185, 175,
 			175, 208, 209, 211, 185, 208, 208, 209, 210, 185, 208, 208, 210, 214, 192, 175,
 			175, 192, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 193, 175,
+			175, 185, 105,   0,   0, 107, 107,   0, 107, 105,   0, 105,   0,   0, 105, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
+			175, 185, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 176, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 175
 		};
 	}
@@ -323,6 +323,15 @@ AppStatus Scene::LoadLevel(int stage)
 
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;				
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				area = level->GetSweptAreaX(hitbox);
+				enemies->Add(pos, EnemyType::DRUNK, area);
+			}
+			else if (tile == Tile::DRUNKR)
+			{
+
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
@@ -594,7 +603,7 @@ void Scene::CheckCollisions()
 
 					enemy->isshooting = true;
 				}
-				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && stage == 4)
+				if (enemy->isshooting && !enemy->noSpawnMore && eTimeBottle > GetRandomValue(5, 8) && (stage == 4 || stage == 3))
 				{
 					enemy->isshooting = false;
 					if (player->GetPos().y > 16) {
@@ -650,7 +659,7 @@ void Scene::CheckCollisions()
 					if (stage == 1 || stage == 2) {
 						bubble->enemytype = 0;
 					}
-					else if (stage == 4) {
+					else if (stage == 4 || stage == 3) {
 						bubble->enemytype = 1;
 
 					}

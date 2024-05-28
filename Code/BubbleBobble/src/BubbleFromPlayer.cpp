@@ -125,7 +125,7 @@ void BubbleFromPlayer::Stomp()
 	if (!inShoot)
 	{
 		AABB box = GetHitbox();
-		if (player != nullptr && IsKeyDown(KEY_X))
+		if (player != nullptr && IsKeyDown(KEY_PERIOD))
 		{
 			if (eTimePogo > 1)
 			{
