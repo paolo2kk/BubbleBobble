@@ -140,6 +140,13 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::PLATAFORM4] = { n * 2, 45 * n, n, n };
 	dict_rect[(int)Tile::CORNER_SHADOW4] = { n , 46 * n, n, n };
 	dict_rect[(int)Tile::BOTTOM_SHADW4] = { n * 2 , 46 * n, n, n };
+	dict_rect[(int)Tile::DRUNKCartel] = { n , 56 * n, n * 13, n * 3 };
+
+	//drunk level
+	dict_rect[(int)Tile::YESYESYESNO] = { n , 57* n, n, n };
+	dict_rect[(int)Tile::WALLSHADEDRUNK] = { n , 58 * n, n, n };
+	dict_rect[(int)Tile::NOYESNOYES] = { n * 2 , 58 * n, n, n };
+	dict_rect[(int)Tile::NOYESNONO] = { n * 2 , 59 * n, n, n };
 
 
 }
