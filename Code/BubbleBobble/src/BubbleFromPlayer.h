@@ -29,6 +29,7 @@ public:
 	void Movement(Directions d);
 	void MoveBubbleRightPlayer();
 	void MoveBubbleLeftPlayer();
+	void SetIdle();
 	void MoveBubbleRightPlayerRandom();
 	void MoveBubbleLeftPlayerRandom();
 	void ClampPos();

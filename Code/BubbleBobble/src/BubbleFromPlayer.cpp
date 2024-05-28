@@ -261,6 +261,7 @@ void BubbleFromPlayer::EnemyCatchSlime()
 	}
 	}
 }
+
 void BubbleFromPlayer::EnemyCatchDrunk()
 {
 	if (poped == false)
@@ -384,6 +385,8 @@ void BubbleFromPlayer::Movement(Directions d)
 }
 void BubbleFromPlayer::MoveBubbleRightPlayer()
 {
+	SetAnimation((int)Animations::BUBBLE_APLASTAO);
+
 	AABB box;
 	direction = Directions::RIGHT;
 	pos += {1, 0};
@@ -391,10 +394,13 @@ void BubbleFromPlayer::MoveBubbleRightPlayer()
 	if (!map->TestCollisionAir(box)) {
 		issAlive = false;
 	}
-}
+	SetAnimation((int)Animations::BUBBLE_APLASTAO);
 
+}
 void BubbleFromPlayer::MoveBubbleLeftPlayer()
 {
+	SetAnimation((int)Animations::BUBBLE_APLASTAO);
+
 	AABB box;
 	direction = Directions::LEFT;
 	pos += {-1, 0};
@@ -402,6 +408,13 @@ void BubbleFromPlayer::MoveBubbleLeftPlayer()
 	if (!map->TestCollisionAir(box)) {
 		issAlive = false;
 	}
+	SetAnimation((int)Animations::BUBBLE_APLASTAO);
+
+}
+void BubbleFromPlayer::SetIdle()
+{
+	SetAnimation((int)Animations::BUBBLE_GREEN);
+
 }
 void BubbleFromPlayer::HandleCollisionLogic()
 {

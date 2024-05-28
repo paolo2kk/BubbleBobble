@@ -675,11 +675,16 @@ void Scene::CheckCollisions()
 					bubble->MoveBubbleRightPlayer();
 
 				}
+				else 
+				{
+					bubble->SetIdle();
+				}
 				if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
 				{
 					bubble->MoveBubbleLeftPlayer();
 
 				}
+				
 			}
 
 			for (Enemy* enemy : enemies->GetEnemies())
