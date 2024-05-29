@@ -440,6 +440,7 @@ void Scene::PlayerBubbleSpawn()
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::LEFT);
 			buble->Initialise();
 			buble->SetTileMap(level);
+			buble->isP2 = true;
 			if (stage == 3) {
 				buble->diffWindMap = true;
 			}
@@ -450,7 +451,8 @@ void Scene::PlayerBubbleSpawn()
 		{
 			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::RIGHT);
 			buble->Initialise();
-			buble->SetTileMap(level);
+			buble->SetTileMap(level);		
+			buble->isP2 = true;
 			if (stage == 3) {
 				buble->diffWindMap = true;
 			}
@@ -711,6 +713,20 @@ void Scene::CheckCollisions()
 
 				}
 				
+			}
+			if (player2->IsMoving()) {
+				if (player2->IsLookingRight() && bubble_box.TestAABB(player_box))
+				{
+					bubble->MoveBubbleRightPlayer();
+
+				}
+
+				if (player2->IsLookingLeft() && bubble_box.TestAABB(player_box))
+				{
+					bubble->MoveBubbleLeftPlayer();
+
+				}
+
 			}
 
 			for (Enemy* enemy : enemies->GetEnemies())

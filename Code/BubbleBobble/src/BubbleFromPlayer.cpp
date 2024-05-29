@@ -43,6 +43,7 @@ AppStatus BubbleFromPlayer::Initialise()
 	InitializeAnimations();
 
 	SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_L);
+	if(isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
 	return AppStatus::OK;
 
 }
@@ -232,6 +233,8 @@ void BubbleFromPlayer::EnemyCatchSlime()
 	{
 	case (int)BubbleStages::GREENSTAGE:
 		SetAnimation((int)Animations::ZENCHAN_BUBBLE_GREEN);
+		if(isP2)SetAnimation((int)Animations::ZENCHAN_BUBBLE_BLUE);
+
 		bubbleStages++;
 		break;
 	case (int)BubbleStages::GREENSTAGE_:
@@ -270,6 +273,8 @@ void BubbleFromPlayer::EnemyCatchDrunk()
 		{
 		case (int)BubbleStages::GREENSTAGE:
 			SetAnimation((int)Animations::DRUNK_BUBBLE_GREEN);
+			if (isP2)SetAnimation((int)Animations::DRUNK_BUBBLE_BLUE);
+
 			bubbleStages++;
 			break;
 		case (int)BubbleStages::GREENSTAGE_:
@@ -318,21 +323,28 @@ void BubbleFromPlayer::Movement(Directions d)
 		{
 			switch (stages) {
 				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_L);
+				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
+
 			case 1:
 				if (pos.x < 20)
 				{
 					pos.x++;
-					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+					if (!inCatch)
+					{
+						SetAnimation((int)Animations::BUBBLE_GREEN);
+						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
 
+					}
 					stages++;
 				}
 				inShoot = true;
 
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
-					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
-
-					stages++;
+					if (!inCatch) {
+						SetAnimation((int)Animations::BUBBLE_GREEN);
+						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
+					}
 				}
 				break;
 			case 2:
@@ -351,20 +363,28 @@ void BubbleFromPlayer::Movement(Directions d)
 
 			switch (stages) {
 				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_R);
+				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_R);
+
 			case 1:
 				if (pos.x > 226)
 				{
 					pos.x--;
-					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
+					if (!inCatch)
+					{
+						SetAnimation((int)Animations::BUBBLE_GREEN);
+						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
 
+					}
 					stages++;
 				}
 				inShoot = true;
 
 				dir = { 2, 0 };
 				if (pos.x >= logPosXR) {
-					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
-
+					if (!inCatch) {
+						SetAnimation((int)Animations::BUBBLE_GREEN);
+						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
+					}
 					stages++;
 				}
 				break;

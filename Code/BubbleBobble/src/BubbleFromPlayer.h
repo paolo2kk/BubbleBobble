@@ -67,7 +67,7 @@ public:
 	int enemytype = 0;
 	bool diffWindMap = false;
 	bool popedParticles;
-
+	bool isP2 = false;
 private:
 	void HandleCollisionLogic();
 	bool isUp = false;
