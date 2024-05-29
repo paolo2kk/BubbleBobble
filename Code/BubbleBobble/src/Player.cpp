@@ -233,8 +233,8 @@ void Player::MoveX()
 	int prev_x = pos.x;
 	int objectiveJumpX = pos.x;
 
-	
-	if (IsKeyDown(KEY_LEFT))
+
+	if (IsKeyDown(KEY_LEFT) && initiallyLookingL)
 	{
 		if (state != State::JUMPING) {
 			pos.x -= 1;
@@ -257,25 +257,25 @@ void Player::MoveX()
 			if (state == State::WALKING) Stop();
 		}
 		else if (map->TestCollisionHalfWallRight(box)) {
-			pos.x = prev_x ;
+			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 
 		}
-		
+
 	}
-	else if (IsKeyDown(KEY_RIGHT))
+	else if (IsKeyDown(KEY_RIGHT) && initiallyLookingR)
 	{
-		
+
 		isStill = false;
 		initiallyLookingR = true;
 		initiallyLookingL = false;
 
-		if (state != State::JUMPING) 
+		if (state != State::JUMPING)
 		{
 			pos.x += 1;
 		}
-		
-	
+
+
 		if (state == State::IDLE) StartWalkingRight();
 		else
 		{
@@ -289,14 +289,14 @@ void Player::MoveX()
 			if (state == State::WALKING) Stop();
 		}
 		else if (map->TestCollisionHalfWallLeft(box)) {
-			pos.x = prev_x ;
+			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 
 		}
 	}
 	else
 	{
-		if (state == State::WALKING) 
+		if (state == State::WALKING)
 		{
 			Stop();
 			isStill = true;
@@ -340,29 +340,29 @@ void Player::MoveY()
 			if (look == Look::RIGHT) {
 				if (map->TestCollisionWallRight(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 				if (map->TestCollisionHalfWallRight(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 				if (map->TestCollisionHalfWallLeft(box))
 				{
-					pos.x += 1;
+					pos.x -= 1;
 				}
 			}
 			else if (look == Look::LEFT) {
 				if (map->TestCollisionWallLeft(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 				if (map->TestCollisionHalfWallLeft(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 				if (map->TestCollisionHalfWallRight(box))
 				{
-					pos.x -= 1;
+					pos.x += 1;
 				}
 			}
 		}
@@ -374,7 +374,7 @@ void Player::MoveY()
 		if (jump_delay == 0)
 		{
 			if (isStill == false) {
-				if (look == Look::RIGHT ) {
+				if (look == Look::RIGHT) {
 					box = GetHitbox();
 					if (map->TestCollisionWallRight(box))
 					{
@@ -408,7 +408,7 @@ void Player::MoveY()
 
 				}
 			}
-			
+
 			prev_y = pos.y;
 			prev_box = GetHitbox();
 
@@ -416,7 +416,7 @@ void Player::MoveY()
 			dir.y += GRAVITY_FORCE;
 			jump_delay = PLAYER_JUMP_DELAY;
 
-		
+
 			//Is the jump finished?
 			if (dir.y > PLAYER_JUMP_LIMIT)
 			{
@@ -431,7 +431,7 @@ void Player::MoveY()
 					if (IsLookingRight())	SetAnimation((int)Animations::BUB_JUMP_R);
 					else					SetAnimation((int)Animations::BUB_JUMP_L);
 					canJump = false;
-					
+
 				}
 				else if (IsLevitating())
 				{
@@ -455,24 +455,24 @@ void Player::MoveY()
 				//ourselves inside a tile, and the entity would otherwise be placed above the tile,
 				//crossing it.
 				if (!map->TestCollisionGround(prev_box, &prev_y) &&
-					 map->TestCollisionGround(box, &pos.y))
+					map->TestCollisionGround(box, &pos.y))
 				{
 					Stop();
 				}
-				
+
 			}
 			else {
 				box = GetHitbox();
 
-			
+
 				if (map->TestCollisionHead(box, &pos.y))
 				{
 					Stop();
 				}
 			}
-			
+
 		}
-		
+
 	}
 }
 void Player::LaserTag()

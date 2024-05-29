@@ -60,6 +60,8 @@ public:
 	Directions BublePop(Directions d);
 	void StayBehind(BubbleFromPlayer* bub);
 
+	void MoveBubbleToRandomNear(BubbleFromPlayer* bubble2);
+
 	bool inShoot;
 	bool CollisionWall(const Point& p, int distance) const;
 	int enemytype = 0;
@@ -68,11 +70,7 @@ public:
 
 private:
 	void HandleCollisionLogic();
-
-
-
-
-
+	bool isUp = false;
 
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);

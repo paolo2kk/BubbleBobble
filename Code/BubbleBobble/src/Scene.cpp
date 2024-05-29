@@ -198,7 +198,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Bubble* bubl;
 	Enemy* ene;
 	AABB hitbox, area;
-
+	numEnemies = 0;
 
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
@@ -210,9 +210,9 @@ AppStatus Scene::LoadLevel(int stage)
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
 				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
-				2,   5,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  2,
+				2,   5,   0,   0,  59,   0,   0,   0,   0,   0,   0,  59,   0,   0,   0,  2,
 				2,   3,   4,  12,  11,  11,  11,  11,  11,  11,  11,  11,  13,   0,  16,  2,
-				2,   5,   0,   0,  59,   0,   0,   0, 103,   0,   0,  59,   0,   0,   0,  2,
+				2,   5,   0,   0,   0,   0,   0,   0, 103,   0,   0,   0,   0,   0,   0,  2,
 				2,  43,  21,  17,  42,  42,  42,  42,  42,  42,  42,  42,  18,   0,  42,  2,
 				2,   9,   6,  10,  19,  19,  19,  19,  19,  19,  19,  19,  20,   0,   7,  2,
 				2,   5,   0,   0,  59,  0 ,   0,   0, 103,   0,   0,  59,   0,   0,   0,  2,
@@ -231,9 +231,9 @@ AppStatus Scene::LoadLevel(int stage)
 				151, 162,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 151,
 				151, 162, 156, 155, 155, 155, 157,   0,   0, 156, 155, 155, 155, 157,   0, 151,
 				151, 162, 160, 164, 166, 166, 163,   0,   0, 165, 166, 166, 166, 161,   0, 151,
-				151, 162, 160, 162,   0,   0,   0,   0,   0,   0,   0,   0,   0, 161,   0, 151,
+				151, 162, 160, 162,   0,  59,   0,   0,   0,   0,  59,   0,   0, 161,   0, 151,
 				151, 162, 160, 158, 152, 152, 152, 167,   0, 168, 152, 152, 152, 161,   0, 151,
-				151, 162, 160, 162,   0,   0, 102,   0,   0,  59,  59,   0,   0, 161,   0, 151,
+				151, 162, 160, 162,   0,   0, 102,   0,   0,   0,   0,   0,   0, 161,   0, 151,
 				151, 162, 160, 159, 155, 155, 155, 157, 156, 155, 155, 155, 155, 161,   0, 151,
 				151, 162, 165, 166, 166, 166, 166, 163, 165, 166, 166, 166, 166, 163,   0, 151,
 				151, 162,   0,  59,   0,   0,   0,   0,   0,   0,   0,   0,   0,  59,   0, 151,
@@ -254,9 +254,9 @@ AppStatus Scene::LoadLevel(int stage)
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
+			175, 185,   0,  59,   0,   0,   0,   0,   0,   0,   0,   0,  59,   0,   0, 175,
 			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
-			175, 185, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 175,
+			175, 185, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 106,   0, 175,
 			175, 176, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 175
 		};
 	}
@@ -473,7 +473,7 @@ void Scene::Update()
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
 	//Debug levels instantly
-	if (numEnemies == 0)
+	if (numEnemies <= 0)
 	{
 		eTimeTrans += GetFrameTime();
 		if (eTimeTrans > 3) {
@@ -661,7 +661,7 @@ void Scene::CheckCollisions()
 				if (bubble == bubble2) continue;
 				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble_box.TestAABB(bubble_box2))
+				if (bubble_box.TestAABB(bubble_box2) && stage != 3)
 				{
 					bubble->MoveBubbleToRandomNear();
 					bubble2->MoveBubbleToRandomNear();
@@ -715,11 +715,12 @@ void Scene::CheckCollisions()
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos,bubble->dire);
 					part->Initialise();
 					part->popedParticles = true;
-					numEnemies--;
 					bubblesPlayer.push_back(part);
 					
 				}
 				bubble->poped = true;
+				numEnemies--;
+
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
 				break;
