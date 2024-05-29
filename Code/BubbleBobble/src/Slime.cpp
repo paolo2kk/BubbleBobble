@@ -55,7 +55,11 @@ void Slime::MoveX()
 	box = GetHitbox();
 	if (look == Look::RIGHT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
-		pos.x += SLIME_SPEED;
+		
+			pos.x += SLIME_SPEED;
+
+		
+		
 		if (map->TestCollisionWallRight(box))
 		{
 			pos.x = prev_x;
@@ -73,7 +77,11 @@ void Slime::MoveX()
 	}
 	else if (look == Look::LEFT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
 	{
-		pos.x += -SLIME_SPEED;
+		
+			pos.x += -SLIME_SPEED;
+
+		
+		
 		if (map->TestCollisionWallLeft(box))
 		{
 			pos.x = prev_x;
@@ -87,6 +95,31 @@ void Slime::MoveX()
 
 		}
 	}
+	/*if (lerping && !hasAlreadyJumped)
+	{		
+		eTimeLerp += GetFrameTime();
+		if(eTimeLerp < .1){
+		
+			pos.y -= 2;
+		}
+		if (eTimeLerp > .6 && eTimeLerp < 2)
+		{
+
+			pos.y -= 1;
+			defusehitbox = true;
+		}
+		else if (eTimeLerp > 1.9)
+		{
+			hasAlreadyJumped = true;
+			defusehitbox = false;
+			lerping = false;
+			
+			eTimeLerp = 0;
+
+		}
+
+
+	}*/
 }
 EnemyType Slime::GetEnemyType() const
 {
@@ -113,7 +146,7 @@ void Slime::MoveY()
 	int prev_y = pos.y;
 
 
-	if (state != SlimeState::JUMPING)
+	if (state != SlimeState::JUMPING && !defusehitbox)
 	{
 		pos.y += 1;
 		

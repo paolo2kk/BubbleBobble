@@ -46,6 +46,7 @@ public:
 
 private:
 	//Create the pattern behaviour
+	float eTimeLerp = 0;
 	void MoveX();
 	void SetAnimation(int id);
 	void MoveY();
@@ -53,7 +54,8 @@ private:
 	void Stop();
 	//Update looking direction according to the current step of the pattern
 	void UpdateLook(int anim_id);
-
+	bool defusehitbox = false;
+	bool hasAlreadyJumped = false;
 	int attack_delay;	//delay between attacks
 	SlimeState state;
 	TileMap* map;

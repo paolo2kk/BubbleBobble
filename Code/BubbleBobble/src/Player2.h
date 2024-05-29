@@ -96,6 +96,7 @@ private:
 	bool initiallyLookingR = true;
 	bool initiallyLookingL = true;
 	int immuneThreshold = 2;
+	float eTimeImmune = 0;
 	State2 state;
 	Look look;
 	int jump_delay;

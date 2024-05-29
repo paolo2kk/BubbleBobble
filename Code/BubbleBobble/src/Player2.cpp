@@ -49,13 +49,14 @@ void Player2::HitProcedure()
 
 	eTimeHitted += GetFrameTime();
 	if (eTimeHitted >= immuneThreshold) {
-		SetPos({ 100, 192 });
-		isGod = false;
-		wasHit = false;
-		eTimeHitted = 0;
+		SetPos({ 32, 192 });
 		STOP = false;
 
-		Ikilleable = true;
+		wasHit = false;
+		eTimeImmune = 0;
+
+
+
 	}
 }
 int Player2::GetScore()
@@ -226,6 +227,19 @@ void Player2::Update()
 	if (wasHit == true)
 	{
 		HitProcedure();
+	}
+	else {
+		eTimeImmune += GetFrameTime();
+		if (eTimeImmune >= 1)
+		{
+			isGod = false;
+
+			eTimeHitted = 0;
+
+			Ikilleable = true;
+		}
+
+
 	}
 
 	Warp();

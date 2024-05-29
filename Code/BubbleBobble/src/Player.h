@@ -96,12 +96,12 @@ private:
 	bool initiallyLookingR = true;
 	bool initiallyLookingL = true;
 	int immuneThreshold = 2;
+	float eTimeImmune = 0;
 	State state;
 	Look look;
 	int jump_delay;
 	float cFrame = 0, eFrame = 0, maxFrame = 8;
 	int score;
 	TileMap *map;
-
 };
 
