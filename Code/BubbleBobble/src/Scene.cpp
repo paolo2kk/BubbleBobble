@@ -437,7 +437,7 @@ void Scene::PlayerBubbleSpawn()
 
 		if (player2->IsLookingLeft())
 		{
-			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::LEFT);
+			BubbleFromPlayer* buble = new BubbleFromPlayer(player2->GetPos(), Directions::RIGHTDEBUG);
 			buble->Initialise();
 			buble->SetTileMap(level);
 			buble->isP2 = true;

@@ -15,7 +15,7 @@
 
 #define SHOOT_RANGE 65
 
-enum class Directions { LEFT, RIGHT };
+enum class Directions { LEFT, RIGHT, RIGHTDEBUG };
 enum class BubbleAnim {INSHOOT, IDLE, SMASHED, ZENCHANG, ZENCHANY, ZENCHANR, ZENCHANBLINK, NUM_ANIMATIONS};
 enum class BubbleStages {GREENSTAGE, GREENSTAGE_, YELLOWSTAGE, YELLOWSTAGE_, REDSTAGE, REDSTAGE_, ENDED};
 class BubbleFromPlayer : public Entity
@@ -80,6 +80,7 @@ private:
 	int logPosXR;
 	float spawnTime;
 	float eTime;
+	float eAnimDebug = 0;
 	float eTimePogo;
 	float eTimeCatch = 0;
 	float eTimeCatchGreen = 1.5;
