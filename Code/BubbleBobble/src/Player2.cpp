@@ -49,7 +49,7 @@ void Player2::HitProcedure()
 
 	eTimeHitted += GetFrameTime();
 	if (eTimeHitted >= immuneThreshold) {
-		SetPos({ 32, 192 });
+		SetPos({ WINDOW_WIDTH - 46, 192 });
 		STOP = false;
 
 		wasHit = false;

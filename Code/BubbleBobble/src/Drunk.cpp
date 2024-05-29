@@ -155,9 +155,9 @@ void Drunk::MoveY()
 	int prev_x = pos.x;
 	int prev_y = pos.y;
 
-	if (pos.y < 16)
+	if (pos.y < 40)
 	{
-		pos.y = prev_y;
+		pos.y = 40;
 	}
 	if (state != DrunkState::JUMPING && !defuseHitbox)
 	{
