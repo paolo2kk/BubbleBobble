@@ -675,10 +675,7 @@ void Scene::CheckCollisions()
 					bubble->MoveBubbleRightPlayer();
 
 				}
-				else 
-				{
-					bubble->SetIdle();
-				}
+				
 				if (player->IsLookingLeft() && bubble_box.TestAABB(player_box))
 				{
 					bubble->MoveBubbleLeftPlayer();
@@ -727,7 +724,7 @@ void Scene::CheckCollisions()
 
 				break;
 			}
-			if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
+			if ((bubble->hasEndedFromCatch) && (bubble->poped == false) && !bubble->popedParticles) {
 				Point pos = bubble->GetPos();
 				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
 				AABB hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);

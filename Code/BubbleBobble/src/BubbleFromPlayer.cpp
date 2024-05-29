@@ -385,7 +385,6 @@ void BubbleFromPlayer::Movement(Directions d)
 }
 void BubbleFromPlayer::MoveBubbleRightPlayer()
 {
-	SetAnimation((int)Animations::BUBBLE_APLASTAO);
 
 	AABB box;
 	direction = Directions::RIGHT;
@@ -394,12 +393,10 @@ void BubbleFromPlayer::MoveBubbleRightPlayer()
 	if (!map->TestCollisionAir(box)) {
 		issAlive = false;
 	}
-	SetAnimation((int)Animations::BUBBLE_APLASTAO);
 
 }
 void BubbleFromPlayer::MoveBubbleLeftPlayer()
 {
-	SetAnimation((int)Animations::BUBBLE_APLASTAO);
 
 	AABB box;
 	direction = Directions::LEFT;
@@ -408,7 +405,6 @@ void BubbleFromPlayer::MoveBubbleLeftPlayer()
 	if (!map->TestCollisionAir(box)) {
 		issAlive = false;
 	}
-	SetAnimation((int)Animations::BUBBLE_APLASTAO);
 
 }
 void BubbleFromPlayer::SetIdle()
