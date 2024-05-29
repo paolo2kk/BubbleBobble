@@ -11,7 +11,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	particles = false;
 	dire = d;
 	speed = .3;
-	stages = 1;
+	stages = 0;
 	logPosXL = pos.x - SHOOT_RANGE;
 	logPosXR = pos.x + SHOOT_RANGE;
 	eTime = 0;
@@ -262,7 +262,7 @@ void BubbleFromPlayer::EnemyCatchSlime()
 	case(int)BubbleStages::ENDED:
 		break;
 	}
-	}
+	}	
 }
 
 void BubbleFromPlayer::EnemyCatchDrunk()
@@ -321,9 +321,14 @@ void BubbleFromPlayer::Movement(Directions d)
 	{
 		if (d == Directions::LEFT)
 		{
+
 			switch (stages) {
 				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_L);
 				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
+			case 0:
+				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
+				stages++;
+
 
 			case 1:
 				if (pos.x < 20)
@@ -364,6 +369,10 @@ void BubbleFromPlayer::Movement(Directions d)
 			switch (stages) {
 				SetAnimation((int)Animations::SPAWN_BUBBLE_GREEN_R);
 				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_R);
+
+			case 0:
+				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
+				stages++;
 
 			case 1:
 				if (pos.x > 226)
