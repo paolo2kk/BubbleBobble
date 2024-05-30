@@ -41,7 +41,13 @@ bool Drunk::Update(const AABB& box)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	bool shoot = false;
 	int anim_id;
-
+	if (jumpCooldownTimer > 0) {
+		jumpCooldownTimer -= GetFrameTime();
+		hasAlreadyJumped = true;
+	}
+	else {
+		hasAlreadyJumped = false;
+	}
 	MoveX();
 	MoveY();
 	StartFalling();
@@ -56,80 +62,64 @@ void Drunk::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
-	if (look == Look::RIGHT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
+	if (!defuseHitbox)
 	{
-		pos.x += DRUNK_SPEED;
-
-		
-		if (map->TestCollisionWallRight(box))
+		if (look == Look::RIGHT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
 		{
-			pos.x = prev_x;
-			look = Look::LEFT;
-			
-			SetAnimation((int)Animations::DRUNK_WALK_L);
-		}
-		else if (map->TestCollisionHalfWallLeft(box)) {
-			pos.x = prev_x;
-			look = Look::LEFT;
-			SetAnimation((int)Animations::DRUNK_WALK_R);
+			pos.x += DRUNK_SPEED;
 
 
-		}
-		
-	}
-	if (lerping)
-	{
-		int prev_x = pos.x;
-		if (eTimeLerp < .3) {
-			SetAnimation((int)Animations::DRUNK_DRINK_L);
+			if (map->TestCollisionWallRight(box))
+			{
+				pos.x = prev_x;
+				look = Look::LEFT;
+
+				SetAnimation((int)Animations::DRUNK_WALK_L);
+			}
+			else if (map->TestCollisionHalfWallLeft(box)) {
+				pos.x = prev_x;
+				look = Look::LEFT;
+				SetAnimation((int)Animations::DRUNK_WALK_R);
+
+
+			}
 
 		}
 
-		eTimeLerp += GetFrameTime();
-		if (eTimeLerp <= .5)
+
+		else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
 		{
-			pos.x = prev_x;
-			state = DrunkState::ROAMING;
-			
-		}
-		else if (eTimeLerp > .5 && eTimeLerp < .6)
-		{
-			if (look == Look::RIGHT)SetAnimation((int)Animations::DRUNK_DRINK_R);
-			else if (look == Look::LEFT)SetAnimation((int)Animations::DRUNK_DRINK_L);
+			pos.x += -DRUNK_SPEED;
 
-		}
-		else if (eTimeLerp > .6 && eTimeLerp < 1)
-		{
-			state = DrunkState::JUMPING;
+			if (map->TestCollisionWallLeft(box))
+			{
+				pos.x = prev_x;
+				look = Look::RIGHT;
+				SetAnimation((int)Animations::DRUNK_WALK_R);
+			}
+			else if (map->TestCollisionHalfWallRight(box)) {
+				pos.x = prev_x;
+				look = Look::RIGHT;
+				SetAnimation((int)Animations::DRUNK_WALK_R);
 
-			defuseHitbox = true;
+			}
 		}
-		else if (eTimeLerp > 1)
-		{
-			eTimeLerp = 0;
-			pos.y -= 10;
-			lerping = false;
-			defuseHitbox = false;
-		}
-
-
 	}
 	
-	else if (look == Look::LEFT && state != DrunkState::FALLING && map->TestCollisionGround(box, &pos.y) && !defuseHitbox)
-	{
-		pos.x += -DRUNK_SPEED;
 
-		if (map->TestCollisionWallLeft(box))
-		{
-			pos.x = prev_x;
-			look = Look::RIGHT;
-			SetAnimation((int)Animations::DRUNK_WALK_R);
+	if (lerping && !hasAlreadyJumped) {
+		eTimeLerp += GetFrameTime();
+		if (eTimeLerp < .1) {
+			pos.y -= 1;
+			defuseHitbox = true;
 		}
-		else if (map->TestCollisionHalfWallRight(box)) {
-			pos.x = prev_x;
-			look = Look::RIGHT;
-			SetAnimation((int)Animations::DRUNK_WALK_R);
 
+		else if (eTimeLerp > .8) {
+			hasAlreadyJumped = true;
+			defuseHitbox = false;
+			lerping = false;
+			eTimeLerp = 0;
+			jumpCooldownTimer = jumpCooldownDuration;
 		}
 	}
 }
@@ -155,6 +145,15 @@ void Drunk::MoveY()
 	int prev_x = pos.x;
 	int prev_y = pos.y;
 
+	if (lerping == true)
+	{
+		pos.y -= 1;
+		defuseHitbox = true;
+	}
+	else {
+		defuseHitbox = false;
+
+	}
 	if (pos.y < 40)
 	{
 		pos.y = 40;
@@ -177,10 +176,7 @@ void Drunk::MoveY()
 		}
 		
 	}
-	else if (state == DrunkState::JUMPING && defuseHitbox)
-	{
-		pos.y -= 1;
-	}
+	
 	
 
 	
