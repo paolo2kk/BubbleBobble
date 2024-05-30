@@ -154,6 +154,22 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::YESNONOYES2] = { 10 * n , 58 * n, n, n };
 	dict_rect[(int)Tile::FINALY] = { 13 * n , 57 * n, n, n };
 
+	//boss level
+	dict_rect[(int)Tile::BLOCK100] = { 16 * n, n, n, n };
+	dict_rect[(int)Tile::BLOCKNO100] = { 16 * n, 2* n, n, n };
+	dict_rect[(int)Tile::SHADEW100] = { 17 * n, 2 * n, n, n };
+	dict_rect[(int)Tile::CORNERARRIBAIZQ] = { 17 * n, n, n, n };
+	dict_rect[(int)Tile::CORNERABAJOIZQ] = { 17 * n, 13 * n, n, n };
+	dict_rect[(int)Tile::FLOOR100] = { 18 * n, 13 * n, n, n };
+	dict_rect[(int)Tile::CEILING100] = { 18 * n,  n, n, n };
+	dict_rect[(int)Tile::NONONOYES100] = { 20 * n, 3* n, n, n };
+	dict_rect[(int)Tile::SHADE100] = { 20 * n, 4 * n, n, n };
+	dict_rect[(int)Tile::SHADE2100] = { 21 * n, 4 * n, n, n };
+	dict_rect[(int)Tile::NONOYESNO100] = { 21 * n, 3 * n, n, n };
+	dict_rect[(int)Tile::PLAT100] = { 19 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::NOYESNONO100] = { 23 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::YESNONONO100] = { 24 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::SHADE3100] = { 29 * n, 6 * n, n, n };
 
 }
 AppStatus TileMap::Initialise()
