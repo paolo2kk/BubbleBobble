@@ -63,5 +63,7 @@ private:
 	int current_frames;	//number of frames in the current step
 	std::vector<Step> pattern;
 	std::vector<BubbleFromPlayer*> bubbles;
+	float jumpCooldownTimer = 0;
+	float jumpCooldownDuration = 1.0f; 
 };
 

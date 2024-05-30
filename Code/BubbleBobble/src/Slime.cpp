@@ -38,7 +38,14 @@ bool Slime::Update(const AABB& box)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	bool shoot = false;
 	int anim_id;
-
+	if (jumpCooldownTimer > 0) {
+		jumpCooldownTimer -= GetFrameTime();
+		hasAlreadyJumped = true;
+	}
+	else {
+		hasAlreadyJumped = false;
+	}
+	
 	MoveX();
 	MoveY();
 	StartFalling();
@@ -53,74 +60,55 @@ void Slime::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
-	if (look == Look::RIGHT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
-	{
-		
+	if (!defusehitbox) {
+		if (look == Look::RIGHT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y)) {
 			pos.x += SLIME_SPEED;
 
-		
-		
-		if (map->TestCollisionWallRight(box))
-		{
-			pos.x = prev_x;
-			look = Look::LEFT;
-			SetAnimation((int)Animations::ZENCHAN_WALK_L);
-		}
-		else if (map->TestCollisionHalfWallLeft(box)) {
-			pos.x = prev_x;
-			look = Look::LEFT;
-			SetAnimation((int)Animations::ZENCHAN_WALK_R);
-
+			if (map->TestCollisionWallRight(box)) {
+				pos.x = prev_x;
+				look = Look::LEFT;
+				SetAnimation((int)Animations::ZENCHAN_WALK_L);
+			}
+			else if (map->TestCollisionHalfWallLeft(box)) {
+				pos.x = prev_x;
+				look = Look::LEFT;
+				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+			}
 
 		}
-		
-	}
-	else if (look == Look::LEFT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y))
-	{
-		
+		else if (look == Look::LEFT && state != SlimeState::FALLING && map->TestCollisionGround(box, &pos.y)) {
 			pos.x += -SLIME_SPEED;
 
-		
-		
-		if (map->TestCollisionWallLeft(box))
-		{
-			pos.x = prev_x;
-			look = Look::RIGHT;
-			SetAnimation((int)Animations::ZENCHAN_WALK_R);
-		}
-		else if (map->TestCollisionHalfWallRight(box)) {
-			pos.x = prev_x;
-			look = Look::RIGHT;
-			SetAnimation((int)Animations::ZENCHAN_WALK_R);
-
+			if (map->TestCollisionWallLeft(box)) {
+				pos.x = prev_x;
+				look = Look::RIGHT;
+				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+			}
+			else if (map->TestCollisionHalfWallRight(box)) {
+				pos.x = prev_x;
+				look = Look::RIGHT;
+				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+			}
 		}
 	}
-	/*if (lerping && !hasAlreadyJumped)
-	{		
-		eTimeLerp += GetFrameTime();
-		if(eTimeLerp < .1){
-		
-			pos.y -= 2;
-		}
-		if (eTimeLerp > .6 && eTimeLerp < 2)
-		{
 
+	if (lerping && !hasAlreadyJumped) {
+		eTimeLerp += GetFrameTime();
+		if (eTimeLerp < .1) {
 			pos.y -= 1;
 			defusehitbox = true;
 		}
-		else if (eTimeLerp > 1.9)
-		{
+		
+		else if (eTimeLerp > .8) {
 			hasAlreadyJumped = true;
 			defusehitbox = false;
 			lerping = false;
-			
 			eTimeLerp = 0;
-
+			jumpCooldownTimer = jumpCooldownDuration; 
 		}
-
-
-	}*/
+	}
 }
+
 EnemyType Slime::GetEnemyType() const
 {
 	return EnemyType::SLIME;
@@ -145,7 +133,15 @@ void Slime::MoveY()
 	int prev_x = pos.x;
 	int prev_y = pos.y;
 
+	if (lerping == true)
+	{
+		pos.y -= 1;
+		defusehitbox = true;
+	}
+	else {
+		defusehitbox = false;
 
+	}
 	if (state != SlimeState::JUMPING && !defusehitbox)
 	{
 		pos.y += 1;

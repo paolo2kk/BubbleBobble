@@ -28,6 +28,7 @@ bool Enemy::IsVisible(const AABB& hitbox)
 	}
 	return false;
 }
+
 Look Enemy::GetDir()
 {
 	return look;
