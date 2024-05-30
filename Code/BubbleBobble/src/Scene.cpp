@@ -81,6 +81,7 @@ Scene::~Scene()
 	}
 	projectiles.clear();
 	objects.clear();
+	thunds.clear();
 	bubbles.clear();
 	bubblesPlayer.clear();
 
@@ -398,8 +399,7 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				obj = new Object(pos, ObjectType::DOT);
-				objects.push_back(obj);
-				AllObjects++;
+				thunds.push_back(obj);
 				map[i] = 0;
 			}
 			++i;
@@ -557,6 +557,14 @@ void Scene::Update()
 	level->Update();
 	hitbox = player->GetHitbox();
 	hitbox = player2->GetHitbox();
+	if (player->isThund == true)
+	{
+		for (BubbleFromPlayer* buble : bubblesPlayer)
+		{
+			buble->isThund = true;
+
+		}
+	}
 	if (P2in == true)
 	{
 		player2->Update();
@@ -733,31 +741,24 @@ void Scene::CheckCollisions()
 			for (BubbleFromPlayer* bubble2 : bubblesPlayer)
 			{
 				if (bubble == bubble2) continue;
-				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble_box.TestAABB(bubble_box2))
+				if (bubble2->issAlive)
 				{
-					if (stage != 3)
-					{
-						bubble->MoveBubbleToRandomNear();
-						bubble2->MoveBubbleToRandomNear();
-					}
-					
-					if (bubble->poped == false)
-					{
-						Point pos = bubble2->GetPos();
-						BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble2->dire);
-						part->Initialise();
-						part->popedParticles = true;
-						bubblesPlayer.push_back(part);
+					AABB bubble_box2 = bubble2->GetHitbox();
 
+					if (bubble_box.TestAABB(bubble_box2))
+					{
+						if (stage != 3)
+						{
+							bubble->MoveBubbleToRandomNear();
+							bubble2->MoveBubbleToRandomNear();
+						}
+
+						
+						break;
 					}
-					bubble2->noZesty = true;
-					bubble2->issAlive = false;
-					bubble2->poped = true;
-					
-					break;
 				}
+
 			}
 			if (player->IsMoving()) {
 				if (player->IsLookingRight() && bubble_box.TestAABB(player_box))
@@ -885,17 +886,11 @@ void Scene::CheckCollisions()
 				if (bubble == bubble2) continue;
 				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble->dire == Directions::LEFT && bubble2->dire == Directions::LEFT)
-				{
-					bubble2->StayBehind(bubble);
-				}
-				/*if (bubble_box.TestAABB(bubble_box2))
+				if (stage != 3)
 				{
 					bubble->MoveBubbleToRandomNear();
 					bubble2->MoveBubbleToRandomNear();
-
-					break;
-				}*/
+				}
 			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))
@@ -1013,6 +1008,38 @@ void Scene::CheckCollisions()
 		{
 			//Move to the next object
 			++it;
+		}
+	}
+
+	auto itten = thunds.begin();
+	while (itten != thunds.end())
+	{
+		obj_box = (*itten)->GetHitbox();
+		if (player_box.TestAABB(obj_box) && P1in == true)
+		{
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
+
+			player->IncrScore((*itten)->Points());
+			(*itten)->DeleteHitbox();
+			(*itten)->point = true;
+			player->isThund = true;
+
+		}
+		else if (player2_box.TestAABB(obj_box) && P2in == true)
+		{
+			ResourceManager::Instance().PlaySoundEffect(Resource::SFX_PICKUP);
+
+			player2->IncrScore((*itten)->Points());
+			(*itten)->DeleteHitbox();
+			(*itten)->point = true;
+			(*itten)->P1 = false;
+			player2->isThund = true;
+
+		}
+		else
+		{
+			//Move to the next object
+			++itten;
 		}
 	}
 	for (Projectile* proj : projectiles)
@@ -1136,6 +1163,11 @@ void Scene::ClearLevel()
 		delete obj;
 	}
 	objects.clear();
+	for (Object* obje : thunds)
+	{
+		delete obje;
+	}
+	thunds.clear();
 	for (Projectile* proj : projectiles)
 	{
 		delete proj;
@@ -1226,11 +1258,48 @@ void Scene::RenderObjects()
 		}
 
 	}
+	auto ate = thunds.begin();
+	while (ate != thunds.end())
+	{
+
+		if ((*ate)->point == true)
+		{
+			if ((*ate)->pastTime(1) == false)
+			{
+				(*ate)->Draw();
+				(*ate)->DrawPoints();
+				if ((int)(*ate)->framecounter % 3 == 0)
+				{
+					(*ate)->PointsAnimation();
+				}
+			}
+			else
+			{
+				//Delete the object
+				delete* ate;
+				//Erase the object from the vector and get the iterateor to the next valid element
+				ate = thunds.erase(ate);
+				AllObjects--;
+
+			}
+
+		}
+		else
+		{
+			(*ate)->Draw();
+		}
+		if (ate != thunds.end())
+		{
+			++ate;
+		}
+
+	}
 
 	for (Projectile* proje : projectiles)
 	{
 		proje->Draw();
 	}
+	
 	for (Bubble* bubl : bubbles)
 	{
 		bubl->Draw();

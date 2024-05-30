@@ -58,6 +58,8 @@ private:
     float eTimeSpawnY;
     float eTimeBottle = 0;
     std::vector<Object*> objects;
+    std::vector<Object*> thunds;
+
     std::vector<Projectile*> projectiles;
 
     std::vector<Bubble*> bubbles;

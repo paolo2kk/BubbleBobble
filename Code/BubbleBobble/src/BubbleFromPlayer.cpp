@@ -331,6 +331,7 @@ void BubbleFromPlayer::SetTileMap(TileMap* m)
 }
 void BubbleFromPlayer::Movement(Directions d)
 {
+
 	ClampPos();
 	Stomp();
 	FromDown();
@@ -356,7 +357,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				{
 					pos.x++;
 					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
-
+					if(isThund)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
 					stages++;
 				}
 				inShoot = true;
@@ -364,7 +365,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
 					if (!inCatch) SetAnimation((int)Animations::BUBBLE_GREEN);
-
+					if (isThund)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
 					stages++;
 				}
 				break;
@@ -398,6 +399,8 @@ void BubbleFromPlayer::Movement(Directions d)
 					{
 						SetAnimation((int)Animations::BUBBLE_GREEN);
 						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
+						if (isThund && !isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
+						if (isThund && isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
 
 					}
 					stages++;
@@ -409,6 +412,9 @@ void BubbleFromPlayer::Movement(Directions d)
 					if (!inCatch) {
 						SetAnimation((int)Animations::BUBBLE_GREEN);
 						if (isP2) SetAnimation((int)Animations::BUBBLE_BLUE);
+						if (isThund && !isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
+						if (isThund && isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
+
 					}
 					stages++;
 				}
@@ -433,6 +439,7 @@ void BubbleFromPlayer::Movement(Directions d)
 
 			case 0:
 				if (isP2) SetAnimation((int)Animations::SPAWN_BUBBLE_BLUE_L);
+				if(isThund) SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
 				stages++;
 
 			case 1:
@@ -448,6 +455,7 @@ void BubbleFromPlayer::Movement(Directions d)
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
 					if (!inCatch) SetAnimation((int)Animations::BUBBLE_BLUE);
+					if (isThund) SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
 
 					stages++;
 				}

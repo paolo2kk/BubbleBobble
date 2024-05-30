@@ -71,6 +71,7 @@ public:
 	bool isP2 = false;
 	bool cameFromDown = false;
 	bool noZesty = false;
+	bool isThund = false;
 private:
 	void HandleCollisionLogic();
 	bool isUp = false;

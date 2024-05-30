@@ -69,6 +69,7 @@ public:
 	void SetDeathAnim();
 	bool Ikilleable = true;
 	void NoP2();
+	bool isThund = false;
 
 private:
 

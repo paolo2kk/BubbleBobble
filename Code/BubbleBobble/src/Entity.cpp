@@ -505,7 +505,7 @@ AppStatus Entity::InitializeAnimations()
         Anima->AddKeyFrame((int)Animations::THUNDER_BUBBLE_BLUE, { i * n, n * 65, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BUBBLE_GREEN, ANIM_DELAY);
-    for (i = 0; i < 3; ++i)
+    for (i = 1; i < 2; ++i)
         Anima->AddKeyFrame((int)Animations::BUBBLE_GREEN, { i * n, n * 66, n, n });
 
     Anima->SetAnimationDelay((int)Animations::BUBBLE_APLASTAO, ANIM_DELAY);
