@@ -291,7 +291,7 @@ AppStatus Scene::LoadLevel(int stage)
 			  219, 229,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
 			  219, 229,   0, 224, 232,   0,   0, 225, 226,   0,   0,   0, 224, 232,   0, 219,
 			  219, 229,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
-			  219, 229,   0,   0, 222, 223,   0,   0,   0,   0, 222, 223,   0,   0,   0, 219,
+			  219, 229,   0,   0, 222, 223,   0, 108,   0,   0, 222, 223,   0,   0,   0, 219,
 			  219, 229,   0,   0, 230, 231,   0,   0,   0,   0, 230, 231,   0,   0,   0, 219,
 			  219, 229,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
 			  219, 229,   0, 224, 232,   0,   0, 225, 226,   0,   0,   0, 224, 232,   0, 219,
@@ -351,6 +351,17 @@ AppStatus Scene::LoadLevel(int stage)
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
 				if(stage != 4)numEnemies++;
+
+			}
+			else if (tile == Tile::SD)
+			{
+
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				area = level->GetSweptAreaX(hitbox);
+				enemies->Add(pos, EnemyType::SD, area);
+				if (stage != 4)numEnemies++;
 
 			}
 			else if (tile == Tile::DRUNKR)

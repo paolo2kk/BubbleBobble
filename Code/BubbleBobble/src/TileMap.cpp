@@ -244,12 +244,12 @@ Tile TileMap::GetTileIndex(int x, int y) const
 bool TileMap::IsTileStatic(Tile tile) const
 {
 	return (Tile::STATIC_FIRST <= tile && tile <= Tile::STATIC_LAST || tile == Tile::BLOCKWITH3 || tile == Tile::BLOCKWITHOUT3 ||
-		tile == Tile::BLOCKWITH30 || tile == Tile::BLOCKWITHOUT30 || tile == Tile::BLOCKWALL4 || tile == Tile::BLOCKWALL4NUMBER);
+		tile == Tile::BLOCKWITH30 || tile == Tile::BLOCKWITHOUT30 || tile == Tile::BLOCKWALL4 || tile == Tile::BLOCKWALL4NUMBER || tile == Tile::BLOCKNO100 || tile == Tile::BLOCK100);
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
 	return (Tile::SOLID_FIRST <= tile && tile <= Tile::SOLID_LAST || tile == Tile::CORNER || tile == Tile::PLATFORMCORNERRIGHT || tile == Tile::PLATFORMLVL2 ||
-		tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS || tile == Tile::CORNER_PLATAFORM4 || tile == Tile::PLATAFORM_SHADOW4);
+		tile == Tile::CORNERPLATFORMLVL2 || tile == Tile::PLATFORMDEDOS || tile == Tile::CORNER_PLATAFORM4 || tile == Tile::PLATAFORM_SHADOW4 || tile == Tile::PLAT100);
 }
 bool TileMap::IsTileLaser(Tile tile) const
 {
@@ -261,7 +261,7 @@ bool TileMap::IsTileMario(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeRight(Tile tile) const
 {
-	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST || tile == Tile::PLATFORMCORNERLEFTLVL2);
+	return (Tile::HALF_FIRST <= tile && tile <= Tile::HALF_LAST || tile == Tile::PLATFORMCORNERLEFTLVL2 || tile == Tile::NOYESNONO100);
 }
 bool TileMap::IsTileHalfCubeRightDEBUG(Tile tile) const
 {
@@ -273,7 +273,7 @@ bool TileMap::IsTileHalfCubeLeft(Tile tile) const
 }
 bool TileMap::IsTileHalfCubeLeftDEBUG(Tile tile) const
 {
-	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT || tile == Tile::FLOOR30R);
+	return (tile == Tile::PLATFORMMIDDLESTART || tile == Tile::FLOORLVL2RIGHT || tile == Tile::FLOOR30R || tile == Tile::NONONOYES100);
 }
 bool TileMap::IsTileHalfWallLeft(Tile tile) const
 {
@@ -292,7 +292,7 @@ bool TileMap::IsTileAir(Tile tile) const
 bool TileMap::IsTileFloor(Tile tile) const
 {
 	return (Tile::FLOOR_FIRST <= tile && tile <= Tile::FLOOR_LAST || tile == Tile::FLOORLVL2 || tile == Tile::CORNERFLOORLVL2 || tile == Tile::FLOOR30 || tile == Tile::CORNERFLOOR30
-		|| tile == Tile::FLOOR30WSHADOWL || tile == Tile::FLOOR30WSHADOWR || tile == Tile::PLATAFORM4 || tile == Tile::WALL_PLATAFORM4);
+		|| tile == Tile::FLOOR30WSHADOWL || tile == Tile::FLOOR30WSHADOWR || tile == Tile::PLATAFORM4 || tile == Tile::WALL_PLATAFORM4 || tile == Tile::FLOOR100 || tile == Tile::CORNERABAJOIZQ);
 }
 bool TileMap::IsTileFloorNCeiling(Tile tile) const
 {
