@@ -44,7 +44,7 @@ public:
 	bool isshooting = false;
 	Look GetDir();
 	int SDhp = 10;
-
+	bool SDInBubble = false;
 	bool noSpawnMore = false;
 protected:
 	//Return true if the given hitbox is within the visibility area and the enemy is facing it

@@ -1072,6 +1072,7 @@ void Scene::CheckCollisions()
 			if (ene_box.TestAABB(projectile_box))
 			{
 				enemy->SDhp--;
+
 			}
 		}
 

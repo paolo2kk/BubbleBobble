@@ -48,13 +48,21 @@ void Projectile::Update()
 void Projectile::MoveX()
 {
 	
-	if (direction == Look::LEFT) 
+	if (direction == Look::LEFT && !isThund) 
 	{
 		dir = { -2, 0 };
 	}
-	else if (direction == Look::RIGHT)
+	else if (direction == Look::RIGHT && !isThund)
 	{
 		dir = { 2, 0 };
+	}
+	if (direction == Look::LEFT && isThund)
+	{
+		dir = { 2, 0 };
+	}
+	else if (direction == Look::RIGHT && isThund)
+	{
+		dir = { -2, 0 };
 	}
 }
 void Projectile::DrawDebug(const Color& col) const

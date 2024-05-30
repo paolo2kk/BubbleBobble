@@ -49,6 +49,10 @@ bool SD::Update(const AABB& box)
 	MoveX();
 	StartFalling();
 	Warp();
+	if (SDhp <= 0)
+	{
+		direction = SDdir::STOP;
+	}
 	sprite->Update();
 
 	return shoot;
@@ -109,7 +113,17 @@ void SD::MoveX()
 			direction = SDdir::SW;
 		}
 		break;
-
+	case SDdir::STOP:
+		pos.x += 0;
+		pos.y += 0;
+		SetAnimation((int)Animations::SUPER_DRUNK_BUBBLE);
+		direction = SDdir::INBUBBLE;
+		break;
+	case SDdir::INBUBBLE:
+		pos.x += 0;
+		pos.y += 0;
+		SDInBubble = true;
+		break;
 	}
 }
 
