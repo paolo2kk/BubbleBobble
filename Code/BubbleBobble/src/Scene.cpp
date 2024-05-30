@@ -808,7 +808,7 @@ void Scene::CheckCollisions()
 			{
 
 				AABB enemy_box = enemy->GetHitbox();
-				if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
+				if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch && stage != 5)
 				{
 					if (stage == 1 || stage == 2) {
 						bubble->enemytype = 0;
