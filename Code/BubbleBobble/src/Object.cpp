@@ -42,6 +42,27 @@ Object::Object(const Point& p) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL
 	ResourceManager& data = ResourceManager::Instance();
 	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
 }
+Object::Object(const Point& p, ObjectType obj) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
+{
+	P1 = true;
+	framecounter = 0;
+	Rectangle rc;
+	const int n = TILE_SIZE;
+
+	switch (obj)
+	{
+
+	case ObjectType::DOT:
+		rc = { 12 * n, 0, n, n }; break;
+
+	default: LOG("Internal error: object creation of invalid type");
+	}
+
+	point = false;
+
+	ResourceManager& data = ResourceManager::Instance();
+	render = new StaticImage(data.GetTexture(Resource::IMG_ITEMS), rc);
+}
 Object::~Object()
 {
 

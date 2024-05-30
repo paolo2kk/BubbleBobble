@@ -65,6 +65,7 @@ enum class Tile {
 	//shades boss
 	SHADEW100, SHADE100, SHADE2100, SHADE3100,
 
+	DOT,
 	
 	//Intervals
 	STATIC_FIRST = BLOCKWITH1,

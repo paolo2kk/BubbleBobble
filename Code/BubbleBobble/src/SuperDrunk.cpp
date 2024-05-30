@@ -47,7 +47,6 @@ bool SD::Update(const AABB& box)
 	}
 	
 	MoveX();
-	MoveY();
 	StartFalling();
 	Warp();
 	sprite->Update();
@@ -60,52 +59,57 @@ void SD::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
-	if (!defusehitbox) {
-		if (look == Look::RIGHT && state != SDState::FALLING && map->TestCollisionGround(box, &pos.y)) {
-			pos.x += SD_SPEED;
-
-			if (map->TestCollisionWallRight(box)) {
-				pos.x = prev_x;
-				look = Look::LEFT;
-				SetAnimation((int)Animations::SUPER_DRUNK_WALK_L);
-			}
-			else if (map->TestCollisionHalfWallLeft(box)) {
-				pos.x = prev_x;
-				look = Look::LEFT;
-				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
-			}
-
+	switch (direction)
+	{
+	case SDdir::NE:
+		pos.x += 1;
+		pos.y -= 1;
+		if (map->TestCollisionWallRight(box))
+		{
+			direction = SDdir::WN;
 		}
-		else if (look == Look::LEFT && state != SDState::FALLING && map->TestCollisionGround(box, &pos.y)) {
-			pos.x += -SD_SPEED;
+		else if (pos.y < 64)
+		{
+			direction = SDdir::ES;
+		}
+		break;
+	case SDdir::ES:
+		pos.x += 1;
+		pos.y += 1;
+		if (map->TestCollisionWallRight(box))
+		{
+			direction = SDdir::SW;
+		}
+		else if (pos.y > WINDOW_HEIGHT - 24)
+		{
+			direction = SDdir::NE;
+		}
+		break;
+	case SDdir::SW:
+		pos.x -= 1;
+		pos.y += 1;
+		if (map->TestCollisionWallLeft(box))
+		{
+			direction = SDdir::ES;
+		}
+		else if (pos.y > WINDOW_HEIGHT - 24)
+		{
+			direction = SDdir::WN;
+		}
+		break;
+	case SDdir::WN:
+		pos.x -= 1;
+		pos.y -= 1;
+		if (map->TestCollisionWallLeft(box))
+		{
+			direction = SDdir::NE;
+		}
+		else if (pos.y < 64)
+		{
+			direction = SDdir::SW;
+		}
+		break;
 
-			if (map->TestCollisionWallLeft(box)) {
-				pos.x = prev_x;
-				look = Look::RIGHT;
-				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
-			}
-			else if (map->TestCollisionHalfWallRight(box)) {
-				pos.x = prev_x;
-				look = Look::RIGHT;
-				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
-			}
-		}
-	}
-
-	if (lerping && !hasAlreadyJumped) {
-		eTimeLerp += GetFrameTime();
-		if (eTimeLerp < .1) {
-			pos.y -= 1;
-			defusehitbox = true;
-		}
-		
-		else if (eTimeLerp > .8) {
-			hasAlreadyJumped = true;
-			defusehitbox = false;
-			lerping = false;
-			eTimeLerp = 0;
-			jumpCooldownTimer = jumpCooldownDuration; 
-		}
 	}
 }
 
@@ -124,42 +128,7 @@ void SD::Stop()
 	dir = { 0,0 };
 	state = SDState::ROAMING;
 }
-void SD::MoveY()
-{
-	AABB box, prev_box;
-	int prev_x = pos.x;
-	int prev_y = pos.y;
 
-	if (lerping == true)
-	{
-		pos.y -= 1;
-		defusehitbox = true;
-	}
-	else {
-		defusehitbox = false;
-
-	}
-	if (state != SDState::JUMPING && !defusehitbox)
-	{
-		pos.y += 1;
-		
-		box = GetHitbox();
-		if (map->TestCollisionGround(box, &pos.y))
-		{
-			if (state == SDState::FALLING) Stop();
-			if (IsKeyPressed(KEY_X))
-				dir.y = -1;
-		}
-		else
-		{
-			if (state != SDState::FALLING) StartFalling();
-		}
-		
-		
-	}
-	
-	
-}
 
 void SD::UpdateLook(int anim_id)
 {

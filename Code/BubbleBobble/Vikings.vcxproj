@@ -23,6 +23,7 @@
     <ClCompile Include="src\Bottle.cpp" />
     <ClCompile Include="src\Bubble.cpp" />
     <ClCompile Include="src\BubbleFromPlayer.cpp" />
+    <ClCompile Include="src\DrugOfThunder.cpp" />
     <ClCompile Include="src\Drunk.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="src\Bottle.h" />
     <ClInclude Include="src\Bubble.h" />
     <ClInclude Include="src\BubbleFromPlayer.h" />
+    <ClInclude Include="src\DrugOfThunder.h" />
     <ClInclude Include="src\Drunk.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\EnemyManager.h" />

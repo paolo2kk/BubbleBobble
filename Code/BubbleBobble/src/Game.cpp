@@ -31,7 +31,7 @@ Game::Game()
     fadeCondition = true;
     transCounter = 0;
     frameCounter = 0;
-    credit = 2;
+    credit = 0;
     playtime = 0;
     text_ = new Text();
 

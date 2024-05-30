@@ -13,6 +13,7 @@
 #define SD_SHOT_SPEED	4
 
 enum class SDState { ROAMING, ATTACK, FALLING, JUMPING };
+enum class SDdir {NE, ES, SW, WN};
 enum class SDAnim {
 	IDLE_LEFT, IDLE_RIGHT, WALKING_LEFT, WALKING_RIGHT,
 	ATTACK_LEFT, ATTACK_RIGHT, NUM_ANIMATIONS
@@ -48,7 +49,6 @@ private:
 	float eTimeLerp = 0;
 	void MoveX();
 	void SetAnimation(int id);
-	void MoveY();
 	void StartFalling();
 	void Stop();
 	//Update looking direction according to the current step of the pattern
@@ -64,5 +64,6 @@ private:
 	std::vector<BubbleFromPlayer*> bubbles;
 	float jumpCooldownTimer = 0;
 	float jumpCooldownDuration = 1.0f; 
+	SDdir direction = SDdir::NE;
 };
 
