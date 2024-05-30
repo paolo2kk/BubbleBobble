@@ -857,6 +857,7 @@ void Scene::CheckCollisions()
 					part->popedParticles = true;
 					bubblesPlayer.push_back(part);
 					Projectile* proj = new Projectile(pos, player->GetDir(), true);
+					proj->isThund = true;
 					projectiles.push_back(proj);
 				}
 				bubble->poped = true;
@@ -1072,7 +1073,9 @@ void Scene::CheckCollisions()
 			if (ene_box.TestAABB(projectile_box))
 			{
 				enemy->SDhp--;
-
+				proj->Release();
+				delete proj;
+				proj = nullptr;
 			}
 		}
 
@@ -1328,7 +1331,42 @@ void Scene::RenderObjects()
 		}
 
 	}
+	auto atee = thunds.begin();
+	while (atee != thunds.end())
+	{
 
+		if ((*atee)->point == true)
+		{
+			if ((*atee)->pastTime(1) == false)
+			{
+				(*atee)->Draw();
+				(*atee)->DrawPoints();
+				if ((int)(*atee)->framecounter % 3 == 0)
+				{
+					(*atee)->PointsAnimation();
+				}
+			}
+			else
+			{
+				//Delete the object
+				delete* atee;
+				//Erase the object from the vector and get the iterateeor to the next valid element
+				atee = thunds.erase(atee);
+				AllObjects--;
+
+			}
+
+		}
+		else
+		{
+			(*atee)->Draw();
+		}
+		if (atee != thunds.end())
+		{
+			++atee;
+		}
+
+	}
 	for (Projectile* proje : projectiles)
 	{
 		proje->Draw();
