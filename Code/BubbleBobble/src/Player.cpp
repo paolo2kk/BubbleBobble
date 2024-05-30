@@ -501,6 +501,10 @@ void Player::LaserTag()
 		inLaser = true;
 	}
 }
+Look Player::GetDir()
+{
+	return look;
+}
 bool Player::TestCollisionFromUp(const AABB& box, int* py) 
 {
 	Point p(box.pos.x, *py);	

@@ -54,6 +54,7 @@ enum class Resource {
     SFX_ELECTRIC_HIT,
     IMG_ZENCHAN,
     IMG_ENEMIES,
+    IMG_WINDOW,
 };
 
 class ResourceManager {

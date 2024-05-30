@@ -560,6 +560,10 @@ AppStatus Entity::InitializeAnimations()
     for (i = 0; i < 4; ++i)
         Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_BUBBLE, { i * n * 4, n * 82, n * 4, n * 4 });
 
+    Anima->SetAnimationDelay((int)Animations::THUNDER, ANIM_DELAY);
+    for (i = 3; i < 6; ++i)
+        Anima->AddKeyFrame((int)Animations::THUNDER, { i * n, n * 65, n, n });
+
     return AppStatus::OK;
 }
 Point Entity::GetPos()

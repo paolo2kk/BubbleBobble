@@ -72,6 +72,7 @@ public:
 	bool Ikilleable = true;
 	void NoP1();
 	bool isThund = false;
+	Look GetDir();
 
 private:
 	

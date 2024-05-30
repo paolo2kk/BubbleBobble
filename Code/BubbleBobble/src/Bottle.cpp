@@ -12,6 +12,18 @@ Projectile::Projectile(const Point& p, Look view) : Entity(p, 2, 2, TILE_SIZE, T
 	rc = { n, n + 6, n, n }; 
 	SetAnimation((int)Animations::DRUNK_PROJECTILE);
 }
+Projectile::Projectile(const Point& p, Look view, bool a) : Entity(p, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE)
+{
+	if (a == true)
+	{
+		framecounter = 0;
+		direction = view;
+		Rectangle rc;
+		const int n = TILE_SIZE;
+		rc = { n, n + 6, n, n };
+		SetAnimation((int)Animations::THUNDER);
+	}
+}
 void Projectile::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);

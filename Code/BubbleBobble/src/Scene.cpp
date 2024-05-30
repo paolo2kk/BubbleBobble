@@ -735,6 +735,7 @@ void Scene::CheckCollisions()
 			}
 
 		}
+		//bubble
 		for (BubbleFromPlayer* bubble : bubblesPlayer)
 		{
 			AABB bubble_box = bubble->GetHitbox();
@@ -842,6 +843,24 @@ void Scene::CheckCollisions()
 				numEnemies--;
 
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+
+				break;
+			}
+			if (bubble_box.TestAABB(player_box) && stage == 5 && !bubble->inShoot)
+			{
+				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+					Projectile* proj = new Projectile(pos, player->GetDir(), true);
+					projectiles.push_back(proj);
+				}
+				bubble->poped = true;
+
 
 				break;
 			}
@@ -1044,8 +1063,19 @@ void Scene::CheckCollisions()
 	}
 	for (Projectile* proj : projectiles)
 	{
+		
 		AABB projectile_box = proj->GetHitbox();
-		if (player_box.TestAABB(projectile_box) && P1in == true)
+		
+		for (Enemy* enemy : enemies->GetEnemies())
+		{
+			AABB ene_box = enemy->GetHitbox();
+			if (ene_box.TestAABB(projectile_box))
+			{
+				enemy->SDhp--;
+			}
+		}
+
+		if (player_box.TestAABB(projectile_box) && P1in == true && stage != 5)
 		{
 			if (player->Ikilleable) {
 				Point posplayer = player->GetPos();
@@ -1057,7 +1087,7 @@ void Scene::CheckCollisions()
 
 			}
 		}
-		if (player2_box.TestAABB(projectile_box)&& P2in==true)
+		if (player2_box.TestAABB(projectile_box)&& P2in==true && stage != 5)
 		{
 			if (player2->Ikilleable) {
 				Point posplayer = player2->GetPos();
@@ -1069,6 +1099,9 @@ void Scene::CheckCollisions()
 
 			}
 		}
+
+		
+
 	}
 	
 	if (IsKeyDown(KEY_O)) {

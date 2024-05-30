@@ -10,6 +10,7 @@ class Projectile : public Entity
 {
 public:
 	Projectile(const Point& p, Look view);
+	Projectile(const Point& p, Look view, bool a);
 	void SetAnimation(int id);
 	~Projectile();
 
