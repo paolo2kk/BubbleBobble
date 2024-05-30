@@ -228,6 +228,20 @@ void BubbleFromPlayer::Stomp()
 	}
 	eTimePogo += GetFrameTime();
 }
+void BubbleFromPlayer::FromDown()
+{
+	if (!inShoot && !popedParticles)
+	{
+		AABB box = GetHitbox();
+		if (player != nullptr)
+		{
+			if (player->TestCollisionFromBelow(box, &pos.y))
+			{
+				cameFromDown = true;
+			}
+		}
+	}
+}
 Point BubbleFromPlayer::GetPos() const
 {
 	return pos;
@@ -319,6 +333,7 @@ void BubbleFromPlayer::Movement(Directions d)
 {
 	ClampPos();
 	Stomp();
+	FromDown();
 	if (poped == true)
 	{
 		return;
@@ -508,17 +523,18 @@ void BubbleFromPlayer::Release()
 }
 Directions BubbleFromPlayer::BublePop(Directions d)
 {
-
-	if (pos.x<=16)
+	if (noZesty == false)
 	{
-		d = Directions::RIGHT;
+		if (pos.x <= 16)
+		{
+			d = Directions::RIGHT;
 
-	}
-	if (pos.x+16>=240)
-	{
-		d = Directions::LEFT;
+		}
+		if (pos.x + 16 >= 240)
+		{
+			d = Directions::LEFT;
 
-	}
+		}
 
 
 		if (d == Directions::LEFT)
@@ -526,20 +542,20 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 			if ((framecounter / 60) <= 0.5)
 			{
 				pos.x = pos.x - 1;
-				pos.y = pos.y - 2 ;
+				pos.y = pos.y - 2;
 
 				framecounter++;
 			}
 			else if (0.5 < (framecounter / 60) && (framecounter / 60) <= 1)
 			{
-				pos.x= pos.x-1;
-				pos.y=pos.y-1;
+				pos.x = pos.x - 1;
+				pos.y = pos.y - 1;
 				framecounter++;
 			}
 			else if (1 < (framecounter / 60))
 			{
 				pos.y = pos.y + 3;
-				pos.x=pos.x-1;
+				pos.x = pos.x - 1;
 
 				framecounter++;
 				if (map->TestCollisionGround(GetHitbox(), &pos.y) == true)
@@ -558,7 +574,7 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 				pos.y = pos.y - 3;
 				framecounter++;
 			}
-			else if (0.5 < (framecounter / 60) && (framecounter / 60 )<= 1)
+			else if (0.5 < (framecounter / 60) && (framecounter / 60) <= 1)
 			{
 				pos.x = pos.x + 2;
 				pos.y = pos.y - 2;
@@ -571,7 +587,7 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 				pos.x = pos.x + 2;
 
 				framecounter++;
-				if (map->TestCollisionGround(GetHitbox(),&pos.y) == true)
+				if (map->TestCollisionGround(GetHitbox(), &pos.y) == true)
 				{
 					fruit = true;
 				}
@@ -579,4 +595,6 @@ Directions BubbleFromPlayer::BublePop(Directions d)
 			return Directions::RIGHT;
 
 		}
+	}
+	
 }

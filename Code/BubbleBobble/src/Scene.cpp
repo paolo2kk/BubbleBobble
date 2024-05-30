@@ -288,7 +288,7 @@ AppStatus Scene::LoadLevel(int stage)
 			  219, 229,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
 			  219, 229,   0,   0, 222, 223,   0,   0,   0,   0, 222, 223,   0,   0,   0, 219,
 			  219, 229,   0,   0, 230, 231,   0,   0,   0,   0, 230, 231,   0,   0,   0, 219,
-			  219, 229,   0, 233,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
+			  219, 229,   0, 233,   0,   0,   0,   0,   0,   0,   0,   0, 233,   0,   0, 219,
 			  219, 229,   0, 224, 232,   0,   0, 225, 226,   0,   0,   0, 224, 232,   0, 219,
 			  219, 229,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 219,
 			  219, 229,   0,   0, 222, 223,   0, 108,   0,   0, 222, 223,   0,   0,   0, 219,
@@ -735,11 +735,27 @@ void Scene::CheckCollisions()
 				if (bubble == bubble2) continue;
 				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (bubble_box.TestAABB(bubble_box2) && stage != 3)
+				if (bubble_box.TestAABB(bubble_box2))
 				{
-					bubble->MoveBubbleToRandomNear();
-					bubble2->MoveBubbleToRandomNear();
+					if (stage != 3)
+					{
+						bubble->MoveBubbleToRandomNear();
+						bubble2->MoveBubbleToRandomNear();
+					}
+					
+					if (bubble->poped == false)
+					{
+						Point pos = bubble2->GetPos();
+						BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble2->dire);
+						part->Initialise();
+						part->popedParticles = true;
+						bubblesPlayer.push_back(part);
 
+					}
+					bubble2->noZesty = true;
+					bubble2->issAlive = false;
+					bubble2->poped = true;
+					
 					break;
 				}
 			}
@@ -756,6 +772,21 @@ void Scene::CheckCollisions()
 
 				}
 				
+			}
+			if (bubble->cameFromDown == true) //cpy this to p2
+			{
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+
+				}
+				bubble->noZesty = true;
+				bubble->issAlive = false;
+				bubble->poped = true;
 			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player_box))
@@ -878,7 +909,21 @@ void Scene::CheckCollisions()
 
 				}
 			}
+			if (bubble->cameFromDown == true) //cpy this to p2
+			{
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
 
+				}
+				bubble->noZesty = true;
+				bubble->issAlive = false;
+				bubble->poped = true;
+			}
 			for (Enemy* enemy : enemies->GetEnemies())
 			{
 

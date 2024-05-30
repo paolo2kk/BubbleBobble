@@ -51,6 +51,8 @@ public:
 	bool IsLookingLeft() const;
 	bool BubbleIsBeingCreated = false;
 	bool IsStompingAbove(const Point& p, int distance);
+	bool TestCollisionFromBelow(const AABB& box, int* py);
+	bool IsHittingFromBelow(const Point& p, int distance);
 	void SetDir(Point p);
 	bool TestCollisionFromUp(const AABB& box, int* py);
 	void SetState(State state);

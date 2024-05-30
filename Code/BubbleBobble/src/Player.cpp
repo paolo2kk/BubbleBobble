@@ -535,6 +535,38 @@ bool Player::IsStompingAbove(const Point& p, int distance)
 		return false;     
 	
 }
+bool Player::TestCollisionFromBelow(const AABB& box, int* py)
+{
+	Point p(box.pos.x, *py);
+	int tile_y;
+
+	if (pos.y > p.y && IsHittingFromBelow(p, box.width))
+	{
+		tile_y = (p.y - TILE_SIZE) / TILE_SIZE;
+
+		*py += 10;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool Player::IsHittingFromBelow(const Point& p, int distance)
+{
+	AABB playerHitbox = GetHitbox();
+
+	int displacement = 50;
+	if (p.y >= playerHitbox.pos.y &&
+		p.y <= playerHitbox.pos.y + displacement &&
+		p.x + distance >= playerHitbox.pos.x &&
+		p.x <= playerHitbox.pos.x + playerHitbox.width)
+	{
+		return true;
+	}
+	return false;
+}
+
 void Player::SetDir(Point p)
 {
 	dir += p;

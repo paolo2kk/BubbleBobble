@@ -40,6 +40,7 @@ public:
 	int stages;
 	void DrawDebug(const Color& col) const;
 	void Stomp();
+	void FromDown();
 	void SetTileMap(TileMap* m);
 	void SetPlayer(Player* p);
 	void SetPlayer2(Player2* p);
@@ -68,6 +69,8 @@ public:
 	bool diffWindMap = false;
 	bool popedParticles;
 	bool isP2 = false;
+	bool cameFromDown = false;
+	bool noZesty = false;
 private:
 	void HandleCollisionLogic();
 	bool isUp = false;
