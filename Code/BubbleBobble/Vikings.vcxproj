@@ -46,6 +46,7 @@
     <ClCompile Include="src\Slime.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\StaticImage.cpp" />
+    <ClCompile Include="src\SuperDrunk.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
     <ClCompile Include="src\Turret.cpp" />
     <ClCompile Include="src\Text.cpp">
@@ -86,6 +87,7 @@
     </ClInclude>
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\StaticImage.h" />
+    <ClInclude Include="src\SuperDrunk.h" />
     <ClInclude Include="src\TileMap.h" />
     <ClInclude Include="src\Turret.h" />
     <ClInclude Include="src\Text.h">

@@ -2,6 +2,7 @@
 #include "Slime.h"
 #include "Turret.h"
 
+
 EnemyManager::EnemyManager()
 {
 	shots = nullptr;
@@ -39,6 +40,10 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	else if (type == EnemyType::DRUNK)
 	{
 		enemy = new Drunk(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
+	}
+	else if (type == EnemyType::SD)
+	{
+		enemy = new SD(pos, SD_PHYSICAL_WIDTH, SD_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
 	}
 
 	else

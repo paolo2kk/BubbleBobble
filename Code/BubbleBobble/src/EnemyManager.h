@@ -4,6 +4,7 @@
 #include "Slime.h"
 #include "Drunk.h"
 #include "TileMap.h"
+#include "SuperDrunk.h"
 #include "ShotManager.h"
 
 class EnemyManager

@@ -4,9 +4,14 @@
 
 //Representation model size: 32x32
 #define SLIME_FRAME_SIZE		16
+#define SD_FRAME_SIZE		    64
+
 //Logical model size: 24x30
-#define SLIME_PHYSICAL_WIDTH	10
-#define SLIME_PHYSICAL_HEIGHT	9
+#define SLIME_PHYSICAL_WIDTH	6
+#define SLIME_PHYSICAL_HEIGHT	7
+
+#define SD_PHYSICAL_WIDTH    	6
+#define SD_PHYSICAL_HEIGHT	    7
 
 //Representation model size: 32x32
 #define TURRET_FRAME_SIZE		16
@@ -14,7 +19,7 @@
 #define TURRET_PHYSICAL_WIDTH	16
 #define TURRET_PHYSICAL_HEIGHT	16
 
-enum class EnemyType { SLIME, TURRET, DRUNK, BOTTLE };
+enum class EnemyType { SLIME, TURRET, DRUNK, BOTTLE, SD };
 
 class Enemy : public Entity
 {
