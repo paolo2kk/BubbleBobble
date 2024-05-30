@@ -10,8 +10,8 @@
 #define SLIME_PHYSICAL_WIDTH	6
 #define SLIME_PHYSICAL_HEIGHT	7
 
-#define SD_PHYSICAL_WIDTH    	6
-#define SD_PHYSICAL_HEIGHT	    7
+#define SD_PHYSICAL_WIDTH    	64
+#define SD_PHYSICAL_HEIGHT	    64
 
 //Representation model size: 32x32
 #define TURRET_FRAME_SIZE		16

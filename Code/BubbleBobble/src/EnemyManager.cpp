@@ -76,6 +76,11 @@ AABB EnemyManager::GetEnemyHitBox(const Point& pos, EnemyType type) const
 		width = TURRET_PHYSICAL_WIDTH;
 		height = TURRET_PHYSICAL_HEIGHT;
 	}
+	else if (type == EnemyType::SD)
+	{
+		width = SD_PHYSICAL_WIDTH;
+		height = SD_PHYSICAL_HEIGHT;
+	}
 	else
 	{
 		LOG("Internal error while computing hitbox for an invalid enemy type");

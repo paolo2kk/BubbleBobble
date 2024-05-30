@@ -347,7 +347,7 @@ AppStatus Scene::LoadLevel(int stage)
 
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;				
-				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
+				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SD);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
 				if(stage != 4)numEnemies++;

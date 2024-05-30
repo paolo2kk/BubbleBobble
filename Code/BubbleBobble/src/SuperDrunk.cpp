@@ -2,7 +2,7 @@
 #include "Sprite.h"
 
 SD::SD(const Point& p, int width, int height, int frame_width, int frame_height, TileMap* mapp) :
-	Enemy(p, width, height, frame_width, frame_height)
+	Enemy(p, width, height, 64, 64)
 {
 	attack_delay = 0;
 	state = SDState::ROAMING;
@@ -18,8 +18,8 @@ AppStatus SD::Initialise(Look look, const AABB& area)
 	InitializeAnimations();
 
 	this->look = look;
-	if (look == Look::LEFT)        SetAnimation((int)Animations::ZENCHAN_WALK_L);
-	else if (look == Look::RIGHT) SetAnimation((int)Animations::ZENCHAN_WALK_R);
+	if (look == Look::LEFT)        SetAnimation((int)Animations::SUPER_DRUNK_WALK_L);
+	else if (look == Look::RIGHT) SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
 
 	visibility_area = area;
 	noSpawnMore = false;
@@ -67,12 +67,12 @@ void SD::MoveX()
 			if (map->TestCollisionWallRight(box)) {
 				pos.x = prev_x;
 				look = Look::LEFT;
-				SetAnimation((int)Animations::ZENCHAN_WALK_L);
+				SetAnimation((int)Animations::SUPER_DRUNK_WALK_L);
 			}
 			else if (map->TestCollisionHalfWallLeft(box)) {
 				pos.x = prev_x;
 				look = Look::LEFT;
-				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
 			}
 
 		}
@@ -82,12 +82,12 @@ void SD::MoveX()
 			if (map->TestCollisionWallLeft(box)) {
 				pos.x = prev_x;
 				look = Look::RIGHT;
-				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
 			}
 			else if (map->TestCollisionHalfWallRight(box)) {
 				pos.x = prev_x;
 				look = Look::RIGHT;
-				SetAnimation((int)Animations::ZENCHAN_WALK_R);
+				SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
 			}
 		}
 	}
@@ -164,9 +164,9 @@ void SD::MoveY()
 void SD::UpdateLook(int anim_id)
 {
 	Animations anim = (Animations)anim_id;
-	look = (anim == Animations::ZENCHAN_WALK_L ||
-		anim == Animations::ZENCHAN_WALK_L ||
-		anim == Animations::ZENCHAN_WALK_L) ? Look::LEFT : Look::RIGHT;
+	look = (anim == Animations::SUPER_DRUNK_WALK_L ||
+		anim == Animations::SUPER_DRUNK_WALK_L ||
+		anim == Animations::SUPER_DRUNK_WALK_L) ? Look::LEFT : Look::RIGHT;
 }
 void SD::GetShootingPosDir(Point* p, Point* d) const
 {

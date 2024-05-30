@@ -541,9 +541,12 @@ AppStatus Entity::InitializeAnimations()
 
     //SUPER DRUNK
 
-    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_WALK, ANIM_DELAY);
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_WALK_L, ANIM_DELAY);
     for (i = 0; i < 4; ++i)
-        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_WALK, { i * n*4, n * 70, n*4, n*4 });
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_WALK_L, { i * n*4, n * 70, n*4, n*4 });
+    Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_WALK_R, ANIM_DELAY);
+    for (i = 0; i < 4; ++i)
+        Anima->AddKeyFrame((int)Animations::SUPER_DRUNK_WALK_R, { i * n * 4, n * 70, -n * 4, n * 4 });
 
     Anima->SetAnimationDelay((int)Animations::SUPER_DRUNK_DEATH, ANIM_DELAY);
     for (i = 0; i < 4; ++i)
