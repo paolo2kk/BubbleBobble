@@ -55,6 +55,7 @@ private:
     Camera2D camera;
     float eBubblingTime;
     float eTimeSpawnX;
+    float eTimeSDBH = 0;
     float eTimeSpawnY;
     float eTimeBottle = 0;
     std::vector<Object*> objects;

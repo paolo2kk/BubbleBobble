@@ -666,7 +666,8 @@ void Scene::CheckCollisions()
 	{
 		player2_box = player2->GetHitbox();
 	}
-	if (IsKeyPressed(KEY_P) && stage == 5)
+	eTimeSDBH += GetFrameTime();
+	if (eTimeSDBH >= 2 && stage == 5)
 	{
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
@@ -687,6 +688,7 @@ void Scene::CheckCollisions()
 			Projectile* projp = new Projectile(midPos, Look::R);
 			projectiles.push_back(projp);
 		}
+		eTimeSDBH = 0;
 	}
 	if (P1in == true)
 	{
