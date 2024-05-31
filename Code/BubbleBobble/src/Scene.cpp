@@ -846,7 +846,7 @@ void Scene::CheckCollisions()
 
 				break;
 			}
-			if (bubble_box.TestAABB(player_box) && stage == 5 && !bubble->inShoot)
+			if (bubble_box.TestAABB(player_box) && stage == 5 && !bubble->inShoot && player->isThund)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
 				if (bubble->poped == false)
@@ -1074,8 +1074,8 @@ void Scene::CheckCollisions()
 			{
 				enemy->SDhp--;
 				proj->Release();
-				delete proj;
 				proj = nullptr;
+				projectiles.pop_back();
 			}
 		}
 
