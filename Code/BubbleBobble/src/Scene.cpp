@@ -202,7 +202,6 @@ AppStatus Scene::LoadLevel(int stage)
 	Enemy* ene;
 	AABB hitbox, area;
 	numEnemies = 0;
-	avoidCrashingBubbles();
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
 
@@ -444,26 +443,34 @@ void Scene::BubbleSpawner()
 }
 void Scene::avoidCrashingBubbles()
 {
-	BubbleFromPlayer* buble = new BubbleFromPlayer({1000, 1000}, Directions::LEFT);
-	buble->Initialise();
-	bubblesPlayer.push_back(buble);
+	eDbg += GetFrameTime();
 
-	BubbleFromPlayer* bublee = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
-	buble->Initialise();
-	bubblesPlayer.push_back(bublee);
+	if (eDbg >= 5)
+	{
 
-	BubbleFromPlayer* bubles = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
-	buble->Initialise();
-	bubblesPlayer.push_back(bubles);
+		BubbleFromPlayer* buble = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+		buble->Initialise();
+		bubblesPlayer.push_back(buble);
 
-	BubbleFromPlayer* bublex = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
-	buble->Initialise();
-	bubblesPlayer.push_back(bublex);
+		BubbleFromPlayer* bublee = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+		buble->Initialise();
+		bubblesPlayer.push_back(bublee);
+
+		BubbleFromPlayer* bubles = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+		buble->Initialise();
+		bubblesPlayer.push_back(bubles);
+
+		BubbleFromPlayer* bublex = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+		buble->Initialise();
+		bubblesPlayer.push_back(bublex);
 
 
-	BubbleFromPlayer* bublea = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
-	buble->Initialise();
-	bubblesPlayer.push_back(bublea);
+		BubbleFromPlayer* bublea = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+		buble->Initialise();
+		bubblesPlayer.push_back(bublea);
+
+		eDbg = 0;
+	}
 }
 void Scene::PlayerBubbleSpawn()
 {
@@ -591,6 +598,8 @@ void Scene::Update()
 
 		}
 	}
+	avoidCrashingBubbles();
+
 	if (P2in == true)
 	{
 		player2->Update();
@@ -977,16 +986,27 @@ void Scene::CheckCollisions()
 		for (BubbleFromPlayer* bubble : bubblesPlayer2)
 		{
 			AABB bubble_box = bubble->GetHitbox();
-			for (BubbleFromPlayer* bubble2 : bubblesPlayer2)
+			for (BubbleFromPlayer* bubble2 : bubblesPlayer)
 			{
 				if (bubble == bubble2) continue;
-				AABB bubble_box2 = bubble2->GetHitbox();
 
-				if (stage != 3)
+				if (bubble2->issAlive)
 				{
-					bubble->MoveBubbleToRandomNear();
-					bubble2->MoveBubbleToRandomNear();
+					AABB bubble_box2 = bubble2->GetHitbox();
+
+					if (bubble_box.TestAABB(bubble_box2))
+					{
+						if (stage != 3 && stage != 5)
+						{
+							bubble->MoveBubbleToRandomNear();
+							bubble2->MoveBubbleToRandomNear();
+						}
+
+
+						break;
+					}
 				}
+
 			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))
@@ -1000,7 +1020,7 @@ void Scene::CheckCollisions()
 
 				}
 			}
-			if (bubble->cameFromDown == true) //cpy this to p2
+			if (bubble->cameFromDown == true) 
 			{
 				if (bubble->poped == false)
 				{
@@ -1034,13 +1054,25 @@ void Scene::CheckCollisions()
 
 					break;
 				}
-
+				
 
 			}
 			if (bubble_box.TestAABB(player2_box) && bubble->inCatch && !bubble->inShoot)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+
+				}
 				bubble->poped = true;
+				numEnemies--;
+
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
 				break;

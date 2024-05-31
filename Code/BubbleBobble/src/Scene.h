@@ -58,6 +58,7 @@ private:
     float eBubblingTime;
     float eTimeSpawnX;
     float eTTF = 0;
+    float eDbg = 5;
     float eTimeSDBH = 0;
     float eTimeSpawnY;
     float eTimeBottle = 0;
