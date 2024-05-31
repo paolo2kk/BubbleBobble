@@ -25,6 +25,7 @@ public:
 	void DrawDebug(const Color& col) const;
 	float framecounter;
 	bool isThund = false;
+	bool isLive = true;
 private:
 	Look direction;
 	ProjectileType type;

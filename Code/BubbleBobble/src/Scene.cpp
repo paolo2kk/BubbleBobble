@@ -80,6 +80,7 @@ Scene::~Scene()
 		particles = nullptr;
 	}
 	projectiles.clear();
+	thunders.clear();
 	objects.clear();
 	thunds.clear();
 	bubbles.clear();
@@ -577,6 +578,10 @@ void Scene::Update()
 	{
 		proj->Update();
 	}
+	for (Projectile* proj : thunders)
+	{
+		proj->Update();
+	}
 	enemies->Update(hitbox);
 	shots->Update(hitbox);
 	particles->Update();
@@ -858,7 +863,7 @@ void Scene::CheckCollisions()
 					bubblesPlayer.push_back(part);
 					Projectile* proj = new Projectile(pos, player->GetDir(), true);
 					proj->isThund = true;
-					projectiles.push_back(proj);
+					thunders.push_back(proj);
 				}
 				bubble->poped = true;
 
@@ -1066,18 +1071,16 @@ void Scene::CheckCollisions()
 	{
 		
 		AABB projectile_box = proj->GetHitbox();
-		
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB ene_box = enemy->GetHitbox();
 			if (ene_box.TestAABB(projectile_box))
 			{
 				enemy->SDhp--;
-				proj->Release();
-				proj = nullptr;
-				projectiles.pop_back();
+				proj->isLive = false;
 			}
 		}
+		
 
 		if (player_box.TestAABB(projectile_box) && P1in == true && stage != 5)
 		{
@@ -1107,7 +1110,26 @@ void Scene::CheckCollisions()
 		
 
 	}
-	
+	for (Projectile* proj : thunders)
+	{
+
+		AABB projectile_box = proj->GetHitbox();
+		for (Enemy* enemy : enemies->GetEnemies())
+		{
+			AABB ene_box = enemy->GetHitbox();
+			if (ene_box.TestAABB(projectile_box))
+			{
+				enemy->SDhp--;
+				proj->isLive = false;
+			}
+		}
+
+
+		
+
+
+
+	}
 	if (IsKeyDown(KEY_O)) {
 
 		if (P1in == true)
@@ -1210,6 +1232,11 @@ void Scene::ClearLevel()
 		delete proj;
 	}
 	projectiles.clear();
+	for (Projectile* proj : thunders)
+	{
+		delete proj;
+	}
+	thunders.clear();
 	for (Bubble* bubl : bubbles)
 	{
 		delete bubl;
@@ -1295,42 +1322,7 @@ void Scene::RenderObjects()
 		}
 
 	}
-	auto ate = thunds.begin();
-	while (ate != thunds.end())
-	{
-
-		if ((*ate)->point == true)
-		{
-			if ((*ate)->pastTime(1) == false)
-			{
-				(*ate)->Draw();
-				(*ate)->DrawPoints();
-				if ((int)(*ate)->framecounter % 3 == 0)
-				{
-					(*ate)->PointsAnimation();
-				}
-			}
-			else
-			{
-				//Delete the object
-				delete* ate;
-				//Erase the object from the vector and get the iterateor to the next valid element
-				ate = thunds.erase(ate);
-				AllObjects--;
-
-			}
-
-		}
-		else
-		{
-			(*ate)->Draw();
-		}
-		if (ate != thunds.end())
-		{
-			++ate;
-		}
-
-	}
+	
 	auto atee = thunds.begin();
 	while (atee != thunds.end())
 	{
@@ -1364,6 +1356,26 @@ void Scene::RenderObjects()
 		if (atee != thunds.end())
 		{
 			++atee;
+		}
+
+	}
+	auto tate = thunders.begin();
+	while (tate != thunders.end())
+	{
+
+		if((*tate)->isLive == false)
+		{
+			//Delete the object
+			delete* tate;
+			//Erase the object from the vector and get the iterator to the next valid element
+			tate = thunders.erase(tate);
+
+		}
+		else
+		{
+			(*tate)->Draw();
+			// Move to the next element
+			++tate;
 		}
 
 	}

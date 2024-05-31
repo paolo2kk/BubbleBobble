@@ -61,6 +61,7 @@ private:
     std::vector<Object*> thunds;
 
     std::vector<Projectile*> projectiles;
+    std::vector<Projectile*> thunders;
 
     std::vector<Bubble*> bubbles;
     EnemyManager* enemies;
