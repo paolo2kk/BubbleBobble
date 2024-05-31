@@ -80,6 +80,7 @@ Scene::~Scene()
 		particles = nullptr;
 	}
 	projectiles.clear();
+	SDBOTTLES.clear();
 	thunders.clear();
 	objects.clear();
 	thunds.clear();
@@ -578,6 +579,10 @@ void Scene::Update()
 	{
 		proj->Update();
 	}
+	for (Projectile* proj : SDBOTTLES)
+	{
+		proj->Update();
+	}
 	for (Projectile* proj : thunders)
 	{
 		proj->Update();
@@ -661,7 +666,28 @@ void Scene::CheckCollisions()
 	{
 		player2_box = player2->GetHitbox();
 	}
+	if (IsKeyPressed(KEY_P) && stage == 5)
+	{
+		for (Enemy* enemy : enemies->GetEnemies())
+		{
+			Point midPos = {(float) enemy->GetPos().x + 32, (float)enemy->GetPos().y - 32 };
 
+			Projectile* projo = new Projectile(midPos, Look::L);
+			projectiles.push_back(projo);
+
+			Projectile* proje = new Projectile(midPos, Look::LO);
+			projectiles.push_back(proje);
+
+			Projectile* proji = new Projectile(midPos, Look::O);
+			projectiles.push_back(proji);
+
+			Projectile* proju = new Projectile(midPos, Look::RO);
+			projectiles.push_back(proju);
+
+			Projectile* projp = new Projectile(midPos, Look::R);
+			projectiles.push_back(projp);
+		}
+	}
 	if (P1in == true)
 	{
 		for (Enemy* enemy : enemies->GetEnemies())
@@ -754,7 +780,7 @@ void Scene::CheckCollisions()
 
 					if (bubble_box.TestAABB(bubble_box2))
 					{
-						if (stage != 3)
+						if (stage != 3 && stage != 5)
 						{
 							bubble->MoveBubbleToRandomNear();
 							bubble2->MoveBubbleToRandomNear();
@@ -835,6 +861,7 @@ void Scene::CheckCollisions()
 			if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				
 				if (bubble->poped == false)
 				{
 					Point pos = bubble->GetPos();
@@ -1074,7 +1101,7 @@ void Scene::CheckCollisions()
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
 			AABB ene_box = enemy->GetHitbox();
-			if (ene_box.TestAABB(projectile_box))
+			if (ene_box.TestAABB(projectile_box) && proj->isThund)
 			{
 				enemy->SDhp--;
 				proj->isLive = false;
@@ -1082,7 +1109,7 @@ void Scene::CheckCollisions()
 		}
 		
 
-		if (player_box.TestAABB(projectile_box) && P1in == true && stage != 5)
+		if (player_box.TestAABB(projectile_box) && P1in == true && !proj->isThund)
 		{
 			if (player->Ikilleable) {
 				Point posplayer = player->GetPos();
@@ -1094,7 +1121,7 @@ void Scene::CheckCollisions()
 
 			}
 		}
-		if (player2_box.TestAABB(projectile_box)&& P2in==true && stage != 5)
+		if (player2_box.TestAABB(projectile_box)&& P2in==true && !proj->isThund)
 		{
 			if (player2->Ikilleable) {
 				Point posplayer = player2->GetPos();
@@ -1228,6 +1255,11 @@ void Scene::ClearLevel()
 	}
 	thunds.clear();
 	for (Projectile* proj : projectiles)
+	{
+		delete proj;
+	}
+	projectiles.clear();
+	for (Projectile* proj : SDBOTTLES)
 	{
 		delete proj;
 	}
@@ -1383,7 +1415,10 @@ void Scene::RenderObjects()
 	{
 		proje->Draw();
 	}
-	
+	for (Projectile* projec : SDBOTTLES)
+	{
+		projec->Draw();
+	}
 	for (Bubble* bubl : bubbles)
 	{
 		bubl->Draw();
@@ -1418,6 +1453,10 @@ void Scene::RenderObjectsDebug(const Color& col) const
 		obj->DrawDebug(col);
 	}
 	for (Projectile* proj : projectiles)
+	{
+		proj->DrawDebug(col);
+	}
+	for (Projectile* proj : SDBOTTLES)
 	{
 		proj->DrawDebug(col);
 	}

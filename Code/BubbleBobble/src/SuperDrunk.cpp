@@ -52,6 +52,7 @@ bool SD::Update(const AABB& box)
 	if (SDhp <= 0)
 	{
 		direction = SDdir::STOP;
+	
 	}
 	sprite->Update();
 
@@ -122,6 +123,7 @@ void SD::MoveX()
 	case SDdir::INBUBBLE:
 		pos.x += 0;
 		pos.y += 0;
+
 		SDInBubble = true;
 		break;
 	}

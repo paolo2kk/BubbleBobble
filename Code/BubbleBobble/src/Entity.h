@@ -5,7 +5,7 @@
 #include "RenderComponent.h"
 #include "AABB.h"
 #include "Sprite.h"
-enum class Look { RIGHT, LEFT };
+enum class Look { RIGHT, LEFT, L, LO, O, RO, R };
 
 enum class Animations
 {

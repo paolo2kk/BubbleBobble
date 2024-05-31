@@ -24,6 +24,7 @@ Projectile::Projectile(const Point& p, Look view, bool a) : Entity(p, TILE_SIZE,
 		SetAnimation((int)Animations::THUNDER);
 	}
 }
+
 void Projectile::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -63,6 +64,27 @@ void Projectile::MoveX()
 	else if (direction == Look::RIGHT && isThund)
 	{
 		dir = { -2, 0 };
+	}
+
+	if (direction == Look::L)
+	{
+		dir = {-2, 0};
+	}
+	else if (direction == Look::LO)
+	{
+		dir = { -2, 2 };
+	}
+	else if (direction == Look::O)
+	{
+		dir = { 0, 2 };
+	}
+	else if (direction == Look::RO)
+	{
+		dir = { 2, 2 };
+	}
+	else if (direction == Look::R)
+	{
+		dir = { 2, 0};
 	}
 }
 void Projectile::DrawDebug(const Color& col) const
