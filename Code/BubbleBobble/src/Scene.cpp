@@ -667,7 +667,7 @@ void Scene::CheckCollisions()
 		player2_box = player2->GetHitbox();
 	}
 	eTimeSDBH += GetFrameTime();
-	if (eTimeSDBH >= 3 && stage == 5)
+	if (eTimeSDBH >= 2 && stage == 5)
 	{
 		for (Enemy* enemy : enemies->GetEnemies())
 		{

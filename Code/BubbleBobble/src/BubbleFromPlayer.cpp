@@ -211,6 +211,7 @@ void BubbleFromPlayer::SetPlayer2(Player2* p)
 }
 void BubbleFromPlayer::Stomp()
 {
+
 	if (!inShoot)
 	{
 		AABB box = GetHitbox();
@@ -230,7 +231,7 @@ void BubbleFromPlayer::Stomp()
 }
 void BubbleFromPlayer::FromDown()
 {
-	if (!inShoot && !popedParticles)
+	if (!inShoot && !popedParticles && eTimeBug <= 3)
 	{
 		AABB box = GetHitbox();
 		if (player != nullptr)
@@ -241,6 +242,7 @@ void BubbleFromPlayer::FromDown()
 			}
 		}
 	}
+	eTimeBug += GetFrameTime();
 }
 Point BubbleFromPlayer::GetPos() const
 {
@@ -482,9 +484,9 @@ void BubbleFromPlayer::MoveBubbleRightPlayer()
 	direction = Directions::RIGHT;
 	pos += {1, 0};
 	box = GetHitbox();
-	if (!map->TestCollisionAir(box)) {
+	/*if (!map->TestCollisionAir(box)) {
 		issAlive = false;
-	}
+	}*/
 
 }
 void BubbleFromPlayer::MoveBubbleLeftPlayer()
@@ -494,9 +496,9 @@ void BubbleFromPlayer::MoveBubbleLeftPlayer()
 	direction = Directions::LEFT;
 	pos += {-1, 0};
 	box = GetHitbox();
-	if (!map->TestCollisionAir(box)) {
+	/*if (!map->TestCollisionAir(box)) {
 		issAlive = false;
-	}
+	}*/
 
 }
 void BubbleFromPlayer::SetIdle()

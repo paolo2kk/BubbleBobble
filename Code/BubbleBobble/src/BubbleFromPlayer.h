@@ -75,7 +75,7 @@ public:
 private:
 	void HandleCollisionLogic();
 	bool isUp = false;
-
+	float eTimeBug = 0;
 	//void DrawDebug(const Color& col) const;
 	void SetAnimation(int id);
 	int bubbleStages = (int)BubbleStages::GREENSTAGE;
