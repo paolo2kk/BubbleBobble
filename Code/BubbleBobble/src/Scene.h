@@ -37,6 +37,7 @@ public:
     Player* player;
     Player2* player2;
     bool P2in;
+    bool yep = false;
     bool P1in;
     bool nextSceneTrigger = false;
 private:
@@ -56,6 +57,7 @@ private:
     Camera2D camera;
     float eBubblingTime;
     float eTimeSpawnX;
+    float eTTF = 0;
     float eTimeSDBH = 0;
     float eTimeSpawnY;
     float eTimeBottle = 0;

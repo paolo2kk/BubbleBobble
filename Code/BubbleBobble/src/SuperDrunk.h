@@ -13,7 +13,7 @@
 #define SD_SHOT_SPEED	4
 
 enum class SDState { ROAMING, ATTACK, FALLING, JUMPING };
-enum class SDdir {NE, ES, SW, WN, STOP, INBUBBLE};
+enum class SDdir {NE, ES, SW, WN, STOP, INBUBBLE, DED, DED2};
 enum class SDAnim {
 	IDLE_LEFT, IDLE_RIGHT, WALKING_LEFT, WALKING_RIGHT,
 	ATTACK_LEFT, ATTACK_RIGHT, NUM_ANIMATIONS
@@ -43,10 +43,12 @@ public:
 
 	//Retrieve the position and direction of the shot to be thrown
 	void GetShootingPosDir(Point* pos, Point* dir) const override;
+	bool bossDed = false; 
 
 private:
 	//Create the pattern behaviour
 	float eTimeLerp = 0;
+
 	void MoveX();
 	void SetAnimation(int id);
 	void StartFalling();

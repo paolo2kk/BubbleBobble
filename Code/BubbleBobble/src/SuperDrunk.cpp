@@ -64,6 +64,10 @@ void SD::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 	box = GetHitbox();
+	if (killed == true)
+	{
+		direction = SDdir::DED;
+	}
 	switch (direction)
 	{
 	case SDdir::NE:
@@ -118,6 +122,9 @@ void SD::MoveX()
 		pos.x += 0;
 		pos.y += 0;
 		SetAnimation((int)Animations::SUPER_DRUNK_BUBBLE);
+		SDInBubble = true;
+		ableToDie = true;
+		SDhp++;
 		direction = SDdir::INBUBBLE;
 		break;
 	case SDdir::INBUBBLE:
@@ -125,6 +132,19 @@ void SD::MoveX()
 		pos.y += 0;
 
 		SDInBubble = true;
+		ableToDie = true;
+		break;
+	case SDdir::DED:
+		killed = false;
+		pos.y += 2;
+		pos.x -= 2;
+
+		SetAnimation((int)Animations::SUPER_DRUNK_DEATH);
+		direction = SDdir::DED2;
+		break;
+	case SDdir::DED2:
+		pos.y += 2;
+		pos.x -= 2;
 		break;
 	}
 }

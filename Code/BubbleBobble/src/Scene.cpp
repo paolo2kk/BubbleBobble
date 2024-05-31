@@ -245,7 +245,7 @@ AppStatus Scene::LoadLevel(int stage)
 				151, 162, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 106,   0, 151,
 				151, 159, 155, 155, 157,   0, 156, 155, 155, 157,   0, 156, 155, 155, 155, 151
 			};
-		numEnemies = 3;
+		numEnemies = 4;
 	}
 	else if (stage == 3)
 	{
@@ -695,22 +695,26 @@ void Scene::CheckCollisions()
 	{
 		for (Enemy* enemy : enemies->GetEnemies())
 		{
-			Point midPos = {(float) enemy->GetPos().x + 32, (float)enemy->GetPos().y - 32 };
+			if (!enemy->ableToDie)
+			{
+				Point midPos = { (float)enemy->GetPos().x + 32, (float)enemy->GetPos().y - 32 };
 
-			Projectile* projo = new Projectile(midPos, Look::L);
-			projectiles.push_back(projo);
+				Projectile* projo = new Projectile(midPos, Look::L);
+				projectiles.push_back(projo);
 
-			Projectile* proje = new Projectile(midPos, Look::LO);
-			projectiles.push_back(proje);
+				Projectile* proje = new Projectile(midPos, Look::LO);
+				projectiles.push_back(proje);
 
-			Projectile* proji = new Projectile(midPos, Look::O);
-			projectiles.push_back(proji);
+				Projectile* proji = new Projectile(midPos, Look::O);
+				projectiles.push_back(proji);
 
-			Projectile* proju = new Projectile(midPos, Look::RO);
-			projectiles.push_back(proju);
+				Projectile* proju = new Projectile(midPos, Look::RO);
+				projectiles.push_back(proju);
 
-			Projectile* projp = new Projectile(midPos, Look::R);
-			projectiles.push_back(projp);
+				Projectile* projp = new Projectile(midPos, Look::R);
+				projectiles.push_back(projp);
+			}
+			
 		}
 		eTimeSDBH = 0;
 	}
@@ -729,7 +733,21 @@ void Scene::CheckCollisions()
 				player2_boxx = player2->GetHitbox();
 			}
 			AABB enemy_hitbox = enemy->GetHitbox();
-			if (player_boxx.TestAABB(enemy_hitbox)) {
+			if (player_boxx.TestAABB(enemy_hitbox) && enemy->ableToDie == true)
+			{
+				enemy->killed = true;
+
+				
+			}
+			if (enemy->killed == true)
+			{
+				eTTF += GetFrameTime();
+				if (eTTF >= 4)
+				{
+					yep = true;
+				}
+			}
+			if (player_boxx.TestAABB(enemy_hitbox) && !enemy->ableToDie) {
 				if (player->Ikilleable) {
 					Point posplayer = player->GetPos();
 					posplayer.y -= 16;
