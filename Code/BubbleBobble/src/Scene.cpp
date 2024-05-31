@@ -748,6 +748,12 @@ void Scene::CheckCollisions()
 
 				
 			}
+			if (player2_boxx.TestAABB(enemy_hitbox) && enemy->ableToDie == true)
+			{
+				enemy->killed = true;
+
+
+			}
 			if (enemy->killed == true)
 			{
 				eTTF += GetFrameTime();
@@ -875,13 +881,13 @@ void Scene::CheckCollisions()
 				bubble->poped = true;
 			}
 			if (player2->IsMoving()) {
-				if (player2->IsLookingRight() && bubble_box.TestAABB(player_box))
+				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))
 				{
 					bubble->MoveBubbleRightPlayer();
 
 				}
 
-				if (player2->IsLookingLeft() && bubble_box.TestAABB(player_box))
+				if (player2->IsLookingLeft() && bubble_box.TestAABB(player2_box))
 				{
 					bubble->MoveBubbleLeftPlayer();
 
@@ -931,7 +937,28 @@ void Scene::CheckCollisions()
 
 				break;
 			}
+			
 			if (bubble_box.TestAABB(player_box) && stage == 5 && !bubble->inShoot && player->isThund)
+			{
+				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+					Projectile* proj = new Projectile(pos, player->GetDir(), true);
+					proj->isThund = true;
+					thunders.push_back(proj);
+				}
+				bubble->poped = true;
+
+
+				break;
+			}
+
+			if (bubble_box.TestAABB(player2_box) && stage == 5 && !bubble->inShoot && player->isThund)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
 				if (bubble->poped == false)
@@ -1008,6 +1035,26 @@ void Scene::CheckCollisions()
 				}
 
 			}
+			if (bubble_box.TestAABB(player2_box) && bubble->inCatch && !bubble->inShoot)
+			{
+				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+					part->Initialise();
+					part->popedParticles = true;
+					bubblesPlayer.push_back(part);
+					numEnemies--;
+
+				}
+				bubble->poped = true;
+
+				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+
+				break;
+			}
 			if (player2->IsMoving()) {
 				if (player2->IsLookingRight() && bubble_box.TestAABB(player2_box))
 				{
@@ -1057,26 +1104,7 @@ void Scene::CheckCollisions()
 				
 
 			}
-			if (bubble_box.TestAABB(player2_box) && bubble->inCatch && !bubble->inShoot)
-			{
-				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
-
-				if (bubble->poped == false)
-				{
-					Point pos = bubble->GetPos();
-					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
-					part->Initialise();
-					part->popedParticles = true;
-					bubblesPlayer.push_back(part);
-
-				}
-				bubble->poped = true;
-				numEnemies--;
-
-				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
-
-				break;
-			}
+			
 			if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
 				Point pos = bubble->GetPos();
 				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
