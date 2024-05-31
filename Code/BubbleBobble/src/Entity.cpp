@@ -583,23 +583,16 @@ void Entity::Update()
 	pos += dir;
     
 }
-AABB Entity::GetHitbox() const
-{
-    if (NoHitbox == false)
-    {
-        Point p(pos.x, pos.y - (height - 1));
-        AABB hitbox(p, width, height);
-        return hitbox;
+AABB Entity::GetHitbox() const {
+    if (NoHitbox) {
+        return AABB(Point(-100, -100), -1, -1);
     }
-    else
-    {
+    else {
         Point p(pos.x, pos.y - (height - 1));
-        Point d(-100, -100);
-        AABB hitbox(d, width, height);
-        return hitbox;
+        return AABB(p, width, height);
     }
-
 }
+
 AABB Entity::GetHitArea() const
 {
 

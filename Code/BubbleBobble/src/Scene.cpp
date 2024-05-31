@@ -225,6 +225,7 @@ AppStatus Scene::LoadLevel(int stage)
 			};
 		player->InitScore();
 		numEnemies = 3;
+		
 
 	}
 	else if (stage == 2)
