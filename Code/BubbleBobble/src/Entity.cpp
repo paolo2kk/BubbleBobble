@@ -585,19 +585,13 @@ void Entity::Update()
 }
 AABB Entity::GetHitbox() const
 {
-    if (NoHitbox == false)
+    if (isAlive)
     {
         Point p(pos.x, pos.y - (height - 1));
         AABB hitbox(p, width, height);
         return hitbox;
     }
-    else
-    {
-        Point p(pos.x, pos.y - (height - 1));
-        Point d(-100, -100);
-        AABB hitbox(d, width, height);
-        return hitbox;
-    }
+    
 
 }
 AABB Entity::GetHitArea() const
