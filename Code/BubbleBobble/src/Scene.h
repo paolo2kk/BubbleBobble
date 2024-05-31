@@ -41,6 +41,7 @@ public:
     bool nextSceneTrigger = false;
 private:
     void BubbleSpawner();
+    void avoidCrashingBubbles();
     void CheckCollisions();
     void BubbleDespawn();
     void ClearLevel();

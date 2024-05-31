@@ -202,7 +202,7 @@ AppStatus Scene::LoadLevel(int stage)
 	Enemy* ene;
 	AABB hitbox, area;
 	numEnemies = 0;
-
+	avoidCrashingBubbles();
 	ClearLevel();
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
 
@@ -441,6 +441,29 @@ void Scene::BubbleSpawner()
 		eTimeSpawnX += GetFrameTime();
 		eTimeSpawnY += GetFrameTime();
 	}
+}
+void Scene::avoidCrashingBubbles()
+{
+	BubbleFromPlayer* buble = new BubbleFromPlayer({1000, 1000}, Directions::LEFT);
+	buble->Initialise();
+	bubblesPlayer.push_back(buble);
+
+	BubbleFromPlayer* bublee = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+	buble->Initialise();
+	bubblesPlayer.push_back(bublee);
+
+	BubbleFromPlayer* bubles = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+	buble->Initialise();
+	bubblesPlayer.push_back(bubles);
+
+	BubbleFromPlayer* bublex = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+	buble->Initialise();
+	bubblesPlayer.push_back(bublex);
+
+
+	BubbleFromPlayer* bublea = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
+	buble->Initialise();
+	bubblesPlayer.push_back(bublea);
 }
 void Scene::PlayerBubbleSpawn()
 {
