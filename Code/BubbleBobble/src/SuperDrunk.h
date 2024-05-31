@@ -48,7 +48,7 @@ public:
 private:
 	//Create the pattern behaviour
 	float eTimeLerp = 0;
-
+	float eTimelel = 0;
 	void MoveX();
 	void SetAnimation(int id);
 	void StartFalling();

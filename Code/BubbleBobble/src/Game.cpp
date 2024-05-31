@@ -649,6 +649,16 @@ AppStatus Game::Update()
                 state = GameState::MAIN_MENU;
 
             }
+
+            if (scene->yep == true && scene->P2in == false)
+            {
+                state = GameState::FALSE_ENDING;
+            }
+
+            if (scene->yep == true && scene->P2in == true)
+            {
+                state = GameState::GOOD_ENDING;
+            }
             break;
         case GameState::TRANSITIONING:
             

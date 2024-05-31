@@ -145,6 +145,13 @@ void SD::MoveX()
 	case SDdir::DED2:
 		pos.y += 2;
 		pos.x -= 2;
+		eTimelel += GetFrameTime();
+		if (eTimelel >= 4)
+		{
+			killed = true;
+
+		}
+
 		break;
 	}
 }
