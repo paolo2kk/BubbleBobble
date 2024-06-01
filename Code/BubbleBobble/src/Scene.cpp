@@ -962,6 +962,7 @@ void Scene::CheckCollisions()
 					Projectile* proj = new Projectile(pos, player->GetDir(), true);
 					proj->isThund = true;
 					thunders.push_back(proj);
+					bubble->issAlive = false;
 				}
 				bubble->poped = true;
 
@@ -1035,13 +1036,15 @@ void Scene::CheckCollisions()
 				{
 					Point pos = bubble->GetPos();
 
-					if (stage != 5)
+					if (stage == 5)
 					{
 
 						BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
 						part->Initialise();
 						part->popedParticles = true;
 						bubblesPlayer.push_back(part);
+						bubble->issAlive = false;
+
 					}
 					Projectile* proj = new Projectile(pos, player->GetDir(), true);
 					proj->isThund = true;

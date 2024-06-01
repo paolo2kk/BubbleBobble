@@ -63,7 +63,7 @@ void BubbleFromPlayer::Update()
 		Movement(dire);
 		pos += dir;
 	}
-	else
+	else if(!isThund)
 	{
 		dire = BublePop(dire);
 	}
