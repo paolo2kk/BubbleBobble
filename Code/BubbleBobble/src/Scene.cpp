@@ -445,7 +445,7 @@ void Scene::avoidCrashingBubbles()
 {
 	eDbg += GetFrameTime();
 
-	if (eDbg >= 3)
+	if (eDbg >= 5)
 	{
 
 		BubbleFromPlayer* buble = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
@@ -930,10 +930,10 @@ void Scene::CheckCollisions()
 					part->popedParticles = true;
 					player->IncrScore(1000);
 					bubblesPlayer.push_back(part);
-					
+					numEnemies--;
 				}
 				bubble->poped = true;
-				numEnemies--;
+			
 
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
