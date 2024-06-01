@@ -5,7 +5,6 @@
 
 Game::Game()
 {
-
     scene = nullptr;
     state = GameState::START;
     img_menu = nullptr;
@@ -148,6 +147,7 @@ AppStatus Game::Initialise(float scale)
 
 
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+    PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_SUPER_DRUNK));
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_INTRO));
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
     PlayMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_FALSE_ENDING));
@@ -787,20 +787,28 @@ void Game::Render()
             break;
 
         case GameState::PLAYING:
-            if (playtime == 0)
+            if (scene->stage != 5)
             {
-                scene->player->SetState(State::WALKING);
+                if (playtime == 0)
+                {
+                    scene->player->SetState(State::WALKING);
+                }
+                if ((playtime / 60) <= 30)
+                {
+                    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
+                    playtime++;
+                }
+                else
+                {
+                    UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
+                    playtime++;
+                }
             }
-            if ((playtime/60) <= 30)
+            else 
             {
-                UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
-                playtime++;
+                UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_SUPER_DRUNK));
             }
-            else
-            {
-                UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_MAIN_THEME_HURRY));
-                playtime++;
-            }
+           
             RenderUI();
             scene->Render();
             RenderLives();

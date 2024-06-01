@@ -552,7 +552,7 @@ void Scene::Update()
 	if (numEnemies <= 0)
 	{
 		eTimeTrans += GetFrameTime();
-		if (eTimeTrans > 3) {
+		if (eTimeTrans > 6) {
 			nextSceneTrigger = true;
 			
 		}
@@ -924,16 +924,17 @@ void Scene::CheckCollisions()
 				
 				if (bubble->poped == false)
 				{
+
 					Point pos = bubble->GetPos();
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos,bubble->dire);
 					part->Initialise();
 					part->popedParticles = true;
 					player->IncrScore(1000);
 					bubblesPlayer.push_back(part);
-					numEnemies--;
 				}
 				bubble->poped = true;
-			
+				numEnemies--;
+
 
 				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
 
