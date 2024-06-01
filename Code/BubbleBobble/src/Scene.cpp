@@ -818,6 +818,11 @@ void Scene::CheckCollisions()
 						enemy->lerping = true;
 						
 					}
+					if (player2->GetPos().y > 32) {
+
+						enemy->lerping = true;
+
+					}
 					if (stage == 4 || stage == 3)
 					{
 						Projectile* proj = new Projectile(enemy->GetPos(), enemy->GetDir());
@@ -980,12 +985,12 @@ void Scene::CheckCollisions()
 				case 0:
 
 					bubble->hasEndedFromCatch = false;
-					enemies->Add(pos, EnemyType::SLIME, area);
+					enemies->Add(pos, EnemyType::DSLIME, area);
 					break;
 				case 1:
 
 					bubble->hasEndedFromCatch = false;
-					enemies->Add(pos, EnemyType::DRUNK, area);
+					enemies->Add(pos, EnemyType::DDRUNK, area);
 					break;
 
 				}

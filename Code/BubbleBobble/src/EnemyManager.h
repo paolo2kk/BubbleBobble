@@ -6,6 +6,8 @@
 #include "TileMap.h"
 #include "SuperDrunk.h"
 #include "ShotManager.h"
+#include "DrunkEvil.h"
+#include "SlimeEvil.h"
 
 class EnemyManager
 {

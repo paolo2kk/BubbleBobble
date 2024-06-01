@@ -45,6 +45,14 @@ void EnemyManager::Add(const Point& pos, EnemyType type, const AABB& area, Look 
 	{
 		enemy = new SD(pos, SD_PHYSICAL_WIDTH, SD_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
 	}
+	else if (type == EnemyType::DSLIME)
+	{
+		enemy = new DSLIME(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
+	}
+	else if (type == EnemyType::DDRUNK)
+	{
+		enemy = new DDRUNK(pos, SLIME_PHYSICAL_WIDTH, SLIME_PHYSICAL_HEIGHT, SLIME_FRAME_SIZE, SLIME_FRAME_SIZE, map);
+	}
 
 	else
 	{
