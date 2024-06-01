@@ -449,7 +449,8 @@ void BubbleFromPlayer::Movement(Directions d)
 				{
 					pos.x++;
 					if (!inCatch) SetAnimation((int)Animations::BUBBLE_BLUE);
-
+					if (isThund && !isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
+					if (isThund && isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
 					stages++;
 				}
 				inShoot = true;
@@ -457,8 +458,8 @@ void BubbleFromPlayer::Movement(Directions d)
 				dir = { -2, 0 };
 				if (pos.x <= logPosXL) {
 					if (!inCatch) SetAnimation((int)Animations::BUBBLE_BLUE);
-					if (isThund) SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
-
+					if (isThund && !isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_GREEN);
+					if (isThund && isP2)  SetAnimation((int)Animations::THUNDER_BUBBLE_BLUE);
 					stages++;
 				}
 				break;

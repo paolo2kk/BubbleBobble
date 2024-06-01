@@ -1,4 +1,4 @@
-Project executed on 01-06-2024 at 15:28:15.
+Project executed on 01-06-2024 at 16:06:54.
 main.cpp(13): Application start
 TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given index: (7, -2)
 TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given index: (7, -1)
@@ -28,3 +28,11 @@ TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given 
 TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given index: (14, -1)
 TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given index: (15, -2)
 TileMap.cpp(237): Error: Index out of bounds. Tile map dimensions: 16x14. Given index: (15, -1)
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type
+EnemyManager.cpp(51): Internal error: trying to add a new enemy with invalid type

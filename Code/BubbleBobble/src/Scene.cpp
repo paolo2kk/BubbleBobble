@@ -598,6 +598,14 @@ void Scene::Update()
 
 		}
 	}
+	if (player2->isThund == true)
+	{
+		for (BubbleFromPlayer* buble : bubblesPlayer2)
+		{
+			buble->isThund = true;
+
+		}
+	}
 	avoidCrashingBubbles();
 
 	if (P2in == true)
@@ -867,7 +875,7 @@ void Scene::CheckCollisions()
 			}
 			if (bubble->cameFromDown == true) 
 			{
-				if (bubble->poped == false)
+				if (bubble->poped == false && stage != 5)
 				{
 					Point pos = bubble->GetPos();
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
@@ -961,25 +969,7 @@ void Scene::CheckCollisions()
 				break;
 			}
 
-			if (bubble_box.TestAABB(player2_box) && stage == 5 && !bubble->inShoot && player2->isThund)
-			{
-				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
-				if (bubble->poped == false)
-				{
-					Point pos = bubble->GetPos();
-					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
-					part->Initialise();
-					part->popedParticles = true;
-					bubblesPlayer.push_back(part);
-					Projectile* proj = new Projectile(pos, player->GetDir(), true);
-					proj->isThund = true;
-					thunders.push_back(proj);
-				}
-				bubble->poped = true;
-
-
-				break;
-			}
+		
 			if ((bubble->hasEndedFromCatch) && (bubble->poped == false) && !bubble->popedParticles) {
 				Point pos = bubble->GetPos();
 				pos.x += (SLIME_FRAME_SIZE - SLIME_PHYSICAL_WIDTH) / 2;
@@ -1000,7 +990,7 @@ void Scene::CheckCollisions()
 				}
 
 			}
-			if (bubble->fruit == true)
+			if (bubble->fruit == true && !bubble->isThund)
 			{
 				Object* obj = new Object(bubble->GetPos());
 				objects.push_back(obj);
@@ -1037,6 +1027,30 @@ void Scene::CheckCollisions()
 					}
 				}
 
+			}
+			if (bubble_box.TestAABB(player2_box) && stage == 5 && !bubble->inShoot && player2->isThund)
+			{
+				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
+				if (bubble->poped == false)
+				{
+					Point pos = bubble->GetPos();
+
+					if (stage != 5)
+					{
+
+						BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
+						part->Initialise();
+						part->popedParticles = true;
+						bubblesPlayer.push_back(part);
+					}
+					Projectile* proj = new Projectile(pos, player->GetDir(), true);
+					proj->isThund = true;
+					thunders.push_back(proj);
+				}
+				bubble->poped = true;
+
+
+				break;
 			}
 			if (bubble_box.TestAABB(player2_box) && bubble->inCatch && !bubble->inShoot)
 			{
@@ -1092,7 +1106,7 @@ void Scene::CheckCollisions()
 			{
 
 				AABB enemy_box = enemy->GetHitbox();
-				if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch)
+				if (bubble_box.TestAABB(enemy_box) && bubble->canCollide && !bubble->inCatch && stage != 5)
 				{
 					if (stage == 1 || stage == 2) {
 						bubble->enemytype = 0;
@@ -1131,7 +1145,7 @@ void Scene::CheckCollisions()
 				}
 
 			}
-			if (bubble->fruit == true)
+			if (bubble->fruit == true && !bubble->isThund)
 			{
 				Object* obj = new Object(bubble->GetPos());
 				objects.push_back(obj);
