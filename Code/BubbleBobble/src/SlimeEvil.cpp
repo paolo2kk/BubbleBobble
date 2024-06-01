@@ -121,7 +121,7 @@ void DSLIME::SetAnimation(int id)
 void DSLIME::StartFalling()
 {
 	dir.y = 1;
-}
+}	
 void DSLIME::Stop()
 {
 	dir = { 0,0 };

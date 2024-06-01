@@ -535,6 +535,47 @@ void Scene::PlayerBubbleSpawn()
 	
 	
 }
+void Scene::DebugFRUITSANDENEMIES()
+{
+	Point posEnemy = { (float)player->GetPos().x + 64, (float)player->GetPos().y };
+	if (IsKeyPressed(KEY_SIX))
+	{
+		Point p = { (float)player->GetPos().x + 32, (float)player->GetPos().y };
+		Object* obj = new Object(p);
+		objects.push_back(obj);
+		AllObjects++;
+	}
+	if (IsKeyPressed(KEY_SEVEN))
+	{
+		AABB hitbox = enemies->GetEnemyHitBox(posEnemy, EnemyType::SLIME);
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(posEnemy, EnemyType::SLIME, area);
+	}
+	if (IsKeyPressed(KEY_EIGHT))
+	{
+		AABB hitbox = enemies->GetEnemyHitBox(posEnemy, EnemyType::SLIME);
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(posEnemy, EnemyType::DSLIME, area);
+	}
+	if (IsKeyPressed(KEY_NINE))
+	{
+		AABB hitbox = enemies->GetEnemyHitBox(posEnemy, EnemyType::SLIME);
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(posEnemy, EnemyType::DRUNK, area);
+	}
+	if (IsKeyPressed(KEY_ZERO))
+	{
+		AABB hitbox = enemies->GetEnemyHitBox(posEnemy, EnemyType::SLIME);
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(posEnemy, EnemyType::DDRUNK, area);
+	}
+	if (IsKeyPressed(KEY_P))
+	{
+		AABB hitbox = enemies->GetEnemyHitBox(posEnemy, EnemyType::SLIME);
+		AABB area = level->GetSweptAreaX(hitbox);
+		enemies->Add(posEnemy, EnemyType::SD, area);
+	}
+}
 void Scene::Update()
 {
 	Point p1, p2;
@@ -542,7 +583,7 @@ void Scene::Update()
 	AABB hitbox;
 
 	PlayerBubbleSpawn();
-	
+	DebugFRUITSANDENEMIES();
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
 	if (IsKeyPressed(KEY_F1))
 	{

@@ -27,6 +27,7 @@ public:
     void RandomItemSpawn();
     int AllObjects;
     void PlayerBubbleSpawn();
+    void DebugFRUITSANDENEMIES();
     int Score() const;
     int Score2() const;
     void ResetScore() const;
