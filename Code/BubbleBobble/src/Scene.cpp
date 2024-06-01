@@ -445,7 +445,7 @@ void Scene::avoidCrashingBubbles()
 {
 	eDbg += GetFrameTime();
 
-	if (eDbg >= 5)
+	if (eDbg >= 3)
 	{
 
 		BubbleFromPlayer* buble = new BubbleFromPlayer({ 1000, 1000 }, Directions::LEFT);
@@ -865,7 +865,7 @@ void Scene::CheckCollisions()
 				}
 				
 			}
-			if (bubble->cameFromDown == true) //cpy this to p2
+			if (bubble->cameFromDown == true) 
 			{
 				if (bubble->poped == false)
 				{
@@ -874,6 +874,7 @@ void Scene::CheckCollisions()
 					part->Initialise();
 					part->popedParticles = true;
 					bubblesPlayer.push_back(part);
+					player->IncrScore(50);
 
 				}
 				bubble->noZesty = true;
@@ -889,7 +890,7 @@ void Scene::CheckCollisions()
 
 				if (player2->IsLookingLeft() && bubble_box.TestAABB(player2_box))
 				{
-					bubble->MoveBubbleLeftPlayer();
+					bubble->MoveBubbleLeftiePlayer();
 
 				}
 
@@ -927,6 +928,7 @@ void Scene::CheckCollisions()
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos,bubble->dire);
 					part->Initialise();
 					part->popedParticles = true;
+					player->IncrScore(1000);
 					bubblesPlayer.push_back(part);
 					
 				}
@@ -958,7 +960,7 @@ void Scene::CheckCollisions()
 				break;
 			}
 
-			if (bubble_box.TestAABB(player2_box) && stage == 5 && !bubble->inShoot && player->isThund)
+			if (bubble_box.TestAABB(player2_box) && stage == 5 && !bubble->inShoot && player2->isThund)
 			{
 				ResourceManager::Instance().PlaySoundEffect(Resource::SFX_BUBBLE_POP);
 				if (bubble->poped == false)
@@ -1013,7 +1015,7 @@ void Scene::CheckCollisions()
 		for (BubbleFromPlayer* bubble : bubblesPlayer2)
 		{
 			AABB bubble_box = bubble->GetHitbox();
-			for (BubbleFromPlayer* bubble2 : bubblesPlayer)
+			for (BubbleFromPlayer* bubble2 : bubblesPlayer2)
 			{
 				if (bubble == bubble2) continue;
 
@@ -1046,7 +1048,9 @@ void Scene::CheckCollisions()
 					part->Initialise();
 					part->popedParticles = true;
 					bubblesPlayer.push_back(part);
+					player2->IncrScore(1000);
 					numEnemies--;
+					bubble->poped = true;
 
 				}
 				bubble->poped = true;
@@ -1076,6 +1080,7 @@ void Scene::CheckCollisions()
 					part->Initialise();
 					part->popedParticles = true;
 					bubblesPlayer.push_back(part);
+					player2->IncrScore(50);
 
 				}
 				bubble->noZesty = true;
@@ -1091,7 +1096,7 @@ void Scene::CheckCollisions()
 					if (stage == 1 || stage == 2) {
 						bubble->enemytype = 0;
 					}
-					else if (stage == 4) {
+					else if (stage == 4 || stage == 3) {
 						bubble->enemytype = 1;
 
 					}
@@ -1582,6 +1587,7 @@ void Scene::RenderObjectsDebug(const Color& col) const
 			buble->DrawDebug(BLUE);
 		}
 	}
+
 	
 }
 int Scene::Score() const

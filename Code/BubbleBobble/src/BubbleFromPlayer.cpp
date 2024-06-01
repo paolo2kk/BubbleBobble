@@ -501,6 +501,18 @@ void BubbleFromPlayer::MoveBubbleLeftPlayer()
 	}*/
 
 }
+void BubbleFromPlayer::MoveBubbleLeftiePlayer()
+{
+
+	AABB box;
+	direction = Directions::RIGHTDEBUG;
+	pos += {-1, 0};
+	box = GetHitbox();
+	/*if (!map->TestCollisionAir(box)) {
+		issAlive = false;
+	}*/
+
+}
 void BubbleFromPlayer::SetIdle()
 {
 	SetAnimation((int)Animations::BUBBLE_GREEN);
