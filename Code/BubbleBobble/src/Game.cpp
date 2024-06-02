@@ -548,7 +548,7 @@ AppStatus Game::Update()
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
 
-            if (pastTime(8.4))//should be 8.41
+            if (pastTime(.1))//should be 8.41
             {
 
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;

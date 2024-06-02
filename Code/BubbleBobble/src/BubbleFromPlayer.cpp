@@ -114,6 +114,7 @@ bool BubbleFromPlayer::isAlive()
 		{
 			return false;
 		}
+	
 		else if(eTime >= lifeTime - 0.5)
 		{
 			if (particles == false)
