@@ -455,6 +455,8 @@ AppStatus Game::Update()
             }
             if (IsKeyPressed(KEY_ONE))
             {
+                frameCounter = 0;
+                alpha = 0;
                 state = GameState::INTRO;
             }
             break;
@@ -468,10 +470,19 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ENTER))
             {
                 incCredit();
-                state = GameState::PLAYER_1;
+                if (GetCredit() == 0)
+                {
+                    state = GameState::PLAYER_1;
+                }
+                else
+                {
+                    state = GameState::PLAYER_2_AND_1;
+                }
             }
             if (IsKeyPressed(KEY_SPACE))
             {
+                frameCounter = 0;
+                alpha = 0;
                 state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ONE))
@@ -508,6 +519,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_SPACE))
             {
                 frameCounter = 0;
+                alpha = 0;
                 state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
@@ -523,6 +535,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_SPACE))
             {
                 frameCounter = 0;
+                alpha = 0;
                 state = GameState::INTRO;
             }
             if (IsKeyPressed(KEY_ENTER))
@@ -535,7 +548,7 @@ AppStatus Game::Update()
 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
 
-            if (pastTime(.1))//should be 8.4
+            if (pastTime(8.4))//should be 8.41
             {
 
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
@@ -552,14 +565,14 @@ AppStatus Game::Update()
 
 
         case GameState::FALSE_ENDING:
-            if ((pastTime(93))||(IsKeyPressed(KEY_ESCAPE)))
+            if ((pastTime(93))||(IsKeyPressed(KEY_SPACE)))
             {
                 state = GameState::MAIN_MENU;
             }
             break;
 
         case GameState::GOOD_ENDING:
-            if ((pastTime(32)) || (IsKeyPressed(KEY_ESCAPE)))
+            if ((pastTime(32)) || (IsKeyPressed(KEY_SPACE)))
             {
                 state = GameState::MAIN_MENU;
             }
@@ -795,6 +808,7 @@ void Game::Render()
                 }
                 if ((playtime / 60) <= 30)
                 {
+
                     UpdateMusicStream(*ResourceManager::Instance().GetMusic(Resource::MUSIC_BACKGROUND));
                     playtime++;
                 }
