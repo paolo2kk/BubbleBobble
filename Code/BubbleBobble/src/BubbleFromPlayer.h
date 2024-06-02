@@ -88,9 +88,9 @@ private:
 	float eAnimDebug = 0;
 	float eTimePogo;
 	float eTimeCatch = 0;
-	float eTimeCatchGreen = 1.5;
-	float eTimeCatchYellow = 1;
-	float eTimeCatchRed = 1;
+	float eTimeCatchGreen = 4;
+	float eTimeCatchYellow = 3;
+	float eTimeCatchRed = 2;
 	float lifeTime;
 	float speed;
 	Player* player;
