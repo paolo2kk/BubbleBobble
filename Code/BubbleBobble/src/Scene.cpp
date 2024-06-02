@@ -919,9 +919,9 @@ void Scene::CheckCollisions()
 				}
 				
 			}
-			if (bubble->cameFromDown == true) 
+			if (bubble->cameFromDown == true && stage != 5)
 			{
-				if (bubble->poped == false && stage != 5)
+				if (bubble->poped == false )
 				{
 					Point pos = bubble->GetPos();
 					BubbleFromPlayer* part = new BubbleFromPlayer(pos, bubble->dire);
