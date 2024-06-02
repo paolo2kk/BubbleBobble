@@ -69,7 +69,8 @@ AppStatus Game::Initialise(float scale)
         // Handle error, perhaps by logging or attempting a graceful shutdown.
         return AppStatus::ERROR;
     }
-
+    src = { 0, 0, WINDOW_WIDTH, -WINDOW_HEIGHT };
+    dst = { 0 , 0, WINDOW_WIDTH * scale, WINDOW_HEIGHT * scale };
     if (ResourceManager::Instance().LoadMusic(Resource::MUSIC_BACKGROUND, "music/Music/Main_Theme_Music.ogg") != AppStatus::OK) {
         // Handle error
         return AppStatus::ERROR;
@@ -444,6 +445,22 @@ AppStatus Game::Update()
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
     if(WindowShouldClose()) return AppStatus::QUIT;
 
+    if (IsKeyPressed(KEY_F11)) {
+        if (!IsWindowFullscreen())
+        {
+
+            SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+            dst = { (float)((float)GetMonitorWidth(GetCurrentMonitor()) - (WINDOW_WIDTH * GAME_SCALE_FACTOR)) / 2 , WINDOW_HEIGHT / GAME_SCALE_FACTOR  , (WINDOW_WIDTH) * GAME_SCALE_FACTOR , WINDOW_HEIGHT * GAME_SCALE_FACTOR };
+            ToggleFullscreen();
+        }
+        else
+        {
+            dst = { 0 , 0, WINDOW_WIDTH * GAME_SCALE_FACTOR, WINDOW_HEIGHT * GAME_SCALE_FACTOR };
+            ToggleFullscreen();
+            SetWindowSize(WINDOW_WIDTH * GAME_SCALE_FACTOR, WINDOW_HEIGHT * GAME_SCALE_FACTOR);
+        }
+    }
+   
     switch (state)
     {
         case GameState::START:
@@ -687,6 +704,7 @@ AppStatus Game::Update()
     }
     return AppStatus::OK;
 }
+
 void Game::Render()
 {
     //Draw everything in the render texture, note this will not be rendered on screen, yet

@@ -13,6 +13,7 @@ public:
 
     AppStatus Initialise(float scale);
     AppStatus Update();
+    void ToggleFullScreenWindow(int windowWidth, int windowHeight);
     void Render();
     void Cleanup();
 
@@ -41,9 +42,11 @@ private:
     bool fadeCondition;
     int transCounter;
     int HighScore;
-
+    bool isFullscreen = false;      
+    bool f11Pressed = false;
     GameState state;
     Scene *scene;
+    Rectangle src, dst;
     const Texture2D *img_player_1;
     const Texture2D* img_stage1;
     const Texture2D* img_stage2;
@@ -70,7 +73,6 @@ private:
 
     //To work with original game units and then scale the result
     RenderTexture2D target;
-    Rectangle src, dst;
     Text* text_;
 
     Entity* IntroBub;
