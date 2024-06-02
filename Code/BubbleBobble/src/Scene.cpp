@@ -1186,23 +1186,7 @@ void Scene::CheckCollisions()
 					break;
 				}
 				
-				if (player2_box.TestAABB(enemy_box) && !enemy->ableToDie) {
-					if (player2->Ikilleable) {
-						Point posplayer = player2->GetPos();
-						posplayer.y -= 16;
-						player2->SetPos(posplayer);
-						player2->SetDeathAnim();
-						player2->toogleWasHit();
-						player2->DecLiv();
-
-					}
-				}
-				if (player2_box.TestAABB(enemy_box) && enemy->ableToDie == true)
-				{
-					enemy->killed = true;
-
-
-				}
+				
 			}
 			
 			if ((bubble->hasEndedFromCatch) && (bubble->poped == false)) {
@@ -1234,6 +1218,28 @@ void Scene::CheckCollisions()
 			}
 
 		}
+		for (Enemy* enemy : enemies->GetEnemies())
+		{
+			AABB enemy_box = enemy->GetHitbox();
+			if (player2_box.TestAABB(enemy_box) && !enemy->ableToDie) {
+				if (player2->Ikilleable) {
+					Point posplayer = player2->GetPos();
+					posplayer.y -= 16;
+					player2->SetPos(posplayer);
+					player2->SetDeathAnim();
+					player2->toogleWasHit();
+					player2->DecLiv();
+
+				}
+			}
+			if (player2_box.TestAABB(enemy_box) && enemy->ableToDie == true)
+			{
+				enemy->killed = true;
+
+
+			}
+		}
+		
 	}
 
 	auto it = objects.begin();
