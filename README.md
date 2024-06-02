@@ -64,6 +64,10 @@ F1    - Collision debug
 
 F2    - God mode
 
+F11   - Toggle Fullscreen
+
+Q     - Next Level
+
 1 (while in start screen) - skip cutscenes
 
 1 (while in game) - first level
