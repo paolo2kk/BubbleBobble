@@ -814,7 +814,7 @@ void Scene::CheckCollisions()
 				}
 			}
 			if (player_boxx.TestAABB(enemy_hitbox) && !enemy->ableToDie) {
-				if (player->Ikilleable) {
+				if (player->Ikilleable ) {
 					Point posplayer = player->GetPos();
 					posplayer.y -= 16;
 					player->SetPos(posplayer);
@@ -824,7 +824,7 @@ void Scene::CheckCollisions()
 
 				}
 			}
-			if (player2_boxx.TestAABB(enemy_hitbox)) {
+			if (player2_boxx.TestAABB(enemy_hitbox) && !enemy->ableToDie) {
 				if (player2->Ikilleable) {
 					Point posplayer = player2->GetPos();
 					posplayer.y -= 16;

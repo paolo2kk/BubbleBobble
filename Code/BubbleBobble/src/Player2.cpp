@@ -44,7 +44,6 @@ void Player2::IncrScore(int n)
 void Player2::HitProcedure()
 {
 	STOP = true;
-	isGod = true;
 	Ikilleable = false;
 
 	eTimeHitted += GetFrameTime();
@@ -54,6 +53,7 @@ void Player2::HitProcedure()
 
 		wasHit = false;
 		eTimeImmune = 0;
+		Ikilleable = true;
 
 
 
@@ -118,7 +118,7 @@ void Player2::IncLiv()
 void Player2::DecLiv()
 {
 
-	if (isGod == false) {
+	if (Ikilleable == true) {
 
 		lives--;
 		HitProcedure();
@@ -202,11 +202,11 @@ void Player2::Update()
 	}
 	if (IsKeyPressed(KEY_F2))
 	{
-		if (isGod == false) {
-			isGod = true;
+		if (Ikilleable == false) {
+			Ikilleable = true;
 		}
 		else {
-			isGod = false;
+			Ikilleable = false;
 		}
 	}
 	if (IsLookingRight() && IsKeyPressed(KEY_H) && !STOP)
@@ -232,11 +232,9 @@ void Player2::Update()
 		eTimeImmune += GetFrameTime();
 		if (eTimeImmune >= 1)
 		{
-			isGod = false;
 
 			eTimeHitted = 0;
 
-			Ikilleable = true;
 		}
 
 
