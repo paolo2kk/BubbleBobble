@@ -342,7 +342,7 @@ void Game::RenderUI()
 
     if (scene->Score()+scene->Score2() >= HighScore)
     {
-        HighScore = scene->Score();
+        HighScore = scene->Score()+scene->Score2();
     }
     text_->Draw(122, 8, TextFormat("%d", HighScore), WHITE);
 
