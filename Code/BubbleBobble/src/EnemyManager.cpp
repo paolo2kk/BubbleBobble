@@ -124,12 +124,14 @@ void EnemyManager::Draw() const
 void EnemyManager::DrawDebug() const
 {
 	Color c;
-	c.a = 0;
+	c.r = 128;
+	c.b = 128;
+	c.g = 0;
+	c.a = 50;
 
 	for (const Enemy* enemy : enemies)
 	{
-		enemy->DrawVisibilityArea(c);
-		enemy->DrawHitbox(RED);
+		enemy->DrawHitbox(c);
 	}
 }
 void EnemyManager::DestroyEnemy(Enemy* enemy)
