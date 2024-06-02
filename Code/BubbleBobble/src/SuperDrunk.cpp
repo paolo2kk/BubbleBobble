@@ -75,48 +75,64 @@ void SD::MoveX()
 		pos.y -= 1;
 		if (map->TestCollisionWallRight(box))
 		{
-			direction = SDdir::WN;
+			direction = SDdir::WNN;
 		}
 		else if (pos.y < 64)
 		{
-			direction = SDdir::ES;
+			direction = SDdir::ESS;
 		}
+		break;
+	case SDdir::NEE:
+		SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
+		direction = SDdir::NE;
 		break;
 	case SDdir::ES:
 		pos.x += 1;
 		pos.y += 1;
 		if (map->TestCollisionWallRight(box))
 		{
-			direction = SDdir::SW;
+			direction = SDdir::SWW;
 		}
 		else if (pos.y > WINDOW_HEIGHT - 24)
 		{
-			direction = SDdir::NE;
+			direction = SDdir::NEE;
 		}
+		break;
+	case SDdir::ESS:
+		SetAnimation((int)Animations::SUPER_DRUNK_WALK_R);
+		direction = SDdir::ES;
 		break;
 	case SDdir::SW:
 		pos.x -= 1;
 		pos.y += 1;
 		if (map->TestCollisionWallLeft(box))
 		{
-			direction = SDdir::ES;
+			direction = SDdir::ESS;
 		}
 		else if (pos.y > WINDOW_HEIGHT - 24)
 		{
-			direction = SDdir::WN;
+			direction = SDdir::WNN;
 		}
+		break;
+	case SDdir::SWW:
+		SetAnimation((int)Animations::SUPER_DRUNK_WALK_L);
+		direction = SDdir::SW;
 		break;
 	case SDdir::WN:
 		pos.x -= 1;
 		pos.y -= 1;
 		if (map->TestCollisionWallLeft(box))
 		{
-			direction = SDdir::NE;
+			direction = SDdir::NEE;
 		}
 		else if (pos.y < 64)
 		{
-			direction = SDdir::SW;
+			direction = SDdir::SWW;
 		}
+		break;
+	case SDdir::WNN:
+		SetAnimation((int)Animations::SUPER_DRUNK_WALK_L);
+		direction = SDdir::WN;
 		break;
 	case SDdir::STOP:
 		pos.x += 0;

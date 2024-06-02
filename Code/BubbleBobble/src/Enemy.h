@@ -44,7 +44,7 @@ public:
 	virtual void GetShootingPosDir(Point* pos, Point* dir) const = 0;
 	bool isshooting = false;
 	Look GetDir();
-	int SDhp = 1;
+	int SDhp = 15;
 	bool SDInBubble = false;
 	bool noSpawnMore = false;
 protected:

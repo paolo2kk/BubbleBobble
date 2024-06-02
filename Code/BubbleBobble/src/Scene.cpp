@@ -263,6 +263,8 @@ AppStatus Scene::LoadLevel(int stage)
 			175, 185, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 106,   0, 175,
 			175, 176, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 177, 175
 		};
+		numEnemies = 7;
+
 	}
 	else if (stage == 4)
 	{
@@ -301,7 +303,7 @@ AppStatus Scene::LoadLevel(int stage)
 			  219, 229, 100,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 106,   0, 219,
 			  219, 221, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 219
 			};
-		numEnemies = 1;
+		numEnemies = 4;
 	}
 	else
 	{
@@ -353,7 +355,7 @@ AppStatus Scene::LoadLevel(int stage)
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SD);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
-				if(stage != 4)numEnemies++;
+				/*if(stage != 4)numEnemies++;*/
 
 			}
 			else if (tile == Tile::SD)
@@ -375,7 +377,7 @@ AppStatus Scene::LoadLevel(int stage)
 				hitbox = enemies->GetEnemyHitBox(pos, EnemyType::SLIME);
 				area = level->GetSweptAreaX(hitbox);
 				enemies->Add(pos, EnemyType::DRUNK, area);
-				numEnemies++;
+				/*numEnemies++;*/
 
 			}
 			else if (tile == Tile::BUBBLE)
@@ -593,7 +595,7 @@ void Scene::Update()
 	if (numEnemies <= 0)
 	{
 		eTimeTrans += GetFrameTime();
-		if (eTimeTrans > 6) {
+		if (eTimeTrans > 7) {
 			nextSceneTrigger = true;
 			
 		}
@@ -883,6 +885,14 @@ void Scene::CheckCollisions()
 		for (BubbleFromPlayer* bubble : bubblesPlayer)
 		{
 			AABB bubble_box = bubble->GetHitbox();
+
+			if (bubble_box.TestAABB(player_box) && bubble->inCatch && !bubble->inShoot)
+			{
+				if (bubble->poped == false)
+				{
+					numEnemies--;
+				}
+			}
 			for (BubbleFromPlayer* bubble2 : bubblesPlayer)
 			{
 				if (bubble == bubble2) continue;
@@ -987,10 +997,17 @@ void Scene::CheckCollisions()
 					bubblesPlayer.push_back(part);
 				}
 				bubble->poped = true;
-				numEnemies--;
 
 
-				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+				if (stage != 3 || stage != 4)
+				{
+					bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+
+				}
+				else {
+					bubble->SetAnimationE((int)Animations::DRUNK_DEATH);
+
+				}
 
 				break;
 			}
@@ -1119,7 +1136,15 @@ void Scene::CheckCollisions()
 				}
 				bubble->poped = true;
 
-				bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+				if (stage != 3 || stage != 4)
+				{
+					bubble->SetAnimationE((int)Animations::ZENCHAN_DEATH);
+
+				}
+				else {
+					bubble->SetAnimationE((int)Animations::DRUNK_DEATH);
+
+				}
 
 				break;
 			}

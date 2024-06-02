@@ -81,7 +81,7 @@ void BubbleFromPlayer::Update()
 		case 0:
 			EnemyCatchSlime();
 			break;
-		case 1:
+		case 1:			
 			EnemyCatchDrunk();
 			break;
 		}
