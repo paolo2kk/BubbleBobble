@@ -30,7 +30,7 @@ Game::Game()
     fadeCondition = true;
     transCounter = 0;
     frameCounter = 0;
-    credit = 2;
+    credit = 0;
     playtime = 0;
     text_ = new Text();
 
@@ -457,6 +457,7 @@ AppStatus Game::Update()
             {
                 frameCounter = 0;
                 alpha = 0;
+                credit = 2;
                 state = GameState::INTRO;
             }
             break;
@@ -483,11 +484,17 @@ AppStatus Game::Update()
             {
                 frameCounter = 0;
                 alpha = 0;
-                state = GameState::INTRO;
+                if (GetCredit() != 0)
+                {
+                    state = GameState::INTRO;
+                }
             }
             if (IsKeyPressed(KEY_ONE))
             {
-                state = GameState::PLAYING;
+                if (GetCredit() != 0)
+                {
+                    state = GameState::PLAYING;
+                }
             }
             break;
 
@@ -614,7 +621,7 @@ AppStatus Game::Update()
                 scene->P1in = true;
             }
 
-            if (scene->P1in == false && scene->P2in == false)
+            if (scene->player->lives == 0 && scene->player2->lives == 0)
             {
                 state = GameState::GAME_OVER;
                 decCredit();

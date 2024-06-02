@@ -17,7 +17,7 @@ BubbleFromPlayer::BubbleFromPlayer(const Point& p, Directions d) : Entity(p, BUB
 	eTime = 0;
 	spawnTime = 0;
 	player = nullptr;
-	lifeTime = GetRandomValue(4, 6);
+	lifeTime = GetRandomValue(8, 10);
 	Rectangle rc;
 	inShoot = true;
 	eTimePogo = 0;
@@ -114,7 +114,6 @@ bool BubbleFromPlayer::isAlive()
 		{
 			return false;
 		}
-	
 		else if(eTime >= lifeTime - 0.5)
 		{
 			if (particles == false)
@@ -122,6 +121,16 @@ bool BubbleFromPlayer::isAlive()
 				SetAnimation((int)Animations::BUBBLE_POP);
 			}
 			particles = true;
+			return true;
+		}
+		else if (eTime >= lifeTime - 1)
+		{
+			SetAnimation((int)Animations::BUBBLEREDRED);
+			return true;
+		}
+		else if (eTime >= lifeTime - 2)
+		{
+			SetAnimation((int)Animations::BUBBLERED);
 			return true;
 		}
 		else 
